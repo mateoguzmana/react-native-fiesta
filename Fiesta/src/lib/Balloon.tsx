@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   Circle,
   Group,
@@ -20,33 +20,42 @@ interface BalloonProps {
 const BOTTOM = -350;
 const SKEW_X_VALUES = [0.1, 0, -0.1];
 
+const springOptions: SpringConfig = {
+  stiffness: 0.2,
+};
+
 function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
   const shadowPosition = useValue(screenHeight - 315 - BOTTOM + y);
   const mainBalloonPosition = useValue(screenHeight - 300 - BOTTOM + y);
   const stringPosition = useValue(screenHeight - 265 - BOTTOM + y);
 
-  const springOptions: SpringConfig = {
-    stiffness: 0.2,
-  };
+  const changeShadowPosition = useCallback(
+    () => runSpring(shadowPosition, -screenHeight, springOptions),
+    [shadowPosition],
+  );
+  const changeMainBalloonPosition = useCallback(
+    () => runSpring(mainBalloonPosition, -screenHeight, springOptions),
+    [mainBalloonPosition],
+  );
+  const changeStringPosition = useCallback(
+    () => runSpring(stringPosition, -screenHeight, springOptions),
+    [stringPosition],
+  );
 
-  const changeShadowPosition = () =>
-    runSpring(shadowPosition, -screenHeight, springOptions);
-  const changeMainBalloonPosition = () =>
-    runSpring(mainBalloonPosition, -screenHeight, springOptions);
-  const changeStringPosition = () =>
-    runSpring(stringPosition, -screenHeight, springOptions);
-
-  const pushBalloon = () => {
+  const pushBalloon = useCallback(() => {
     changeShadowPosition();
     changeMainBalloonPosition();
     changeStringPosition();
-  };
+  }, [changeShadowPosition, changeMainBalloonPosition, changeStringPosition]);
 
   useEffect(() => {
     pushBalloon();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [pushBalloon]);
 
-  const skewX = SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)];
+  const skewX = useMemo(
+    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)],
+    [],
+  );
 
   return (
     <Group transform={[{skewX}]}>
