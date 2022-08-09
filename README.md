@@ -12,15 +12,15 @@ Fiesta is a set of animations ideal for celebration and user engagement.
 
 This library is still under construction. Below, a list of features that are currently being worked on.
 
-- [✅] Birthday Balloons (Twitter style)
-- [✅] Dark Balloons
-- [ ] Light Balloons
-- [ ] Fireworks
-- [ ] Hearts
-- [ ] Lollipops
-- [ ] Music Notes
-- [ ] Party Poppers
-- [ ] Stars
+- ✅ Birthday Balloons (Twitter style)
+- ✅ Dark Balloons
+- Light Balloons
+- Fireworks
+- Hearts
+- Lollipops
+- Music Notes
+- Party Poppers
+- Stars
 
 ## Installation
 
@@ -44,13 +44,13 @@ npm install react-native-fiesta
 import { StyleSheet, View } from "react-native";
 import { Birthday } from "react-native-fiesta";
 
-const App = () => {
+function App() {
   return (
     <View style={styles.container}>
       <Birthday />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -60,3 +60,15 @@ const styles = StyleSheet.create({
   },
 });
 ```
+
+You can see more examples in the [example](./example) project.
+
+## Contributing
+
+- If you have any questions or suggestions, please open an issue on [Github](https://github.com/mateoguzmana/react-native-fiesta/issues).
+- To contribute adding a new animation or by improving the existing ones, please open a pull request.
+- If you have a cool theme the community can use, don't hesitate opening an issue to suggest it (or just shoot a PR).
+
+## License
+
+MIT License
