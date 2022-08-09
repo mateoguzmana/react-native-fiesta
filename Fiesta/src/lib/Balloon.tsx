@@ -25,13 +25,13 @@ const springOptions: SpringConfig = {
 };
 
 function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
-  const shadowPosition = useValue(screenHeight - 315 - BOTTOM + y);
+  const reflectPosition = useValue(screenHeight - 315 - BOTTOM + y);
   const mainBalloonPosition = useValue(screenHeight - 300 - BOTTOM + y);
   const stringPosition = useValue(screenHeight - 265 - BOTTOM + y);
 
-  const changeShadowPosition = useCallback(
-    () => runSpring(shadowPosition, -screenHeight, springOptions),
-    [shadowPosition],
+  const changeReflectPosition = useCallback(
+    () => runSpring(reflectPosition, -screenHeight, springOptions),
+    [reflectPosition],
   );
   const changeMainBalloonPosition = useCallback(
     () => runSpring(mainBalloonPosition, -screenHeight, springOptions),
@@ -43,10 +43,10 @@ function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
   );
 
   const pushBalloon = useCallback(() => {
-    changeShadowPosition();
+    changeReflectPosition();
     changeMainBalloonPosition();
     changeStringPosition();
-  }, [changeShadowPosition, changeMainBalloonPosition, changeStringPosition]);
+  }, [changeReflectPosition, changeMainBalloonPosition, changeStringPosition]);
 
   useEffect(() => {
     pushBalloon();
@@ -69,7 +69,7 @@ function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
 
       <Circle cx={50 + x} cy={mainBalloonPosition} r={r} color={color} />
 
-      <Circle cx={65 + x} cy={shadowPosition} r={r / 4} color={palette.gray} />
+      <Circle cx={65 + x} cy={reflectPosition} r={r / 4} color={palette.gray} />
     </Group>
   );
 }

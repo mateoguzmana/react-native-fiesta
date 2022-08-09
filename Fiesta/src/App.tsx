@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Content from './components/Content';
 import {Birthday} from './lib';
+import {FiestaThemes} from './lib/constants/theming';
 
 function App() {
   const [lightMode, setLightMode] = useState(false);
@@ -16,7 +17,7 @@ function App() {
         lightMode={lightMode}
         setLightMode={() => setLightMode(mode => !mode)}
       />
-      <Birthday />
+      <Birthday theme={lightMode ? FiestaThemes.dark : FiestaThemes.default} />
     </View>
   );
 }
