@@ -6,9 +6,9 @@ https://user-images.githubusercontent.com/20783123/183688980-c8da6037-956f-4c70-
 
 Fiesta is a set of animations ideal for celebration and user engagement.
 
-`react-native-fiesta` is fully powered by `@shopify/react-native-skia`.
+`react-native-fiesta` is fully powered by [@shopify/react-native-skia](https://shopify.github.io/react-native-skia/).
 
-## Library Under Construction
+## Library Under Construction 🚧
 
 This library is still under construction. Below, a list of features that are currently being worked on.
 
@@ -30,6 +30,12 @@ This library is still under construction. Below, a list of features that are cur
 
 ```bash
 yarn add react-native-fiesta
+```
+
+Or
+
+```bash
+npm install react-native-fiesta
 ```
 
 ## Usage
