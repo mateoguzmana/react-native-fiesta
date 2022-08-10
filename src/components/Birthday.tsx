@@ -13,6 +13,7 @@ import { screenHeight, screenWidth } from '../constants/dimensions';
 
 interface BirthdayProps {
   theme?: string[];
+  autoplay?: boolean;
 }
 
 const xGap = 60;
@@ -22,7 +23,10 @@ const BOTTOM = -350;
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
-function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
+function Birthday({
+  theme = FiestaThemes.default,
+  autoplay = true,
+}: BirthdayProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
   const xPosition = useValue(screenHeight - BOTTOM + 0);
@@ -49,8 +53,8 @@ function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
   );
 
   useEffect(() => {
-    pushBalloons();
-  }, [pushBalloons]);
+    autoplay && pushBalloons();
+  }, [pushBalloons, autoplay]);
 
   return (
     <Canvas style={styles.canvas}>

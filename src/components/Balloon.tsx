@@ -22,8 +22,10 @@ function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
     [x]
   );
 
-  const skewX =
-    SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0;
+  const skewX = useMemo(
+    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0,
+    []
+  );
 
   return (
     <Group
