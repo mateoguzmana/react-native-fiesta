@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react';
-import {Canvas} from '@shopify/react-native-skia';
-import {StyleSheet} from 'react-native';
+import React, { useMemo } from 'react';
+import { Canvas } from '@shopify/react-native-skia';
+import { StyleSheet } from 'react-native';
 import Balloon from './Balloon';
-import {FiestaThemes} from '../constants/theming';
-import {screenWidth} from '../constants/dimensions';
+import { FiestaThemes } from '../constants/theming';
+import { screenWidth } from '../constants/dimensions';
 
 interface BirthdayProps {
   theme?: string[];
@@ -15,7 +15,7 @@ const possibleRadiuses = [30, 35, 40, 45];
 const optimalNumberOfBalloons = Math.floor(screenWidth / X_GAP);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
-function Birthday({theme = FiestaThemes.default}: BirthdayProps) {
+function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
   return (

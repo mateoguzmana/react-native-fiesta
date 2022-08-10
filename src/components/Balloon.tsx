@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Circle,
   Group,
@@ -6,9 +6,8 @@ import {
   runSpring,
   useValue,
 } from '@shopify/react-native-skia';
-import {SpringConfig} from '@shopify/react-native-skia/lib/typescript/src/animation/spring/types';
-import {screenHeight} from '../constants/dimensions';
-import {palette} from '../constants/theming';
+import { screenHeight } from '../constants/dimensions';
+import { palette } from '../constants/theming';
 
 interface BalloonProps {
   x: number;
@@ -20,26 +19,26 @@ interface BalloonProps {
 const BOTTOM = -350;
 const SKEW_X_VALUES = [0.1, 0, -0.1];
 
-const springOptions: SpringConfig = {
+const springOptions = {
   stiffness: 0.2,
 };
 
-function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
+function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
   const reflectPosition = useValue(screenHeight - 315 - BOTTOM + y);
   const mainBalloonPosition = useValue(screenHeight - 300 - BOTTOM + y);
   const stringPosition = useValue(screenHeight - 265 - BOTTOM + y);
 
   const changeReflectPosition = useCallback(
     () => runSpring(reflectPosition, -screenHeight, springOptions),
-    [reflectPosition],
+    [reflectPosition]
   );
   const changeMainBalloonPosition = useCallback(
     () => runSpring(mainBalloonPosition, -screenHeight, springOptions),
-    [mainBalloonPosition],
+    [mainBalloonPosition]
   );
   const changeStringPosition = useCallback(
     () => runSpring(stringPosition, -screenHeight, springOptions),
-    [stringPosition],
+    [stringPosition]
   );
 
   const pushBalloon = useCallback(() => {
@@ -53,12 +52,12 @@ function Balloon({x, y = 0, color, r = 40}: BalloonProps) {
   }, [pushBalloon]);
 
   const skewX = useMemo(
-    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)],
-    [],
+    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0,
+    []
   );
 
   return (
-    <Group transform={[{skewX}]}>
+    <Group transform={[{ skewX }]}>
       <Rect
         x={48 + x}
         y={stringPosition}

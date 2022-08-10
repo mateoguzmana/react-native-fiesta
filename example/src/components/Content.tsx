@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Switch, Text, View} from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 
 interface ContentProps {
   lightMode: boolean;
-  setLightMode: () => void;
+  setLightMode: any;
 }
 
-function Content({lightMode, setLightMode}: ContentProps) {
+function Content({ lightMode, setLightMode }: ContentProps) {
   return (
     <View style={styles.contentContainer}>
       <View style={styles.switchContainer}>
@@ -14,7 +14,8 @@ function Content({lightMode, setLightMode}: ContentProps) {
           style={[
             styles.title,
             lightMode ? styles.textLightColor : styles.textDarkColor,
-          ]}>
+          ]}
+        >
           Dark
         </Text>
         <Switch
@@ -26,7 +27,8 @@ function Content({lightMode, setLightMode}: ContentProps) {
           style={[
             styles.title,
             lightMode ? styles.textLightColor : styles.textDarkColor,
-          ]}>
+          ]}
+        >
           Light
         </Text>
       </View>
@@ -34,7 +36,8 @@ function Content({lightMode, setLightMode}: ContentProps) {
         style={[
           styles.title,
           lightMode ? styles.textLightColor : styles.textDarkColor,
-        ]}>
+        ]}
+      >
         Hello, congrats for being here today! 🥳
       </Text>
     </View>
@@ -46,12 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
-  },
-  darkMode: {
-    backgroundColor: 'black',
-  },
-  lightMode: {
-    backgroundColor: 'white',
   },
   title: {
     fontSize: 20,
@@ -65,8 +62,8 @@ const styles = StyleSheet.create({
     marginTop: 18,
     marginHorizontal: 10,
   },
-  textLightColor: {color: 'black'},
-  textDarkColor: {color: 'white'},
+  textLightColor: { color: 'black' },
+  textDarkColor: { color: 'white' },
   contentContainer: {
     alignContent: 'center',
     justifyContent: 'space-around',
