@@ -67,6 +67,8 @@ You can see more examples in the [example](./example) project.
 
 ## Contributing
 
+Please read the [guidelines](./CONTRIBUTING.md).
+
 - If you have any questions or suggestions, please open an issue on [Github](https://github.com/mateoguzmana/react-native-fiesta/issues).
 - To contribute adding a new animation or by improving the existing ones, please open a pull request.
 - If you have a cool theme the community can use, don't hesitate opening an issue to suggest it (or just shoot a PR).
