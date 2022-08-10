@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Circle,
   Group,
-  Rect,
+  Path,
   runSpring,
+  useComputedValue,
   useValue,
 } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
@@ -18,57 +19,70 @@ interface BalloonProps {
 
 const BOTTOM = -350;
 const SKEW_X_VALUES = [0.1, 0, -0.1];
+const X_DIFF = 50;
 
 const springOptions = {
+  damping: 1,
   stiffness: 0.2,
+  mass: 0.9,
 };
 
 function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
-  const reflectPosition = useValue(screenHeight - 315 - BOTTOM + y);
-  const mainBalloonPosition = useValue(screenHeight - 300 - BOTTOM + y);
-  const stringPosition = useValue(screenHeight - 265 - BOTTOM + y);
+  const balloonPosition = useValue(screenHeight - BOTTOM + y);
 
-  const changeReflectPosition = useCallback(
-    () => runSpring(reflectPosition, -screenHeight, springOptions),
-    [reflectPosition]
-  );
-  const changeMainBalloonPosition = useCallback(
-    () => runSpring(mainBalloonPosition, -screenHeight, springOptions),
-    [mainBalloonPosition]
-  );
-  const changeStringPosition = useCallback(
-    () => runSpring(stringPosition, -screenHeight, springOptions),
-    [stringPosition]
+  const changeBalloonPosition = useCallback(
+    () => runSpring(balloonPosition, -screenHeight, springOptions),
+    [balloonPosition]
   );
 
   const pushBalloon = useCallback(() => {
-    changeReflectPosition();
-    changeMainBalloonPosition();
-    changeStringPosition();
-  }, [changeReflectPosition, changeMainBalloonPosition, changeStringPosition]);
+    changeBalloonPosition();
+  }, [changeBalloonPosition]);
+
+  const transform = useComputedValue(
+    () => [
+      {
+        translateY: balloonPosition.current,
+        skewX:
+          SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0,
+      },
+    ],
+    [balloonPosition]
+  );
 
   useEffect(() => {
     pushBalloon();
   }, [pushBalloon]);
 
-  const skewX = useMemo(
-    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0,
-    []
+  const xSpacing = useMemo(
+    () => ({
+      string: x - X_DIFF,
+      circle: 95 - X_DIFF + x,
+      reflection: 105 - X_DIFF + x,
+    }),
+    [x]
   );
 
   return (
-    <Group transform={[{ skewX }]}>
-      <Rect
-        x={48 + x}
-        y={stringPosition}
-        width={3}
-        height={100}
-        color={palette.golden}
+    <Group transform={transform}>
+      <Group transform={[{ translateX: xSpacing.string }]}>
+        <Path
+          path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
+          color={palette.golden}
+          style="stroke"
+          strokeJoin="round"
+          strokeWidth={2}
+        />
+      </Group>
+
+      <Circle cx={xSpacing.circle} cy={-10} r={r} color={color} />
+
+      <Circle
+        cx={xSpacing.reflection}
+        cy={-30}
+        r={r / 4}
+        color={palette.gray}
       />
-
-      <Circle cx={50 + x} cy={mainBalloonPosition} r={r} color={color} />
-
-      <Circle cx={65 + x} cy={reflectPosition} r={r / 4} color={palette.gray} />
     </Group>
   );
 }

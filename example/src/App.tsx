@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Birthday, FiestaThemes } from 'react-native-fiesta';
 import Content from './components/Content';
-import { Birthday } from 'react-native-fiesta';
-import { FiestaThemes } from 'react-native-fiesta';
 
 function App() {
   const [lightMode, setLightMode] = useState(false);

@@ -9,10 +9,10 @@ interface BirthdayProps {
   theme?: string[];
 }
 
-const X_GAP = 60;
+const xGap = 60;
 const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
 const possibleRadiuses = [30, 35, 40, 45];
-const optimalNumberOfBalloons = Math.floor(screenWidth / X_GAP);
+const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
 function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
@@ -23,7 +23,7 @@ function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
       {ballonsToRenderArray.map((_, index) => (
         <Balloon
           key={Math.random()}
-          x={X_GAP * index}
+          x={xGap * index}
           y={yPositions[index]}
           color={randomisedColors[index]}
           r={
