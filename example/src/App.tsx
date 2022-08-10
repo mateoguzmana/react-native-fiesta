@@ -1,18 +1,23 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Content from './components/Content';
+import {Birthday} from 'react-native-fiesta';
+import {FiestaThemes} from 'react-native-fiesta/constants/theming';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-fiesta';
-
-export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+function App() {
+  const [lightMode, setLightMode] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View
+      style={[
+        styles.container,
+        lightMode ? styles.lightMode : styles.darkMode,
+      ]}>
+      <Content
+        lightMode={lightMode}
+        setLightMode={() => setLightMode(mode => !mode)}
+      />
+      <Birthday theme={lightMode ? FiestaThemes.dark : FiestaThemes.default} />
     </View>
   );
 }
@@ -20,13 +25,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    alignContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  darkMode: {
+    backgroundColor: 'black',
+  },
+  lightMode: {
+    backgroundColor: 'white',
   },
 });
+
+export default App;

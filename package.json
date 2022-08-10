@@ -72,7 +72,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@shopify/react-native-skia": "*"
   },
   "jest": {
     "preset": "react-native",

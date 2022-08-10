@@ -1,3 +1,6 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
+import Balloon from './components/Balloon';
+import Birthday from './components/Birthday';
+
+export {Balloon, Birthday};
+
+export default {Balloon, Birthday};
