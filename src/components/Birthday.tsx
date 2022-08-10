@@ -1,9 +1,15 @@
-import React, { useMemo } from 'react';
-import { Canvas } from '@shopify/react-native-skia';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import {
+  Canvas,
+  Group,
+  runSpring,
+  useComputedValue,
+  useValue,
+} from '@shopify/react-native-skia';
 import { StyleSheet } from 'react-native';
 import Balloon from './Balloon';
 import { FiestaThemes } from '../constants/theming';
-import { screenWidth } from '../constants/dimensions';
+import { screenHeight, screenWidth } from '../constants/dimensions';
 
 interface BirthdayProps {
   theme?: string[];
@@ -12,27 +18,60 @@ interface BirthdayProps {
 const xGap = 60;
 const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
 const possibleRadiuses = [30, 35, 40, 45];
+const BOTTOM = -350;
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
+
+const springOptions = {
+  damping: 2,
+  stiffness: 0.2,
+  mass: 0.9,
+};
 
 function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
+  const xPosition = useValue(screenHeight - BOTTOM + 0);
+
+  const changeBalloonPosition = useCallback(
+    () => runSpring(xPosition, -screenHeight, springOptions),
+    [xPosition]
+  );
+
+  const pushBalloons = useCallback(() => {
+    changeBalloonPosition();
+  }, [changeBalloonPosition]);
+
+  const transform = useComputedValue(
+    () => [
+      {
+        translateY: xPosition.current,
+      },
+    ],
+    [xPosition]
+  );
+
+  useEffect(() => {
+    pushBalloons();
+  }, [pushBalloons]);
+
   return (
     <Canvas style={styles.canvas}>
-      {ballonsToRenderArray.map((_, index) => (
-        <Balloon
-          key={Math.random()}
-          x={xGap * index}
-          y={yPositions[index]}
-          color={randomisedColors[index]}
-          r={
-            possibleRadiuses[
-              Math.floor(Math.random() * possibleRadiuses.length)
-            ]
-          }
-        />
-      ))}
+      <Group transform={transform}>
+        {ballonsToRenderArray.map((_, index) => (
+          <Balloon
+            key={Math.random()}
+            x={xGap * index}
+            y={yPositions[index]}
+            color={randomisedColors[index]}
+            r={
+              possibleRadiuses[
+                Math.floor(Math.random() * possibleRadiuses.length)
+              ]
+            }
+          />
+        ))}
+      </Group>
     </Canvas>
   );
 }
