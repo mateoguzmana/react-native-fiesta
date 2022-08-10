@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import {
   Circle,
   Group,
@@ -22,7 +22,7 @@ const SKEW_X_VALUES = [0.1, 0, -0.1];
 const X_DIFF = 50;
 
 const springOptions = {
-  damping: 1,
+  damping: 2,
   stiffness: 0.2,
   mass: 0.9,
 };
@@ -87,4 +87,4 @@ function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
   );
 }
 
-export default Balloon;
+export default memo(Balloon);
