@@ -22,19 +22,16 @@ const BOTTOM = -350;
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
-const springOptions = {
-  damping: 2,
-  stiffness: 0.2,
-  mass: 0.9,
-};
-
 function Birthday({ theme = FiestaThemes.default }: BirthdayProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
   const xPosition = useValue(screenHeight - BOTTOM + 0);
 
   const changeBalloonPosition = useCallback(
-    () => runSpring(xPosition, -screenHeight, springOptions),
+    () =>
+      runSpring(xPosition, -screenHeight, {
+        stiffness: 0.2,
+      }),
     [xPosition]
   );
 
