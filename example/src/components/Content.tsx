@@ -3,7 +3,7 @@ import { StyleSheet, Switch, Text, View } from 'react-native';
 
 interface ContentProps {
   lightMode: boolean;
-  setLightMode: any;
+  setLightMode(): void;
 }
 
 function Content({ lightMode, setLightMode }: ContentProps) {
