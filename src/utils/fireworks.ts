@@ -27,25 +27,20 @@ export function getParticlesPositions(
 }
 
 const initialPositions = [
-  {
-    x: 100,
-    y: -500,
-  },
-  {
-    x: 200,
-    y: -700,
-  },
-  {
-    x: 300,
-    y: -800,
-  },
+  { x: 100, y: -300 },
+  { x: 150, y: -700 },
+  { x: 200, y: -500 },
+  { x: 250, y: -600 },
+  { x: 300, y: -400 },
+  { x: 250, y: -800 },
+  { x: 200, y: -900 },
 ];
 
 export function getParticlesPositionsSet(
   numberOfParticles: number,
   radius: number
 ) {
-  return initialPositions.map((initialPosition) => {
-    return getParticlesPositions(numberOfParticles, initialPosition, radius);
-  });
+  return initialPositions.map((initialPosition) =>
+    getParticlesPositions(numberOfParticles, initialPosition, radius)
+  );
 }

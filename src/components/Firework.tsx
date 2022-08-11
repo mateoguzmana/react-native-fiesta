@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import FireworkParticle from './FireworkParticle';
+import { screenHeight, screenWidth } from '../constants/dimensions';
 
 const numberOfParticles = 18;
 const particlesToRenderArray = [...Array(numberOfParticles)];
 
 const initialPosition = {
-  x: 100,
-  y: -500,
+  x: screenWidth / 2,
+  y: -screenHeight / 2,
 };
 
 interface FireworkProps {
@@ -37,4 +38,4 @@ function Firework({ position, color }: FireworkProps) {
   );
 }
 
-export default Firework;
+export default memo(Firework);
