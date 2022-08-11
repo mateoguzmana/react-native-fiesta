@@ -10,47 +10,38 @@ import { StyleSheet } from 'react-native';
 import Firework from './Firework';
 import { palette } from '../constants/theming';
 import { screenHeight } from '../constants/dimensions';
+import { getParticlesPositionsSet } from '../utils/fireworks';
+import { screenWidth } from '../constants/dimensions';
 
 interface FireworksProps {
   theme?: string[];
   autoplay?: boolean;
 }
 
-const BOTTOM = -350;
 const numberOfParticles = 18;
 const particlesToRenderArray = [...Array(numberOfParticles)];
 
-const INITIAL_POSITION = {
+const initialPosition = {
   x: 100,
   y: -500,
 };
 
-const radius = 100;
-const particleRadiuses = [4];
-
-let xValues: number[] = [];
-let yValues: number[] = [];
+const radius = 80;
+const particleRadiuses = [8];
 
 const particlesColors = [palette.red, palette.blue, palette.golden];
 
-for (var i = 0; i < numberOfParticles; i++) {
-  xValues[i] =
-    INITIAL_POSITION.x +
-    radius * Math.cos((2 * Math.PI * i) / numberOfParticles);
-  yValues[i] =
-    INITIAL_POSITION.y +
-    radius * Math.sin((2 * Math.PI * i) / numberOfParticles);
-}
+const fireworksPositions = getParticlesPositionsSet(numberOfParticles, radius);
 
 function Fireworks({ autoplay = true }: FireworksProps) {
-  const xPosition = useValue(screenHeight - BOTTOM + 0);
+  const yPosition = useValue(screenHeight * 1.2);
 
   const changeBalloonPosition = useCallback(
     () =>
-      runSpring(xPosition, -screenHeight, {
+      runSpring(yPosition, -screenHeight, {
         stiffness: 0.2,
       }),
-    [xPosition]
+    [yPosition]
   );
 
   const pushBalloons = useCallback(() => {
@@ -60,10 +51,11 @@ function Fireworks({ autoplay = true }: FireworksProps) {
   const transform = useComputedValue(
     () => [
       {
-        translateY: xPosition.current,
+        translateY: yPosition.current,
+        translateX: screenWidth / 2,
       },
     ],
-    [xPosition]
+    [yPosition]
   );
 
   useEffect(() => {
@@ -76,14 +68,40 @@ function Fireworks({ autoplay = true }: FireworksProps) {
         {particlesToRenderArray.map((_, index) => (
           <Firework
             key={Math.random()}
-            x={INITIAL_POSITION.x}
-            y={INITIAL_POSITION.y}
+            x={initialPosition.x}
+            y={initialPosition.y}
             finalPos={{
-              x: xValues[index] ?? 0,
-              y: yValues[index] ?? 0,
+              x: fireworksPositions?.[0]?.xValues[index] ?? 0,
+              y: fireworksPositions?.[0]?.yValues[index] ?? 0,
             }}
             r={particleRadiuses[0] ?? 0}
             color={particlesColors[0] ?? '#000'}
+          />
+        ))}
+        {particlesToRenderArray.map((_, index) => (
+          <Firework
+            key={Math.random()}
+            x={initialPosition.x}
+            y={initialPosition.y}
+            finalPos={{
+              x: fireworksPositions?.[1]?.xValues[index] ?? 0,
+              y: fireworksPositions?.[1]?.yValues[index] ?? 0,
+            }}
+            r={particleRadiuses[0] ?? 0}
+            color={particlesColors[1] ?? '#000'}
+          />
+        ))}
+        {particlesToRenderArray.map((_, index) => (
+          <Firework
+            key={Math.random()}
+            x={initialPosition.x}
+            y={initialPosition.y}
+            finalPos={{
+              x: fireworksPositions?.[2]?.xValues[index] ?? 0,
+              y: fireworksPositions?.[2]?.yValues[index] ?? 0,
+            }}
+            r={particleRadiuses[0] ?? 0}
+            color={particlesColors[2] ?? '#000'}
           />
         ))}
       </Group>

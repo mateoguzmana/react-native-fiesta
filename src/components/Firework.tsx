@@ -9,7 +9,7 @@ import {
   useComputedValue,
 } from '@shopify/react-native-skia';
 
-interface BalloonProps {
+interface FireworkParticleProps {
   x: number;
   y?: number;
   finalPos: {
@@ -20,23 +20,35 @@ interface BalloonProps {
   color: string;
 }
 
-function Firework({ x, y = 0, finalPos, r, color }: BalloonProps) {
+function FireworkParticle({
+  x,
+  y = 0,
+  finalPos,
+  r,
+  color,
+}: FireworkParticleProps) {
   const xPosition = useValue(x);
   const yPosition = useValue(y);
+  const opacity = useValue(1);
+
   const changeYPosition = useCallback(
-    () =>
-      runSpring(yPosition, finalPos.y, {
-        stiffness: 0.2,
-      }),
+    () => runSpring(yPosition, finalPos.y),
     [yPosition, finalPos.y]
   );
 
   const changeXPosition = useCallback(
-    () =>
-      runSpring(xPosition, finalPos.x, {
-        stiffness: 0.2,
-      }),
+    () => runSpring(xPosition, finalPos.x),
     [xPosition, finalPos.x]
+  );
+
+  const changeOpacity = useCallback(
+    () =>
+      runSpring(opacity, 0, {
+        mass: 0.1,
+        damping: 0.2,
+        stiffness: 0.5,
+      }),
+    [opacity]
   );
 
   const transform = useComputedValue(
@@ -48,7 +60,7 @@ function Firework({ x, y = 0, finalPos, r, color }: BalloonProps) {
     [xPosition]
   );
 
-  const transform2 = useComputedValue(
+  const transformCircle = useComputedValue(
     () => vec(xPosition.current, 0),
     [xPosition]
   );
@@ -56,7 +68,8 @@ function Firework({ x, y = 0, finalPos, r, color }: BalloonProps) {
   const pushBalloons = useCallback(() => {
     changeXPosition();
     changeYPosition();
-  }, [changeXPosition, changeYPosition]);
+    changeOpacity();
+  }, [changeOpacity, changeXPosition, changeYPosition]);
 
   useEffect(() => {
     pushBalloons();
@@ -64,11 +77,11 @@ function Firework({ x, y = 0, finalPos, r, color }: BalloonProps) {
 
   return (
     <Group transform={transform}>
-      <Circle c={transform2} r={r} color={color}>
+      <Circle c={transformCircle} r={r} color={color} opacity={opacity}>
         <BlurMask blur={r / 2} style="normal" />
       </Circle>
     </Group>
   );
 }
 
-export default memo(Firework);
+export default memo(FireworkParticle);
