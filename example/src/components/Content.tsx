@@ -40,6 +40,16 @@ function Content({ lightMode, setLightMode }: ContentProps) {
       >
         Hello, congrats for being here today! 🥳
       </Text>
+
+      <Text
+        style={[
+          styles.title,
+          styles.tryTitle,
+          lightMode ? styles.textLightColor : styles.textDarkColor,
+        ]}
+      >
+        Try out some fiesta components
+      </Text>
     </View>
   );
 }
@@ -68,6 +78,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  tryTitle: {
+    marginTop: 20,
   },
 });
 

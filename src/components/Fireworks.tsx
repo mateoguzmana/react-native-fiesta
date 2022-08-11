@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Fireworks;
+export default memo(Fireworks);

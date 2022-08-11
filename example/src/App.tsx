@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Birthday, Fireworks, FiestaThemes } from 'react-native-fiesta';
 import Content from './components/Content';
+import Button from './components/Button';
 
 function App() {
   const [lightMode, setLightMode] = useState(false);
+  const [componentToRender, setComponentToRender] = useState(<Fireworks />);
 
   return (
     <View
@@ -14,12 +16,23 @@ function App() {
         lightMode={lightMode}
         setLightMode={() => setLightMode((mode) => !mode)}
       />
-      <Birthday
-        theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
-        autoplay={false}
+
+      <Button
+        title="Birthday Balloons"
+        onPress={() => {
+          setComponentToRender(
+            <Birthday
+              theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
+            />
+          );
+        }}
+      />
+      <Button
+        title="Fireworks"
+        onPress={() => setComponentToRender(<Fireworks />)}
       />
 
-      <Fireworks />
+      {componentToRender}
     </View>
   );
 }
