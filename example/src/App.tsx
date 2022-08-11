@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Birthday, FiestaThemes } from 'react-native-fiesta';
+import { Birthday, Fireworks, FiestaThemes } from 'react-native-fiesta';
 import Content from './components/Content';
 
 function App() {
@@ -14,7 +14,12 @@ function App() {
         lightMode={lightMode}
         setLightMode={() => setLightMode((mode) => !mode)}
       />
-      <Birthday theme={lightMode ? FiestaThemes.dark : FiestaThemes.default} />
+      <Birthday
+        theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
+        autoplay={false}
+      />
+
+      <Fireworks theme={lightMode ? FiestaThemes.dark : FiestaThemes.default} />
     </View>
   );
 }
