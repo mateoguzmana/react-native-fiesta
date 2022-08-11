@@ -1,87 +1,40 @@
-import React, { memo, useCallback, useEffect } from 'react';
-import {
-  vec,
-  Group,
-  runSpring,
-  useValue,
-  Circle,
-  BlurMask,
-  useComputedValue,
-} from '@shopify/react-native-skia';
+import React from 'react';
+import FireworkParticle from './FireworkParticle';
 
-interface FireworkParticleProps {
-  x: number;
-  y?: number;
-  finalPos: {
-    x: number;
-    y: number;
+const numberOfParticles = 18;
+const particlesToRenderArray = [...Array(numberOfParticles)];
+
+const initialPosition = {
+  x: 100,
+  y: -500,
+};
+
+interface FireworkProps {
+  position: {
+    xValues: number[];
+    yValues: number[];
   };
-  r: number;
   color: string;
 }
 
-function FireworkParticle({
-  x,
-  y = 0,
-  finalPos,
-  r,
-  color,
-}: FireworkParticleProps) {
-  const xPosition = useValue(x);
-  const yPosition = useValue(y);
-  const opacity = useValue(1);
-
-  const changeYPosition = useCallback(
-    () => runSpring(yPosition, finalPos.y),
-    [yPosition, finalPos.y]
-  );
-
-  const changeXPosition = useCallback(
-    () => runSpring(xPosition, finalPos.x),
-    [xPosition, finalPos.x]
-  );
-
-  const changeOpacity = useCallback(
-    () =>
-      runSpring(opacity, 0, {
-        mass: 0.1,
-        damping: 0.2,
-        stiffness: 0.5,
-      }),
-    [opacity]
-  );
-
-  const transform = useComputedValue(
-    () => [
-      {
-        translateY: yPosition.current,
-      },
-    ],
-    [xPosition]
-  );
-
-  const transformCircle = useComputedValue(
-    () => vec(xPosition.current, 0),
-    [xPosition]
-  );
-
-  const pushBalloons = useCallback(() => {
-    changeXPosition();
-    changeYPosition();
-    changeOpacity();
-  }, [changeOpacity, changeXPosition, changeYPosition]);
-
-  useEffect(() => {
-    pushBalloons();
-  }, [pushBalloons]);
-
+function Firework({ position, color }: FireworkProps) {
   return (
-    <Group transform={transform}>
-      <Circle c={transformCircle} r={r} color={color} opacity={opacity}>
-        <BlurMask blur={r / 2} style="normal" />
-      </Circle>
-    </Group>
+    <>
+      {particlesToRenderArray.map((_, index) => (
+        <FireworkParticle
+          key={Math.random()}
+          x={initialPosition.x}
+          y={initialPosition.y}
+          finalPos={{
+            x: position?.xValues[index] ?? 0,
+            y: position?.yValues[index] ?? 0,
+          }}
+          r={8}
+          color={color ?? '#000'}
+        />
+      ))}
+    </>
   );
 }
 
-export default memo(FireworkParticle);
+export default Firework;

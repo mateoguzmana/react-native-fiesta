@@ -19,7 +19,7 @@ function App() {
         autoplay={false}
       />
 
-      <Fireworks theme={lightMode ? FiestaThemes.dark : FiestaThemes.default} />
+      <Fireworks />
     </View>
   );
 }
