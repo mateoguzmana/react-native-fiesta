@@ -29,14 +29,14 @@ function Birthday({
 }: BirthdayProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
-  const xPosition = useValue(screenHeight - BOTTOM + 0);
+  const yPosition = useValue(screenHeight - BOTTOM);
 
   const changeBalloonPosition = useCallback(
     () =>
-      runSpring(xPosition, -screenHeight, {
+      runSpring(yPosition, -screenHeight, {
         stiffness: 0.2,
       }),
-    [xPosition]
+    [yPosition]
   );
 
   const pushBalloons = useCallback(() => {
@@ -46,10 +46,10 @@ function Birthday({
   const transform = useComputedValue(
     () => [
       {
-        translateY: xPosition.current,
+        translateY: yPosition.current,
       },
     ],
-    [xPosition]
+    [yPosition]
   );
 
   useEffect(() => {
