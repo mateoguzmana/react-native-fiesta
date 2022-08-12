@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Birthday, Fireworks, FiestaThemes, Stars } from 'react-native-fiesta';
+import { Balloons, Fireworks, FiestaThemes, Stars } from 'react-native-fiesta';
 import Content from './components/Content';
 import Button from './components/Button';
 
@@ -21,7 +21,7 @@ function App() {
         title="Birthday Balloons"
         onPress={() => {
           setComponentToRender(
-            <Birthday
+            <Balloons
               theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
             />
           );

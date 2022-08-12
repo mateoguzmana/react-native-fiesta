@@ -10,8 +10,9 @@ import { StyleSheet } from 'react-native';
 import Balloon from './Balloon';
 import { FiestaThemes } from '../constants/theming';
 import { screenHeight, screenWidth } from '../constants/dimensions';
+import { shuffleArray } from '../utils/array';
 
-interface BirthdayProps {
+interface BalloonsProps {
   theme?: string[];
   autoplay?: boolean;
 }
@@ -23,10 +24,10 @@ const BOTTOM = -350;
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
-function Birthday({
+function Balloons({
   theme = FiestaThemes.default,
   autoplay = true,
-}: BirthdayProps) {
+}: BalloonsProps) {
   const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
 
   const yPosition = useValue(screenHeight - BOTTOM);
@@ -88,8 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function shuffleArray(array: any[]) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-export default Birthday;
+export default Balloons;

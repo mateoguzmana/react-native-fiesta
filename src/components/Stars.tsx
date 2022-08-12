@@ -10,17 +10,20 @@ import {
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import Star from './Star';
+import { shuffleArray } from '../utils/array';
 
-const optimalNumberOfStars = Math.floor(screenWidth / 60);
+const xGap = 40;
+const optimalNumberOfStars = Math.floor(screenWidth / xGap);
 const starsToRenderArray = [...Array(optimalNumberOfStars)];
+const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
 
 function Stars() {
-  const yPosition = useValue(screenHeight - 350);
+  const yPosition = useValue(screenHeight);
 
   const changeBalloonPosition = useCallback(
     () =>
       runSpring(yPosition, -screenHeight, {
-        stiffness: 0.2,
+        stiffness: 0.5,
       }),
     [yPosition]
   );
@@ -42,7 +45,7 @@ function Stars() {
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
         {starsToRenderArray.map((_, index) => (
-          <Star key={index} />
+          <Star key={index} x={xGap * index} y={yPositions[index]} />
         ))}
       </Group>
     </Canvas>
