@@ -1,16 +1,24 @@
 import React, { memo } from 'react';
-import { Path } from '@shopify/react-native-skia';
+import { Group, Path } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
 
-function Heart() {
+interface HeartProps {
+  x: number;
+  y: number;
+}
+
+function Heart({ x, y }: HeartProps) {
   return (
-    <Path
-      path={`M20,35.07,4.55,19.62a8.5,8.5,0,0,1-.12-12l.12-.12a8.72,8.72,0,0,1,12.14,0L20,10.77l3.3-3.3A8.09,8.09,0,0,1,29.13,4.9a8.89,8.89,0,0,1,6.31,2.58,8.5,8.5,0,0,1,.12,12l-.12.12ZM10.64,7.13A6.44,6.44,0,0,0,6.07,18.19L20,32.06,33.94,18.12A6.44,6.44,0,0,0,34,9l0,0a6.44,6.44,0,0,0-4.77-1.85A6,6,0,0,0,24.83,9L20,13.78,15.21,9A6.44,6.44,0,0,0,10.64,7.13Z`}
-      color={palette.red}
-      style="stroke"
-      strokeJoin="round"
-      strokeWidth={2}
-    />
+    <Group transform={[{ translateY: y }]}>
+      <Group transform={[{ translateX: x }]}>
+        <Group transform={[{ scale: 0.05 }]}>
+          <Path
+            path="m263.42 235.15c-66.24 0-120 53.76-120 120 0 134.76 135.93 170.09 228.56 303.31 87.574-132.4 228.56-172.86 228.56-303.31 0-66.24-53.76-120-120-120-48.048 0-89.402 28.37-108.56 69.188-19.161-40.817-60.514-69.188-108.56-69.188z"
+            color={palette.red}
+          />
+        </Group>
+      </Group>
+    </Group>
   );
 }
 

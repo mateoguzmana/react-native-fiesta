@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Balloons, Fireworks, FiestaThemes, Stars } from 'react-native-fiesta';
+import {
+  Balloons,
+  Fireworks,
+  FiestaThemes,
+  Stars,
+  Hearts,
+} from 'react-native-fiesta';
 import Content from './components/Content';
 import Button from './components/Button';
 
@@ -27,12 +33,15 @@ function App() {
           );
         }}
       />
+
       <Button
         title="Fireworks"
         onPress={() => setComponentToRender(<Fireworks />)}
       />
 
       <Button title="Stars" onPress={() => setComponentToRender(<Stars />)} />
+
+      <Button title="Hearts" onPress={() => setComponentToRender(<Hearts />)} />
 
       {componentToRender}
     </View>
