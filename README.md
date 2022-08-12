@@ -14,10 +14,13 @@ This library is still under construction. Below, a list of features that are cur
 
 - ✅ Birthday Balloons (Twitter style)
 - ✅ Dark Balloons
+- ✅ Fireworks
+- Hearts
 - Smoother Animations (improve the feel of the animations)
 - Light Balloons
-- Fireworks
-- Hearts
+- Flowers
+- May 5th
+- Pumpkins
 - Lollipops
 - Music Notes
 - Party Poppers
