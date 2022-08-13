@@ -18,7 +18,7 @@ interface BalloonsProps {
 }
 
 const xGap = 50;
-const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
+const yPositions = [150, 0, 300, 100, 250, 0, 150, 100, 300, 0];
 const possibleDepths = [0.9, 1];
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
