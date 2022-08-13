@@ -19,7 +19,7 @@ interface BalloonsProps {
 
 const xGap = 60;
 const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
-const possibleRadiuses = [40, 45];
+const possibleDepths = [0.9, 1];
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
@@ -65,10 +65,9 @@ function Balloons({
             x={xGap * index}
             y={yPositions[index]}
             color={randomisedColors[index]}
-            r={
-              possibleRadiuses[
-                Math.floor(Math.random() * possibleRadiuses.length)
-              ]
+            r={40}
+            depth={
+              possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
             }
           />
         ))}
