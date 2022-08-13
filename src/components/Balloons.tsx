@@ -17,7 +17,7 @@ interface BalloonsProps {
   autoplay?: boolean;
 }
 
-const xGap = 60;
+const xGap = 50;
 const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
 const possibleDepths = [0.9, 1];
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
