@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { Circle, Group, Path } from '@shopify/react-native-skia';
+import { Circle, Group, Oval, Path, Shadow } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
 
 interface BalloonProps {
@@ -9,7 +9,6 @@ interface BalloonProps {
   r?: number;
 }
 
-const SKEW_X_VALUES = [0.1, 0, -0.1];
 const X_DIFF = 50;
 
 function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
@@ -22,38 +21,40 @@ function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
     [x]
   );
 
-  const skewX = useMemo(
-    () => SKEW_X_VALUES[Math.floor(Math.random() * SKEW_X_VALUES.length)] ?? 0,
-    []
-  );
-
   return (
-    <Group
-      transform={[
-        {
-          translateY: y,
-          skewX,
-        },
-      ]}
-    >
-      <Group transform={[{ translateX: xSpacing.string }]}>
-        <Path
-          path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
-          color={palette.golden}
-          style="stroke"
-          strokeJoin="round"
-          strokeWidth={2}
+    <Group transform={[{ translateX: xSpacing.string }]}>
+      <Group
+        transform={[
+          {
+            translateY: y,
+          },
+        ]}
+      >
+        <Group transform={[{ translateX: -55 }]}>
+          <Path
+            path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
+            color={palette.golden}
+            style="stroke"
+            strokeJoin="round"
+            strokeWidth={5}
+          />
+        </Group>
+
+        <Group transform={[{ translateY: -50 }]}>
+          <Group>
+            <Oval height={r * 2.3} width={r * 2} color={color} />
+            <Shadow dx={-12} dy={-12} blur={40} color="#fff" inner />
+          </Group>
+        </Group>
+
+        <Circle
+          cx={r / 0.8}
+          cy={-25}
+          r={r / 4}
+          color={palette.gray}
+          opacity={0.3}
         />
       </Group>
-
-      <Circle cx={xSpacing.circle} cy={-10} r={r} color={color} />
-
-      <Circle
-        cx={xSpacing.reflection}
-        cy={-30}
-        r={r / 4}
-        color={palette.gray}
-      />
     </Group>
   );
 }
