@@ -66,7 +66,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'getting-started/installation',
             position: 'left',
             label: 'Docs',
           },
@@ -85,7 +85,7 @@ const config = {
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: '/docs/getting-started/installation',
               },
             ],
           },
