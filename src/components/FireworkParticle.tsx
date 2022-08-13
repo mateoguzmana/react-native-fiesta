@@ -78,7 +78,7 @@ function FireworkParticle({
   return (
     <Group transform={transform}>
       <Circle c={transformCircle} r={r} color={color} opacity={opacity}>
-        <BlurMask blur={r / 2} style="normal" />
+        <BlurMask blur={r / 3} style="normal" />
       </Circle>
     </Group>
   );

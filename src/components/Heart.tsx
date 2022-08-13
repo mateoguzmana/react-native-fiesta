@@ -14,7 +14,7 @@ function Heart({ x, y }: HeartProps) {
   const changeOpacity = useCallback(
     () =>
       runSpring(opacity, 0, {
-        mass: screenHeight / 3,
+        mass: (screenHeight / Math.random()) * 0.1,
       }),
     [opacity]
   );
