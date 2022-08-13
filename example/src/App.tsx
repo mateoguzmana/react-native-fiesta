@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import {
   Balloons,
   Fireworks,
   FiestaThemes,
   Stars,
   Hearts,
+  Balloon,
+  Star,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import Button from './components/Button';
+import { Canvas } from '@shopify/react-native-skia';
 
 function App() {
   const [lightMode, setLightMode] = useState(false);
@@ -44,6 +47,30 @@ function App() {
       <Button title="Hearts" onPress={() => setComponentToRender(<Hearts />)} />
 
       {componentToRender}
+
+      <Pressable
+        onPress={() => {
+          setComponentToRender(
+            <Balloons
+              theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
+            />
+          );
+        }}
+        style={styles.canvas}
+      >
+        <Canvas style={styles.canvas}>
+          <Balloon x={20} y={50} color={'blue'} depth={0.4} />
+        </Canvas>
+      </Pressable>
+
+      <Pressable
+        onPress={() => setComponentToRender(<Stars />)}
+        style={styles.canvas}
+      >
+        <Canvas style={styles.canvas}>
+          <Star x={20} y={50} />
+        </Canvas>
+      </Pressable>
     </View>
   );
 }
@@ -59,6 +86,9 @@ const styles = StyleSheet.create({
   },
   lightMode: {
     backgroundColor: 'white',
+  },
+  canvas: {
+    flex: 1,
   },
 });
 

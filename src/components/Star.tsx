@@ -6,9 +6,10 @@ import { screenHeight } from '../constants/dimensions';
 interface StarProps {
   x: number;
   y: number;
+  autoplay?: boolean;
 }
 
-function Star({ x, y }: StarProps) {
+function Star({ x, y, autoplay = true }: StarProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
@@ -20,8 +21,8 @@ function Star({ x, y }: StarProps) {
   );
 
   useEffect(() => {
-    changeOpacity();
-  }, [changeOpacity]);
+    autoplay && changeOpacity();
+  }, [changeOpacity, autoplay]);
 
   return (
     <Group transform={[{ translateY: y }]}>
