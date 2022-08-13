@@ -19,7 +19,7 @@ interface BalloonsProps {
 
 const xGap = 60;
 const yPositions = [150, 0, 300, 100, 200, 0, 200, 100, 300, 0];
-const possibleRadiuses = [30, 35, 40, 45];
+const possibleRadiuses = [40, 45];
 const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 

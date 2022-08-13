@@ -14,15 +14,13 @@ const X_DIFF = 50;
 function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
   const xSpacing = useMemo(
     () => ({
-      string: x - X_DIFF,
-      circle: 95 - X_DIFF + x,
-      reflection: 105 - X_DIFF + x,
+      container: x - X_DIFF,
     }),
     [x]
   );
 
   return (
-    <Group transform={[{ translateX: xSpacing.string }]}>
+    <Group transform={[{ translateX: xSpacing.container }]}>
       <Group
         transform={[
           {
@@ -30,7 +28,7 @@ function Balloon({ x, y = 0, color, r = 40 }: BalloonProps) {
           },
         ]}
       >
-        <Group transform={[{ translateX: -55 }]}>
+        <Group transform={[{ translateX: -55, skewX: 0.1 }]}>
           <Path
             path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
             color={palette.golden}
