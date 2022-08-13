@@ -8,6 +8,7 @@ import {
   Hearts,
   Balloon,
   Star,
+  Heart,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import Button from './components/Button';
@@ -27,50 +28,46 @@ function App() {
       />
 
       <Button
-        title="Birthday Balloons"
-        onPress={() => {
-          setComponentToRender(
-            <Balloons
-              theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
-            />
-          );
-        }}
-      />
-
-      <Button
         title="Fireworks"
         onPress={() => setComponentToRender(<Fireworks />)}
       />
 
-      <Button title="Stars" onPress={() => setComponentToRender(<Stars />)} />
+      <View style={styles.row}>
+        <Pressable
+          onPress={() => {
+            setComponentToRender(
+              <Balloons
+                theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
+              />
+            );
+          }}
+          style={styles.canvas}
+        >
+          <Canvas style={styles.canvas}>
+            <Balloon x={20} y={50} color={'blue'} depth={0.4} />
+          </Canvas>
+        </Pressable>
 
-      <Button title="Hearts" onPress={() => setComponentToRender(<Hearts />)} />
+        <Pressable
+          onPress={() => setComponentToRender(<Stars />)}
+          style={styles.canvas}
+        >
+          <Canvas style={styles.canvas}>
+            <Star x={20} y={50} autoplay={false} />
+          </Canvas>
+        </Pressable>
+
+        <Pressable
+          onPress={() => setComponentToRender(<Hearts />)}
+          style={styles.canvas}
+        >
+          <Canvas style={styles.canvas}>
+            <Heart x={20} y={50} autoplay={false} />
+          </Canvas>
+        </Pressable>
+      </View>
 
       {componentToRender}
-
-      <Pressable
-        onPress={() => {
-          setComponentToRender(
-            <Balloons
-              theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
-            />
-          );
-        }}
-        style={styles.canvas}
-      >
-        <Canvas style={styles.canvas}>
-          <Balloon x={20} y={50} color={'blue'} depth={0.4} />
-        </Canvas>
-      </Pressable>
-
-      <Pressable
-        onPress={() => setComponentToRender(<Stars />)}
-        style={styles.canvas}
-      >
-        <Canvas style={styles.canvas}>
-          <Star x={20} y={50} />
-        </Canvas>
-      </Pressable>
     </View>
   );
 }
@@ -88,7 +85,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   canvas: {
+    height: 100,
+    width: 100,
+  },
+  row: {
     flex: 1,
+    flexDirection: 'row',
   },
 });
 

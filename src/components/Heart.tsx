@@ -6,9 +6,10 @@ import { screenHeight } from '../constants/dimensions';
 interface HeartProps {
   x: number;
   y: number;
+  autoplay?: boolean;
 }
 
-function Heart({ x, y }: HeartProps) {
+function Heart({ x, y, autoplay = true }: HeartProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
@@ -20,8 +21,8 @@ function Heart({ x, y }: HeartProps) {
   );
 
   useEffect(() => {
-    changeOpacity();
-  }, [changeOpacity]);
+    autoplay && changeOpacity();
+  }, [autoplay, changeOpacity]);
 
   return (
     <Group transform={[{ translateY: y }]}>

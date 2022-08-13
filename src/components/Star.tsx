@@ -22,7 +22,7 @@ function Star({ x, y, autoplay = true }: StarProps) {
 
   useEffect(() => {
     autoplay && changeOpacity();
-  }, [changeOpacity, autoplay]);
+  }, [autoplay, changeOpacity]);
 
   return (
     <Group transform={[{ translateY: y }]}>
