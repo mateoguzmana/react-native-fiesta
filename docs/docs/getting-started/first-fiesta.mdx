@@ -1,0 +1,44 @@
+---
+id: first-fiesta
+title: First Fiesta
+sidebar_label: First Fiesta
+slug: /getting-started/first-fiesta
+---
+
+Fiesta has some components ready to use out of the box.
+
+Let's celebrate a birthday:
+
+```js
+import { Birthday } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <Birthday />
+  );
+}
+
+```
+
+Full example
+
+```js
+import { StyleSheet, View } from 'react-native';
+import { Birthday } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <Birthday />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+```
