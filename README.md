@@ -15,16 +15,16 @@ This library is still under construction. Below, a list of features that are cur
 - ✅ Birthday Balloons (Twitter style)
 - ✅ Dark Balloons
 - ✅ Fireworks
-- Hearts
+- ✅ Hearts
+- ✅ Stars
 - Smoother Animations (improve the feel of the animations)
 - Light Balloons
 - Flowers
-- May 5th
+- May 5th (or other special days)
 - Pumpkins
 - Lollipops
 - Music Notes
 - Party Poppers
-- Stars
 - Button Celebrations
 
 ## Installation

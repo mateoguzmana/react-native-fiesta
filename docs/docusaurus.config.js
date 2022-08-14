@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'React Native Fiesta',
+  title: 'React Native Fiesta 🎉',
   tagline:
     'A set of celebration animations powered by Skia. Engage more with your users by celebrating in your React Native application.',
   url: 'https://mateoguzmana.github.io/react-native-fiesta',

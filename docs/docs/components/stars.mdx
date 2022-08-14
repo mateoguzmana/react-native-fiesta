@@ -1,0 +1,56 @@
+---
+id: stars
+title: Stars
+sidebar_label: Stars
+slug: /components/stars
+---
+
+A set of animated stars.
+
+- Set of stars
+- Single star
+
+### Set of stars
+
+```js
+import { StyleSheet, View } from 'react-native';
+import { Stars } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <Stars />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+```
+
+### Single star
+
+You can also use a single star. Notice that you need to wrap the star with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+
+```js
+import { StyleSheet } from 'react-native';
+import { Canvas } from '@shopify/react-native-skia';
+import { Star } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <Canvas style={styles.canvas}>
+      <Star x={25} y={30} autoplay={false} />
+    </Canvas>
+  );
+}
+
+const styles = StyleSheet.create({
+  canvas: {
+    flex: 1,
+  },
+});
+```
