@@ -1,25 +1,25 @@
 ---
-id: stars
-title: Stars
-sidebar_label: Stars
-slug: /components/stars
+id: hearts
+title: Hearts
+sidebar_label: Hearts
+slug: /components/hearts
 ---
 
-A set of animated stars.
+A set of animated hears.
 
-- Set of stars
-- Single star
+- Set of hears
+- Single heart
 
-### Set of stars
+### Set of hearts
 
 ```js
 import { StyleSheet, View } from 'react-native';
-import { Stars } from 'react-native-fiesta';
+import { Hearts } from 'react-native-fiesta';
 
 function App() {
   return (
     <View style={styles.container}>
-      <Stars />
+      <Hearts />
     </View>
   );
 }
@@ -31,19 +31,19 @@ const styles = StyleSheet.create({
 });
 ```
 
-### Single star
+### Single heart
 
-You can also use a single star. Notice that you need to wrap the star with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+You can also use a single heart. Notice that you need to wrap the heart with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
 
 ```js
 import { StyleSheet } from 'react-native';
 import { Canvas } from '@shopify/react-native-skia';
-import { Star } from 'react-native-fiesta';
+import { Heart } from 'react-native-fiesta';
 
 function App() {
   return (
     <Canvas style={styles.canvas}>
-      <Star />
+      <Heart />
     </Canvas>
   );
 }
