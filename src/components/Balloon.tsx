@@ -3,16 +3,22 @@ import { Circle, Group, Oval, Path, Shadow } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
 
 interface BalloonProps {
-  x: number;
+  x?: number;
   y?: number;
-  color: string;
+  color?: string;
   r?: number;
   depth?: number;
 }
 
-function Balloon({ x, y = 0, color, r = 40, depth }: BalloonProps) {
+function Balloon({
+  x = 0,
+  y = 0,
+  color = 'blue',
+  r = 40,
+  depth = 1,
+}: BalloonProps) {
   return (
-    <Group transform={[{ scale: depth ?? 1 }]}>
+    <Group transform={[{ scale: depth }]}>
       <Group transform={[{ translateX: x }]}>
         <Group
           transform={[
