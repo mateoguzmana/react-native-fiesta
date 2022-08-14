@@ -1,0 +1,58 @@
+---
+id: balloons
+title: Balloons
+sidebar_label: Balloons
+slug: /components/balloons
+---
+
+A set of balloons which you can use to celebrate things like birthdays, anniversaries, weddings or whatever other special ocassion you can think of, in your application.
+
+- Set of balloons
+- Single balloon
+
+### Set of balloons
+
+```js
+import { StyleSheet, View } from 'react-native';
+import { Balloons } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <Balloons />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+```
+
+### Single balloon
+
+You can also use a single balloon. Notice that you need to wrap the balloon with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+
+```js
+import { StyleSheet } from 'react-native';
+import { Canvas } from '@shopify/react-native-skia';
+import { Balloon } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <Canvas style={styles.canvas}>
+      <Balloon x={50} y={50} color={'rgba(255, 0, 255, 0.4)'} depth={0.4} />
+    </Canvas>
+  );
+}
+
+const styles = StyleSheet.create({
+  canvas: {
+    flex: 1,
+  },
+});
+```
