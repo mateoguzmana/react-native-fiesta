@@ -27,46 +27,7 @@ This library is still under construction. Below, a list of features that are cur
 - Party Poppers
 - Button Celebrations
 
-## Installation
-
-1. As this library fully relies on `@shopify/react-native-skia`, please follow the installation in their [docs](https://shopify.github.io/react-native-skia/docs/getting-started/installation).
-
-2. After installing the dependencies, you can simply install Fiesta with:
-
-```bash
-yarn add react-native-fiesta
-```
-
-Or
-
-```bash
-npm install react-native-fiesta
-```
-
-## Usage
-
-```js
-import { StyleSheet, View } from 'react-native';
-import { Birthday } from 'react-native-fiesta';
-
-function App() {
-  return (
-    <View style={styles.container}>
-      <Birthday />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-```
-
-You can see more examples in the [example](./example) project.
+You can see some examples in the [example](./example) project.
 
 ## Contributing
 
