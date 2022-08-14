@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   Balloons,
   Fireworks,
@@ -9,17 +9,27 @@ import {
   Balloon,
   Star,
   Heart,
+  Firework,
+  getParticlesFinalPositions,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import Button from './components/Button';
 import { Canvas } from '@shopify/react-native-skia';
+
+const numberOfParticles = 18;
+const radius = 30;
+const fireworksPositions = getParticlesFinalPositions(
+  numberOfParticles,
+  { x: 40, y: 40 },
+  radius
+);
 
 function App() {
   const [lightMode, setLightMode] = useState(false);
   const [componentToRender, setComponentToRender] = useState(<Fireworks />);
 
   return (
-    <View
+    <SafeAreaView
       style={[styles.container, lightMode ? styles.lightMode : styles.darkMode]}
     >
       <Content
@@ -32,8 +42,8 @@ function App() {
         onPress={() => setComponentToRender(<Fireworks />)}
       />
 
-      <View style={styles.row}>
-        <Pressable
+      <View style={styles.column}>
+        <TouchableOpacity
           onPress={() => {
             setComponentToRender(
               <Balloons
@@ -41,42 +51,59 @@ function App() {
               />
             );
           }}
-          style={styles.canvas}
+          style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Balloon x={20} y={50} color={'blue'} depth={0.4} />
+            <Balloon x={0} y={50} color={'blue'} depth={0.4} />
           </Canvas>
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable
+        <TouchableOpacity
           onPress={() => setComponentToRender(<Stars />)}
-          style={styles.canvas}
+          style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Star x={20} y={50} autoplay={false} />
+            <Star x={5} y={30} autoplay={false} />
           </Canvas>
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable
+        <TouchableOpacity
           onPress={() => setComponentToRender(<Hearts />)}
-          style={styles.canvas}
+          style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Heart x={20} y={50} autoplay={false} />
+            <Heart x={0} y={20} autoplay={false} />
           </Canvas>
-        </Pressable>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setComponentToRender(<Hearts />)}
+          style={styles.pressable}
+        >
+          <Canvas style={styles.canvas}>
+            <Firework
+              color="blue"
+              autoplay={false}
+              particlesInitialPosition={{ x: 0, y: 50 }}
+              particlesFinalposition={{
+                xValues: fireworksPositions?.xValues ?? [],
+                yValues: fireworksPositions?.yValues ?? [],
+              }}
+            />
+          </Canvas>
+        </TouchableOpacity>
       </View>
 
       {componentToRender}
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignContent: 'center',
+    justifyContent: 'center',
   },
   darkMode: {
     backgroundColor: 'black',
@@ -85,12 +112,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   canvas: {
-    height: 100,
-    width: 100,
+    height: 80,
   },
-  row: {
+  column: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    paddingTop: 10,
+  },
+  pressable: {
+    marginHorizontal: 8,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(255, 0, 255, 0.4)',
+    padding: 4,
+    justifyContent: 'center',
   },
 });
 

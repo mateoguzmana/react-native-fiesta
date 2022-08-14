@@ -3,7 +3,7 @@ interface Coordinate {
   y: number;
 }
 
-export function getParticlesPositions(
+export function getParticlesFinalPositions(
   numberOfParticles: number,
   initialPosition: Coordinate,
   radius: number
@@ -36,11 +36,11 @@ const initialPositions = [
   { x: 200, y: -900 },
 ];
 
-export function getParticlesPositionsSet(
+export function getParticlesFinalPositionsArray(
   numberOfParticles: number,
   radius: number
 ) {
   return initialPositions.map((initialPosition) =>
-    getParticlesPositions(numberOfParticles, initialPosition, radius)
+    getParticlesFinalPositions(numberOfParticles, initialPosition, radius)
   );
 }
