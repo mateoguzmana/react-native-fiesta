@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   Balloons,
   Fireworks,
@@ -13,7 +19,6 @@ import {
   getParticlesFinalPositions,
 } from 'react-native-fiesta';
 import Content from './components/Content';
-import Button from './components/Button';
 import { Canvas } from '@shopify/react-native-skia';
 
 const numberOfParticles = 18;
@@ -37,11 +42,6 @@ function App() {
         setLightMode={() => setLightMode((mode) => !mode)}
       />
 
-      <Button
-        title="Fireworks"
-        onPress={() => setComponentToRender(<Fireworks />)}
-      />
-
       <View style={styles.column}>
         <TouchableOpacity
           onPress={() => {
@@ -54,8 +54,16 @@ function App() {
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Balloon x={0} y={50} color={'blue'} depth={0.4} />
+            <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
+          <Text
+            style={[
+              styles.pressableText,
+              lightMode ? styles.textLightColor : styles.textDarkColor,
+            ]}
+          >
+            Balloons
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -63,8 +71,16 @@ function App() {
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Star x={5} y={30} autoplay={false} />
+            <Star x={25} y={30} autoplay={false} />
           </Canvas>
+          <Text
+            style={[
+              styles.pressableText,
+              lightMode ? styles.textLightColor : styles.textDarkColor,
+            ]}
+          >
+            Stars
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -72,8 +88,16 @@ function App() {
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Heart x={0} y={20} autoplay={false} />
+            <Heart x={20} y={20} autoplay={false} />
           </Canvas>
+          <Text
+            style={[
+              styles.pressableText,
+              lightMode ? styles.textLightColor : styles.textDarkColor,
+            ]}
+          >
+            Hearts
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -90,6 +114,14 @@ function App() {
               }}
             />
           </Canvas>
+          <Text
+            style={[
+              styles.pressableText,
+              lightMode ? styles.textLightColor : styles.textDarkColor,
+            ]}
+          >
+            Fireworks
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -101,8 +133,6 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
   },
   darkMode: {
     backgroundColor: 'black',
@@ -112,19 +142,28 @@ const styles = StyleSheet.create({
   },
   canvas: {
     height: 80,
+    width: 100,
   },
   column: {
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 10,
+    paddingTop: 20,
   },
   pressable: {
     marginHorizontal: 8,
     borderBottomWidth: 1,
     borderColor: 'rgba(255, 0, 255, 0.4)',
     padding: 4,
-    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '100%',
   },
+  pressableText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  textLightColor: { color: 'black' },
+  textDarkColor: { color: 'white' },
 });
 
 export default App;
