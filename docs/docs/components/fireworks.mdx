@@ -1,0 +1,73 @@
+---
+id: fireworks
+title: Fireworks
+sidebar_label: Fireworks
+slug: /components/fireworks
+---
+
+A set of animated fireworks.
+
+- Set of fireworks
+- Single firework
+
+### Set of fireworks
+
+```js
+import { StyleSheet, View } from 'react-native';
+import { Fireworks } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <Fireworks />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+```
+
+### Single fireworks
+
+You can also use a single fireworks. Notice that you need to wrap the fireworks with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+
+We also need to pass a final position to the firework particles, not doing this will end up in a non-good-looking firework since it won't animate the opening. You can use `getParticlesFinalPositions` to generate these positions based on the number of particles, a starting position and the firework radius, check the example below.
+
+```js
+import { StyleSheet } from 'react-native';
+import { Canvas } from '@shopify/react-native-skia';
+import { Firework, getParticlesFinalPositions } from 'react-native-fiesta';
+
+const fireworkParticles = 18;
+const fireworkRadius = 30;
+const particlesFinalPositions = getParticlesFinalPositions(
+  fireworkParticles,
+  { x: 40, y: 40 },
+  fireworkRadius
+);
+
+function App() {
+  return (
+    <Canvas style={styles.canvas}>
+      <Firework
+        color="rgba(255, 0, 255, 0.4)"
+        particlesInitialPosition={{ x: 0, y: 50 }}
+        particlesFinalposition={{
+          xValues: particlesFinalPositions?.xValues ?? [],
+          yValues: particlesFinalPositions?.yValues ?? [],
+        }}
+      />
+    </Canvas>
+  );
+}
+
+const styles = StyleSheet.create({
+  canvas: {
+    flex: 1,
+  },
+});
+```
