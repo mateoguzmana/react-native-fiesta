@@ -24,14 +24,12 @@ interface FireworkProps {
   particlesFinalposition?: FireworkParticlePositions;
   particlesInitialPosition?: FireworkPosition;
   color: string;
-  autoplay?: boolean;
 }
 
 function Firework({
   particlesFinalposition,
   color,
   particlesInitialPosition,
-  autoplay,
 }: FireworkProps) {
   return (
     <>
@@ -46,7 +44,6 @@ function Firework({
           }}
           r={8}
           color={color ?? '#000'}
-          autoplay={autoplay}
         />
       ))}
     </>

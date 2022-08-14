@@ -18,7 +18,6 @@ interface FireworkParticleProps {
   };
   r: number;
   color: string;
-  autoplay?: boolean;
 }
 
 function FireworkParticle({
@@ -27,7 +26,6 @@ function FireworkParticle({
   finalPos,
   r,
   color,
-  autoplay,
 }: FireworkParticleProps) {
   const xPosition = useValue(x);
   const yPosition = useValue(y);
@@ -74,8 +72,8 @@ function FireworkParticle({
   }, [changeOpacity, changeXPosition, changeYPosition]);
 
   useEffect(() => {
-    true && pushBalloons();
-  }, [autoplay, pushBalloons]);
+    pushBalloons();
+  }, [pushBalloons]);
 
   return (
     <Group transform={transform}>

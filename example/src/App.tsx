@@ -83,7 +83,6 @@ function App() {
           <Canvas style={styles.canvas}>
             <Firework
               color="blue"
-              autoplay={false}
               particlesInitialPosition={{ x: 0, y: 50 }}
               particlesFinalposition={{
                 xValues: fireworksPositions?.xValues ?? [],
