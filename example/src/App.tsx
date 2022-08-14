@@ -108,7 +108,7 @@ function App() {
             <Firework
               color="rgba(255, 0, 255, 0.4)"
               particlesInitialPosition={{ x: 0, y: 50 }}
-              particlesFinalposition={{
+              particlesFinalPositions={{
                 xValues: fireworksPositions?.xValues ?? [],
                 yValues: fireworksPositions?.yValues ?? [],
               }}

@@ -21,7 +21,7 @@ interface FireworkParticlePositions {
 }
 
 interface FireworkProps {
-  particlesFinalposition?: FireworkParticlePositions;
+  particlesFinalPositions?: FireworkParticlePositions;
   particlesInitialPosition?: FireworkPosition;
   color: string;
   autoHide?: boolean;
@@ -29,7 +29,7 @@ interface FireworkProps {
 }
 
 function Firework({
-  particlesFinalposition,
+  particlesFinalPositions,
   color,
   particlesInitialPosition,
   autoHide,
@@ -43,8 +43,8 @@ function Firework({
           x={particlesInitialPosition?.x ?? defaultparticlesInitialPosition.x}
           y={particlesInitialPosition?.y ?? defaultparticlesInitialPosition.y}
           finalPos={{
-            x: particlesFinalposition?.xValues[index] ?? 0,
-            y: particlesFinalposition?.yValues[index] ?? 0,
+            x: particlesFinalPositions?.xValues[index] ?? 0,
+            y: particlesFinalPositions?.yValues[index] ?? 0,
           }}
           r={particleRadius}
           color={color ?? '#000'}

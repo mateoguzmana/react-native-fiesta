@@ -32,7 +32,7 @@ function Fireworks({ autoHide, particleRadius }: FireworksProps) {
         {fireworksToRenderArray.map((_, index) => (
           <Firework
             key={index}
-            particlesFinalposition={
+            particlesFinalPositions={
               particlesFinalPositions[index] ?? { xValues: [], yValues: [] }
             }
             color={particlesColors[index] ?? '#000'}
