@@ -16,16 +16,18 @@ interface FireworkParticleProps {
     x: number;
     y: number;
   };
-  r: number;
+  r?: number;
   color: string;
+  autoHide?: boolean;
 }
 
 function FireworkParticle({
   x,
   y = 0,
   finalPos,
-  r,
+  r = 8,
   color,
+  autoHide = true,
 }: FireworkParticleProps) {
   const xPosition = useValue(x);
   const yPosition = useValue(y);
@@ -68,8 +70,8 @@ function FireworkParticle({
   const pushBalloons = useCallback(() => {
     changeXPosition();
     changeYPosition();
-    changeOpacity();
-  }, [changeOpacity, changeXPosition, changeYPosition]);
+    autoHide && changeOpacity();
+  }, [changeOpacity, changeXPosition, changeYPosition, autoHide]);
 
   useEffect(() => {
     pushBalloons();

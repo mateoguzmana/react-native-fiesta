@@ -24,12 +24,16 @@ interface FireworkProps {
   particlesFinalposition?: FireworkParticlePositions;
   particlesInitialPosition?: FireworkPosition;
   color: string;
+  autoHide?: boolean;
+  particleRadius?: number;
 }
 
 function Firework({
   particlesFinalposition,
   color,
   particlesInitialPosition,
+  autoHide,
+  particleRadius,
 }: FireworkProps) {
   return (
     <>
@@ -42,8 +46,9 @@ function Firework({
             x: particlesFinalposition?.xValues[index] ?? 0,
             y: particlesFinalposition?.yValues[index] ?? 0,
           }}
-          r={8}
+          r={particleRadius}
           color={color ?? '#000'}
+          autoHide={autoHide}
         />
       ))}
     </>

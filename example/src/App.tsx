@@ -101,7 +101,7 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Hearts />)}
+          onPress={() => setComponentToRender(<Fireworks />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
@@ -112,6 +112,8 @@ function App() {
                 xValues: fireworksPositions?.xValues ?? [],
                 yValues: fireworksPositions?.yValues ?? [],
               }}
+              particleRadius={2}
+              autoHide={false}
             />
           </Canvas>
           <Text

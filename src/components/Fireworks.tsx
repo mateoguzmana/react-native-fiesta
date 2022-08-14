@@ -20,7 +20,12 @@ const fireworksGroupTransform = [
   { translateY: screenHeight * 1.2, translateX: screenWidth / 2 },
 ];
 
-function Fireworks() {
+interface FireworksProps {
+  autoHide?: boolean;
+  particleRadius?: number;
+}
+
+function Fireworks({ autoHide, particleRadius }: FireworksProps) {
   return (
     <Canvas style={styles.canvas}>
       <Group transform={fireworksGroupTransform}>
@@ -31,6 +36,8 @@ function Fireworks() {
               particlesFinalPositions[index] ?? { xValues: [], yValues: [] }
             }
             color={particlesColors[index] ?? '#000'}
+            autoHide={autoHide}
+            particleRadius={particleRadius}
           />
         ))}
       </Group>
