@@ -46,9 +46,10 @@ function FireworkParticle({
   const changeOpacity = useCallback(
     () =>
       runSpring(opacity, 0, {
-        mass: 0.1,
+        mass: 1,
         damping: 0.2,
         stiffness: 0.5,
+        velocity: 70,
       }),
     [opacity]
   );
