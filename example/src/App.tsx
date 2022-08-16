@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactChild, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -31,7 +31,9 @@ const fireworksPositions = getParticlesFinalPositions(
 
 function App() {
   const [lightMode, setLightMode] = useState(false);
-  const [componentToRender, setComponentToRender] = useState(<Fireworks />);
+  const [componentToRender, setComponentToRender] = useState<ReactChild | null>(
+    null
+  );
 
   return (
     <SafeAreaView
