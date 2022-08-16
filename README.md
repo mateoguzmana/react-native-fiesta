@@ -26,6 +26,7 @@ This library is still under construction. Below, a list of features that are cur
 - Music Notes
 - Party Poppers
 - Button Celebrations
+- Speed options for group animations (at least 3 default configs, slow, normal and fast)
 
 You can see some examples in the [example](./example) project.
 
