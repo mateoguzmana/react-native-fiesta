@@ -12,6 +12,11 @@ A set of animated fireworks.
 
 ### Set of fireworks
 
+| Name            | Type      | Description                                                                          |
+| :-------------- | :-------- | :----------------------------------------------------------------------------------- |
+| autoHide?       | `boolean` | Whether the fireworks should hide (fade out) automatically or not (default is true). |
+| particleRadius? | `number`  | Radius of the firework particle (default is 8).                                      |
+
 ```js
 import { StyleSheet, View } from 'react-native';
 import { Fireworks } from 'react-native-fiesta';
@@ -36,6 +41,14 @@ const styles = StyleSheet.create({
 You can also use a single fireworks. Notice that you need to wrap the fireworks with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
 
 We also need to pass a final position to the firework particles, not doing this will end up in a non-good-looking firework since it won't animate the opening. You can use `getParticlesFinalPositions` to generate these positions based on the number of particles, a starting position and the firework radius, check the example below.
+
+| Name                      | Type                                        | Description                                                                          |
+| :------------------------ | :------------------------------------------ | :----------------------------------------------------------------------------------- |
+| particlesFinalPositions?  | `{ xValues: number[]; yValues: number[]; }` | Final position in the screen of every particle.                                      |
+| particlesInitialPosition? | `{ x: number; y: number; }`                 | Initial position of the particles.                                                   |
+| color?                    | `boolean`                                   | Firework color (default is #000).                                                    |
+| autoHide?                 | `boolean`                                   | Whether the fireworks should hide (fade out) automatically or not (default is true). |
+| particleRadius?           | `number`                                    | Radius of the firework particle (default is 8).                                      |
 
 ```js
 import { StyleSheet } from 'react-native';
