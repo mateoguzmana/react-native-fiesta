@@ -34,7 +34,11 @@ function Balloons({
 
   const changeBalloonPosition = useCallback(
     () =>
-      runSpring(yPosition, -screenHeight, fiestaSpeedConfig[FiestaSpeed.Slow]),
+      runSpring(
+        yPosition,
+        -screenHeight,
+        fiestaSpeedConfig[FiestaSpeed.Normal]
+      ),
     [yPosition]
   );
 
