@@ -25,7 +25,7 @@ function Balloon({
   r = 40,
   depth = 1,
 }: BalloonProps) {
-  const stringSkewX = useTiming({
+  const stringRotation = useTiming({
     to: 0.05,
     from: -0.05,
     yoyo: true,
@@ -35,10 +35,10 @@ function Balloon({
   const stringRotationTransform = useComputedValue(
     () => [
       {
-        skewX: stringSkewX.current,
+        rotate: stringRotation.current,
       },
     ],
-    [stringSkewX]
+    [stringRotation]
   );
 
   return (
