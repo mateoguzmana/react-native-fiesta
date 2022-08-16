@@ -10,25 +10,7 @@ Fiesta is a set of animations ideal for celebration and user engagement.
 
 ## Library Under Construction 🚧
 
-This library is still under construction. Below, a list of features that are currently being worked on.
-
-- ✅ Birthday Balloons (Twitter style)
-- ✅ Dark Balloons
-- ✅ Fireworks
-- ✅ Hearts
-- ✅ Stars
-- Smoother Animations (improve the feel of the animations)
-- Light Balloons
-- Flowers
-- May 5th (or other special days)
-- Pumpkins
-- Lollipops
-- Music Notes
-- Party Poppers
-- Button Celebrations
-- Speed options for group animations (at least 3 default configs, slow, normal and fast)
-
-You can see some examples in the [example](./example) project.
+This library is still under construction, right now it is experimental. You can read more about it [here](./docs/under-construction)
 
 ## Contributing
 
