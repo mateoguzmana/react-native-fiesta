@@ -11,6 +11,7 @@ import Balloon from './Balloon';
 import { FiestaThemes } from '../constants/theming';
 import { screenHeight, screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
+import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
 
 interface BalloonsProps {
   theme?: string[];
@@ -33,9 +34,7 @@ function Balloons({
 
   const changeBalloonPosition = useCallback(
     () =>
-      runSpring(yPosition, -screenHeight, {
-        stiffness: 0.2,
-      }),
+      runSpring(yPosition, -screenHeight, fiestaSpeedConfig[FiestaSpeed.Slow]),
     [yPosition]
   );
 
