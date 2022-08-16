@@ -35,6 +35,12 @@ const styles = StyleSheet.create({
 
 You can also use a single star. Notice that you need to wrap the star with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
 
+| Name      | Type      | Description                                                               |
+| :-------- | :-------- | :------------------------------------------------------------------------ |
+| x         | `number`  | Initial x position of the star.                                           |
+| y         | `number`  | Initial y position of the star.                                           |
+| autoplay? | `boolean` | Whether the star should animate automatically or not (default is `true`). |
+
 ```js
 import { StyleSheet } from 'react-native';
 import { Canvas } from '@shopify/react-native-skia';
