@@ -21,7 +21,7 @@ const DefaultTheme = [
   palette.pink,
 ];
 
-const DarkTheme = [...new Array(7).fill(palette.black)];
+const DarkTheme = [palette.black];
 
 export const FiestaThemes = {
   default: DefaultTheme,

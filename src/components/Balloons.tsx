@@ -10,8 +10,8 @@ import { StyleSheet } from 'react-native';
 import Balloon from './Balloon';
 import { FiestaThemes } from '../constants/theming';
 import { screenHeight, screenWidth } from '../constants/dimensions';
-import { shuffleArray } from '../utils/array';
 import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
+import { colorsFromTheme } from '../utils/colors';
 
 export interface BalloonsProps {
   theme?: string[];
@@ -28,7 +28,10 @@ function Balloons({
   theme = FiestaThemes.default,
   autoplay = true,
 }: BalloonsProps) {
-  const randomisedColors = useMemo(() => shuffleArray(theme), [theme]);
+  const colors = useMemo(
+    () => colorsFromTheme(theme, optimalNumberOfBalloons),
+    [theme]
+  );
 
   const yPosition = useValue(screenHeight + 100);
 
@@ -67,7 +70,7 @@ function Balloons({
             key={Math.random()}
             x={xGap * index}
             y={yPositions[index]}
-            color={randomisedColors[index]}
+            color={colors[index]}
             r={40}
             depth={
               possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
