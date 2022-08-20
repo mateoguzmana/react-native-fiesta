@@ -10,6 +10,7 @@ import Heart from './components/Heart';
 import { FiestaThemes } from './constants/theming';
 import { getParticlesFinalPositions } from './utils/fireworks';
 import EmojiPopper from './components/EmojiPopper';
+import Emoji from './components/Emoji';
 
 export {
   Balloon,
@@ -24,6 +25,7 @@ export {
   Heart,
   getParticlesFinalPositions,
   EmojiPopper,
+  Emoji,
 };
 
 export default {
@@ -39,4 +41,5 @@ export default {
   Heart,
   getParticlesFinalPositions,
   EmojiPopper,
+  Emoji,
 };

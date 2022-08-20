@@ -18,6 +18,7 @@ import {
   Firework,
   getParticlesFinalPositions,
   EmojiPopper,
+  Emoji,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import { Canvas } from '@shopify/react-native-skia';
@@ -133,7 +134,9 @@ function App() {
           onPress={() => setComponentToRender(<EmojiPopper emoji="😀" />)}
           style={styles.pressable}
         >
-          <EmojiPopper emoji="😀" />
+          <Canvas style={styles.canvas}>
+            <Emoji emoji="😀" x={15} y={50} autoplay={false} />
+          </Canvas>
 
           <Text
             style={[

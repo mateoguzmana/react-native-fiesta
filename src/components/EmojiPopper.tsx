@@ -1,26 +1,62 @@
-import { Canvas, Text, useFont } from '@shopify/react-native-skia';
-import { screenHeight } from '../constants/dimensions';
-import React, { memo } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import {
+  Canvas,
+  Group,
+  runSpring,
+  useComputedValue,
+  useValue,
+} from '@shopify/react-native-skia';
+import { screenHeight } from '../constants/dimensions';
+import { screenWidth } from '../constants/dimensions';
+import { shuffleArray } from '../utils/array';
+import Emoji from './Emoji';
+
+const xGap = 40;
+const optimalNumberOfItems = Math.floor(screenWidth / xGap);
+const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
 interface EmojiPopperProps {
   emoji: string;
 }
 
 function EmojiPopper({ emoji }: EmojiPopperProps) {
-  const font = useFont(require('../fonts/emojis.ttf'), 40);
+  const yPosition = useValue(screenHeight);
 
-  if (!font) return null;
+  const changeBalloonPosition = useCallback(
+    () =>
+      runSpring(yPosition, -screenHeight, {
+        stiffness: 0.5,
+      }),
+    [yPosition]
+  );
+
+  const transform = useComputedValue(
+    () => [
+      {
+        translateY: yPosition.current,
+      },
+    ],
+    [yPosition]
+  );
+
+  useEffect(() => {
+    changeBalloonPosition();
+  }, [changeBalloonPosition]);
 
   return (
     <Canvas style={styles.canvas}>
-      <Text
-        x={10}
-        y={screenHeight - 300}
-        text={emoji}
-        font={font}
-        color="white"
-      />
+      <Group transform={transform}>
+        {itemsToRenderArray.map((_, index) => (
+          <Emoji
+            key={index}
+            x={xGap * index}
+            y={yPositions[index]}
+            emoji={emoji}
+          />
+        ))}
+      </Group>
     </Canvas>
   );
 }
