@@ -21,7 +21,7 @@ function Emoji({
   color = palette.golden,
 }: EmojiProps) {
   const opacity = useValue(1);
-  const font = useFont(require('../fonts/emojis.ttf'), size);
+  const font = useFont(require('../fonts/OpenMoji-Color.ttf'), size);
 
   const changeOpacity = useCallback(
     () =>
