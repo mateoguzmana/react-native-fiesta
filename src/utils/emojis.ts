@@ -9,11 +9,11 @@ export function getEmojisToRender(
 
   const randomisedItems = shuffleArray(emojis);
 
-  new Array(itemsToRender).fill(0).map((_, index) => {
-    if (index >= randomisedItems.length) {
+  new Array(itemsToRender).fill(0).map(() => {
+    if (emojiToPushIndex === randomisedItems.length - 1) {
       emojiToPushIndex = 0;
     } else {
-      emojiToPushIndex = index;
+      emojiToPushIndex++;
     }
 
     newEmojis.push(randomisedItems[emojiToPushIndex]);

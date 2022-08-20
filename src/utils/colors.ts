@@ -6,11 +6,11 @@ export function colorsFromTheme(theme: string[], itemsToRender: number) {
 
   const randomisedColors = shuffleArray(theme);
 
-  new Array(itemsToRender).fill(0).map((_, index) => {
-    if (index >= randomisedColors.length) {
+  new Array(itemsToRender).fill(0).map(() => {
+    if (colorToPushIndex === randomisedColors.length - 1) {
       colorToPushIndex = 0;
     } else {
-      colorToPushIndex = index;
+      colorToPushIndex++;
     }
 
     newColors.push(randomisedColors[colorToPushIndex]);

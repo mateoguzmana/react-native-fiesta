@@ -132,7 +132,7 @@ function App() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(<EmojiPopper emojis={['😀', '😅']} />)
+            setComponentToRender(<EmojiPopper emojis={['😀', '😊']} />)
           }
           style={styles.pressable}
         >
