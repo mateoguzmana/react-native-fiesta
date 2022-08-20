@@ -11,6 +11,7 @@ import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import Emoji from './Emoji';
+import { getEmojisToRender } from '../utils/emojis';
 
 const xGap = 40;
 const optimalNumberOfItems = Math.floor(screenWidth / xGap);
@@ -18,11 +19,13 @@ const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
 export interface EmojiPopperProps {
-  emoji: string;
+  emojis: string[];
 }
 
-function EmojiPopper({ emoji }: EmojiPopperProps) {
+function EmojiPopper({ emojis }: EmojiPopperProps) {
   const yPosition = useValue(screenHeight);
+
+  const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);
 
   const changeItemPosition = useCallback(
     () =>
@@ -53,7 +56,7 @@ function EmojiPopper({ emoji }: EmojiPopperProps) {
             key={index}
             x={xGap * index}
             y={yPositions[index]}
-            emoji={emoji}
+            emoji={emojisToRender[index] ?? '❓'}
           />
         ))}
       </Group>
