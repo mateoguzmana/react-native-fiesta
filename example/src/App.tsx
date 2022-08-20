@@ -105,7 +105,7 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Fireworks particleRadius={3} />)}
+          onPress={() => setComponentToRender(<Fireworks />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>

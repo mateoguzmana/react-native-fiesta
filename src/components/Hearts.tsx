@@ -20,7 +20,7 @@ const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
 function Hearts() {
   const yPosition = useValue(screenHeight);
 
-  const changeBalloonPosition = useCallback(
+  const changeItemPosition = useCallback(
     () =>
       runSpring(yPosition, -screenHeight, {
         stiffness: 0.5,
@@ -38,8 +38,8 @@ function Hearts() {
   );
 
   useEffect(() => {
-    changeBalloonPosition();
-  }, [changeBalloonPosition]);
+    changeItemPosition();
+  }, [changeItemPosition]);
 
   return (
     <Canvas style={styles.canvas}>

@@ -24,7 +24,7 @@ interface EmojiPopperProps {
 function EmojiPopper({ emoji }: EmojiPopperProps) {
   const yPosition = useValue(screenHeight);
 
-  const changeBalloonPosition = useCallback(
+  const changeItemPosition = useCallback(
     () =>
       runSpring(yPosition, -screenHeight, {
         stiffness: 0.5,
@@ -42,8 +42,8 @@ function EmojiPopper({ emoji }: EmojiPopperProps) {
   );
 
   useEffect(() => {
-    changeBalloonPosition();
-  }, [changeBalloonPosition]);
+    changeItemPosition();
+  }, [changeItemPosition]);
 
   return (
     <Canvas style={styles.canvas}>
