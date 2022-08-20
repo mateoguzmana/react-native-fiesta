@@ -130,10 +130,10 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<EmojiPopper emoji="matreo" />)}
+          onPress={() => setComponentToRender(<EmojiPopper emoji="😀" />)}
           style={styles.pressable}
         >
-          <EmojiPopper emoji="hello" />
+          <EmojiPopper emoji="😀" />
 
           <Text
             style={[

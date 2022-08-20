@@ -1,4 +1,5 @@
 import { Canvas, Text, useFont } from '@shopify/react-native-skia';
+import { screenHeight } from '../constants/dimensions';
 import React, { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
@@ -7,13 +8,19 @@ interface EmojiPopperProps {
 }
 
 function EmojiPopper({ emoji }: EmojiPopperProps) {
-  const font = useFont(require('../fonts/emojis2.ttf'));
+  const font = useFont(require('../fonts/emojis.ttf'), 40);
 
   if (!font) return null;
 
   return (
     <Canvas style={styles.canvas}>
-      <Text x={0} y={0} text={emoji} font={font} size={100} color="white" />
+      <Text
+        x={10}
+        y={screenHeight - 300}
+        text={emoji}
+        font={font}
+        color="white"
+      />
     </Canvas>
   );
 }
