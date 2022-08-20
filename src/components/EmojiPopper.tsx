@@ -17,7 +17,7 @@ const optimalNumberOfItems = Math.floor(screenWidth / xGap);
 const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
-interface EmojiPopperProps {
+export interface EmojiPopperProps {
   emoji: string;
 }
 

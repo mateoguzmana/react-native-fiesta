@@ -3,7 +3,7 @@ import { Group, Path, runSpring, useValue } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
 import { screenHeight } from '../constants/dimensions';
 
-interface StarProps {
+export interface StarProps {
   x: number;
   y: number;
   autoplay?: boolean;

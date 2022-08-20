@@ -9,7 +9,7 @@ import {
   useComputedValue,
 } from '@shopify/react-native-skia';
 
-interface FireworkParticleProps {
+export interface FireworkParticleProps {
   x: number;
   y?: number;
   finalPos: {

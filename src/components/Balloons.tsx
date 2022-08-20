@@ -13,7 +13,7 @@ import { screenHeight, screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
 
-interface BalloonsProps {
+export interface BalloonsProps {
   theme?: string[];
   autoplay?: boolean;
 }

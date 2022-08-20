@@ -10,7 +10,7 @@ import {
 } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
 
-interface BalloonProps {
+export interface BalloonProps {
   x?: number;
   y?: number;
   color?: string;

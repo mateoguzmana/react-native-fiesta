@@ -3,7 +3,7 @@ import { runSpring, Text, useFont, useValue } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
 import { palette } from '../constants/theming';
 
-interface EmojiProps {
+export interface EmojiProps {
   x: number;
   y: number;
   autoplay?: boolean;

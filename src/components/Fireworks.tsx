@@ -20,7 +20,7 @@ const fireworksGroupTransform = [
   { translateY: screenHeight * 1.2, translateX: screenWidth / 2 },
 ];
 
-interface FireworksProps {
+export interface FireworksProps {
   autoHide?: boolean;
   particleRadius?: number;
 }

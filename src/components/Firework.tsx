@@ -20,7 +20,7 @@ interface FireworkParticlePositions {
   yValues: number[];
 }
 
-interface FireworkProps {
+export interface FireworkProps {
   particlesFinalPositions?: FireworkParticlePositions;
   particlesInitialPosition?: FireworkPosition;
   color?: string;
