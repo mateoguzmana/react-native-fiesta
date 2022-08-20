@@ -17,6 +17,7 @@ import {
   Heart,
   Firework,
   getParticlesFinalPositions,
+  EmojiPopper,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import { Canvas } from '@shopify/react-native-skia';
@@ -103,7 +104,7 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Fireworks />)}
+          onPress={() => setComponentToRender(<Fireworks particleRadius={3} />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
@@ -125,6 +126,22 @@ function App() {
             ]}
           >
             Fireworks
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setComponentToRender(<EmojiPopper emoji="matreo" />)}
+          style={styles.pressable}
+        >
+          <EmojiPopper emoji="hello" />
+
+          <Text
+            style={[
+              styles.pressableText,
+              lightMode ? styles.textLightColor : styles.textDarkColor,
+            ]}
+          >
+            Emoji Popper
           </Text>
         </TouchableOpacity>
       </View>
