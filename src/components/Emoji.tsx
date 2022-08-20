@@ -9,9 +9,17 @@ export interface EmojiProps {
   autoplay?: boolean;
   emoji: string;
   size?: number;
+  color?: string;
 }
 
-function Emoji({ x, y, autoplay = true, emoji, size = 30 }: EmojiProps) {
+function Emoji({
+  x,
+  y,
+  autoplay = true,
+  emoji,
+  size = 30,
+  color = palette.golden,
+}: EmojiProps) {
   const opacity = useValue(1);
   const font = useFont(require('../fonts/emojis.ttf'), size);
 
@@ -36,7 +44,7 @@ function Emoji({ x, y, autoplay = true, emoji, size = 30 }: EmojiProps) {
       text={emoji}
       opacity={opacity}
       font={font}
-      color={palette.yellow}
+      color={color}
     />
   );
 }
