@@ -8,11 +8,12 @@ interface EmojiProps {
   y: number;
   autoplay?: boolean;
   emoji: string;
+  size?: number;
 }
 
-function Emoji({ x, y, autoplay = true, emoji }: EmojiProps) {
+function Emoji({ x, y, autoplay = true, emoji, size = 30 }: EmojiProps) {
   const opacity = useValue(1);
-  const font = useFont(require('../fonts/emojis.ttf'), 40);
+  const font = useFont(require('../fonts/emojis.ttf'), size);
 
   const changeOpacity = useCallback(
     () =>
