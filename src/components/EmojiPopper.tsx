@@ -3,17 +3,15 @@ import type { SkFont } from '@shopify/react-native-skia';
 import { screenWidth } from '../constants/dimensions';
 import Emoji from './Emoji';
 import { getEmojisToRender } from '../utils/emojis';
-import Popper from './Popper';
+import Popper, { PopperProps } from './Popper';
 
-const xGap = 40;
-const optimalNumberOfItems = Math.floor(screenWidth / xGap);
-
-export interface EmojiPopperProps {
+export interface EmojiPopperProps extends Omit<PopperProps, 'renderItem'> {
   emojis?: string[];
   font: SkFont;
 }
 
-function EmojiPopper({ emojis = ['🎉'], font }: EmojiPopperProps) {
+function EmojiPopper({ emojis = ['🎉'], font, xGap = 40 }: EmojiPopperProps) {
+  const optimalNumberOfItems = Math.floor(screenWidth / xGap);
   const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);
 
   return (
