@@ -65,8 +65,6 @@ function Popper({
     changeItemPosition();
   }, [changeItemPosition]);
 
-  if (!renderItem) return null;
-
   return (
     <Canvas style={styles.canvas}>
       <Group transform={transform}>

@@ -1,96 +1,30 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import {
-  Canvas,
-  Group,
-  runSpring,
-  useComputedValue,
-  useValue,
-} from '@shopify/react-native-skia';
-import { StyleSheet } from 'react-native';
+import React from 'react';
 import Balloon from './Balloon';
-import { FiestaThemes } from '../constants/theming';
-import { screenHeight, screenWidth } from '../constants/dimensions';
-import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
-import { colorsFromTheme } from '../utils/colors';
+import Popper, { PopperProps } from './Popper';
 
-export interface BalloonsProps {
-  theme?: string[];
-  autoplay?: boolean;
-}
-
-const spacing = 50;
-const yPositions = [150, 0, 300, 100, 250, 0, 150, 100, 300, 0];
 const possibleDepths = [0.9, 1];
-const optimalNumberOfBalloons = Math.floor(screenWidth / spacing);
-const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
-function Balloons({
-  theme = FiestaThemes.default,
-  autoplay = true,
-}: BalloonsProps) {
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfBalloons),
-    [theme]
-  );
+export interface BalloonsProps extends Omit<PopperProps, 'renderItem'> {}
 
-  const yPosition = useValue(screenHeight + 100);
-
-  const changeBalloonPosition = useCallback(
-    () =>
-      runSpring(
-        yPosition,
-        -screenHeight,
-        fiestaSpeedConfig[FiestaSpeed.Normal]
-      ),
-    [yPosition]
-  );
-
-  const pushBalloons = useCallback(() => {
-    changeBalloonPosition();
-  }, [changeBalloonPosition]);
-
-  const transform = useComputedValue(
-    () => [
-      {
-        translateY: yPosition.current,
-      },
-    ],
-    [yPosition]
-  );
-
-  useEffect(() => {
-    autoplay && pushBalloons();
-  }, [pushBalloons, autoplay]);
-
+function Balloons({ spacing = 60, ...props }: BalloonsProps) {
   return (
-    <Canvas style={styles.canvas}>
-      <Group transform={transform}>
-        {ballonsToRenderArray.map((_, index) => (
-          <Balloon
-            key={Math.random()}
-            x={spacing * index}
-            y={yPositions[index]}
-            color={colors[index]}
-            r={40}
-            depth={
-              possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
-            }
-          />
-        ))}
-      </Group>
-    </Canvas>
+    <Popper
+      spacing={spacing}
+      renderItem={({ x, y, colors }, index) => (
+        <Balloon
+          key={index}
+          x={x}
+          y={y}
+          color={colors[index]}
+          r={40}
+          depth={
+            possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
+          }
+        />
+      )}
+      {...props}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  canvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -1,
-  },
-});
 
 export default Balloons;
