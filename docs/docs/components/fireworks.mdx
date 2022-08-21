@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
 });
 ```
 
-### Single fireworks
+### Single firework
 
-You can also use a single fireworks. Notice that you need to wrap the fireworks with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+You can also use a single firework. Notice that you need to wrap the firework with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
 
 We also need to pass a final position to the firework particles, not doing this will end up in a non-good-looking firework since it won't animate the opening. You can use `getParticlesFinalPositions` to generate these positions based on the number of particles, a starting position and the firework radius, check the example below.
 
