@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import { runSpring, Text, useFont, useValue } from '@shopify/react-native-skia';
+import { runSpring, SkFont, Text, useValue } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
 
 export interface EmojiProps {
@@ -9,11 +9,11 @@ export interface EmojiProps {
   emoji: string;
   size?: number;
   color?: string;
+  font: SkFont;
 }
 
-function Emoji({ x, y, autoplay = true, emoji, size = 30 }: EmojiProps) {
+function Emoji({ x, y, autoplay = true, emoji, font }: EmojiProps) {
   const opacity = useValue(1);
-  const font = useFont(require('../fonts/OpenMoji-Color.ttf'), size);
 
   const changeOpacity = useCallback(
     () =>

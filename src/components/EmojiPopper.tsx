@@ -4,6 +4,7 @@ import {
   Canvas,
   Group,
   runSpring,
+  SkFont,
   useComputedValue,
   useValue,
 } from '@shopify/react-native-skia';
@@ -20,9 +21,10 @@ const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
 export interface EmojiPopperProps {
   emojis: string[];
+  font: SkFont;
 }
 
-function EmojiPopper({ emojis }: EmojiPopperProps) {
+function EmojiPopper({ emojis, font }: EmojiPopperProps) {
   const yPosition = useValue(screenHeight);
 
   const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);
@@ -57,6 +59,7 @@ function EmojiPopper({ emojis }: EmojiPopperProps) {
             x={xGap * index}
             y={yPositions[index]}
             emoji={emojisToRender[index] ?? '❓'}
+            font={font}
           />
         ))}
       </Group>

@@ -21,7 +21,7 @@ import {
   Emoji,
 } from 'react-native-fiesta';
 import Content from './components/Content';
-import { Canvas } from '@shopify/react-native-skia';
+import { Canvas, useFont } from '@shopify/react-native-skia';
 
 const numberOfParticles = 18;
 const radius = 30;
@@ -32,10 +32,13 @@ const fireworksPositions = getParticlesFinalPositions(
 );
 
 function App() {
+  const font = useFont(require('./fonts/OpenMoji-Color.ttf'), 30);
   const [lightMode, setLightMode] = useState(false);
   const [componentToRender, setComponentToRender] = useState<ReactChild | null>(
     null
   );
+
+  if (!font) return null;
 
   return (
     <SafeAreaView
@@ -132,12 +135,14 @@ function App() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(<EmojiPopper emojis={['😀', '🌎']} />)
+            setComponentToRender(
+              <EmojiPopper emojis={['😀', '🌎']} font={font} />
+            )
           }
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Emoji emoji="😀" x={15} y={50} autoplay={false} />
+            <Emoji emoji="😀" x={15} y={50} autoplay={false} font={font} />
           </Canvas>
 
           <Text
