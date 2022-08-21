@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { Group, Path, runSpring, useValue } from '@shopify/react-native-skia';
 import { palette } from '../constants/theming';
-import { screenHeight } from '../constants/dimensions';
+import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface HeartProps {
   x: number;
@@ -14,10 +14,7 @@ function Heart({ x, y, autoplay = true, color = palette.red }: HeartProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
-    () =>
-      runSpring(opacity, 0, {
-        mass: (screenHeight / Math.random()) * 0.1,
-      }),
+    () => runSpring(opacity, 0, singleItemFadeSpeed),
     [opacity]
   );
 

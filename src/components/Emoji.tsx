@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { runSpring, SkFont, Text, useValue } from '@shopify/react-native-skia';
-import { screenHeight } from '../constants/dimensions';
+import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface EmojiProps {
   x?: number;
@@ -20,10 +20,7 @@ function Emoji({
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
-    () =>
-      runSpring(opacity, 0, {
-        mass: screenHeight / 3,
-      }),
+    () => runSpring(opacity, 0, singleItemFadeSpeed),
     [opacity]
   );
 

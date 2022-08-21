@@ -1,3 +1,5 @@
+import { screenHeight } from './dimensions';
+
 const slowSpringSpeed = {
   mass: 1,
   stiffness: 0.2,
@@ -27,3 +29,7 @@ export enum FiestaSpeed {
   Normal = 'normal',
   Fast = 'fast',
 }
+
+export const singleItemFadeSpeed = {
+  mass: (screenHeight / Math.random()) * 0.2,
+};
