@@ -1,26 +1,17 @@
-import React, { memo, useMemo } from 'react';
-import { screenWidth } from '../constants/dimensions';
+import React, { memo } from 'react';
 import Heart from './Heart';
-import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
 import Popper from './Popper';
-
-const xGap = 40;
-const optimalNumberOfHearts = Math.floor(screenWidth / xGap);
 
 export interface HeartsProps {
   theme?: string[];
 }
 
 function Hearts({ theme = FiestaThemes.default }: HeartsProps) {
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfHearts),
-    [theme]
-  );
-
   return (
     <Popper
-      renderItem={({ x, y }, index) => (
+      theme={theme}
+      renderItem={({ x, y, colors }, index) => (
         <Heart key={index} x={x} y={y} color={colors[index]} />
       )}
     />

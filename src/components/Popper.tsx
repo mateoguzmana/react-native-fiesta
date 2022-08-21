@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Canvas,
@@ -10,25 +10,37 @@ import {
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
+import { colorsFromTheme } from '../utils/colors';
+import { FiestaThemes } from '../constants/theming';
 
 interface RenderItemParams {
   x: number;
   y: number;
+  colors: string[];
 }
 
 export interface PopperProps {
   xGap?: number;
+  theme?: string[];
   renderItem: (
     renderItemParams: RenderItemParams,
     index: number
   ) => React.ReactElement;
 }
 
-function Popper({ xGap = 40, renderItem }: PopperProps) {
+function Popper({
+  xGap = 40,
+  theme = FiestaThemes.default,
+  renderItem,
+}: PopperProps) {
   const optimalNumberOfItems = Math.floor(screenWidth / xGap);
   const itemsToRenderArray = [...Array(optimalNumberOfItems)];
   const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
   const containerYPosition = useValue(screenHeight);
+  const colors = useMemo(
+    () => colorsFromTheme(theme, optimalNumberOfItems),
+    [theme, optimalNumberOfItems]
+  );
 
   const changeItemPosition = useCallback(
     () =>
@@ -57,7 +69,7 @@ function Popper({ xGap = 40, renderItem }: PopperProps) {
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
         {itemsToRenderArray.map((_, index) =>
-          renderItem({ x: xGap * index, y: yPositions[index] }, index)
+          renderItem({ x: xGap * index, y: yPositions[index], colors }, index)
         )}
       </Group>
     </Canvas>
