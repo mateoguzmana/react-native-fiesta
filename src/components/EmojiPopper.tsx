@@ -10,13 +10,17 @@ export interface EmojiPopperProps extends Omit<PopperProps, 'renderItem'> {
   font: SkFont;
 }
 
-function EmojiPopper({ emojis = ['🎉'], font, xGap = 40 }: EmojiPopperProps) {
-  const optimalNumberOfItems = Math.floor(screenWidth / xGap);
+function EmojiPopper({
+  emojis = ['🎉'],
+  font,
+  spacing = 40,
+}: EmojiPopperProps) {
+  const optimalNumberOfItems = Math.floor(screenWidth / spacing);
   const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);
 
   return (
     <Popper
-      xGap={xGap}
+      spacing={spacing}
       renderItem={({ x, y }, index) => (
         <Emoji
           key={index}

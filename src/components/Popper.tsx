@@ -20,7 +20,7 @@ interface RenderItemParams {
 }
 
 export interface PopperProps {
-  xGap?: number;
+  spacing?: number;
   theme?: string[];
   renderItem: (
     renderItemParams: RenderItemParams,
@@ -29,13 +29,15 @@ export interface PopperProps {
 }
 
 function Popper({
-  xGap = 40,
+  spacing = 40,
   theme = FiestaThemes.default,
   renderItem,
 }: PopperProps) {
-  const optimalNumberOfItems = Math.floor(screenWidth / xGap);
+  const optimalNumberOfItems = Math.floor(screenWidth / spacing);
   const itemsToRenderArray = [...Array(optimalNumberOfItems)];
-  const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
+  const yPositions = shuffleArray(
+    itemsToRenderArray.map((_, i) => i * spacing)
+  );
   const containerYPosition = useValue(screenHeight);
   const colors = useMemo(
     () => colorsFromTheme(theme, optimalNumberOfItems),
@@ -69,7 +71,10 @@ function Popper({
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
         {itemsToRenderArray.map((_, index) =>
-          renderItem({ x: xGap * index, y: yPositions[index], colors }, index)
+          renderItem(
+            { x: spacing * index, y: yPositions[index], colors },
+            index
+          )
         )}
       </Group>
     </Canvas>

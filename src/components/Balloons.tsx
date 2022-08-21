@@ -18,10 +18,10 @@ export interface BalloonsProps {
   autoplay?: boolean;
 }
 
-const xGap = 50;
+const spacing = 50;
 const yPositions = [150, 0, 300, 100, 250, 0, 150, 100, 300, 0];
 const possibleDepths = [0.9, 1];
-const optimalNumberOfBalloons = Math.floor(screenWidth / xGap);
+const optimalNumberOfBalloons = Math.floor(screenWidth / spacing);
 const ballonsToRenderArray = [...Array(optimalNumberOfBalloons)];
 
 function Balloons({
@@ -68,7 +68,7 @@ function Balloons({
         {ballonsToRenderArray.map((_, index) => (
           <Balloon
             key={Math.random()}
-            x={xGap * index}
+            x={spacing * index}
             y={yPositions[index]}
             color={colors[index]}
             r={40}
