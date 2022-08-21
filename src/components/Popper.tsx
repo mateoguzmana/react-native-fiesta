@@ -12,6 +12,7 @@ import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
+import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
 
 interface RenderItemParams {
   x: number;
@@ -46,9 +47,11 @@ function Popper({
 
   const changeItemPosition = useCallback(
     () =>
-      runSpring(containerYPosition, -screenHeight, {
-        stiffness: 0.5,
-      }),
+      runSpring(
+        containerYPosition,
+        -screenHeight,
+        fiestaSpeedConfig[FiestaSpeed.Normal]
+      ),
     [containerYPosition]
   );
 
