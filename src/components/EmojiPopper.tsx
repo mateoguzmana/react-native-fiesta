@@ -13,7 +13,7 @@ export interface EmojiPopperProps extends Omit<PopperProps, 'renderItem'> {
 function EmojiPopper({
   emojis = ['🎉'],
   font,
-  spacing = 40,
+  spacing = 30,
 }: EmojiPopperProps) {
   const optimalNumberOfItems = Math.floor(screenWidth / spacing);
   const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);

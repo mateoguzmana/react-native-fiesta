@@ -29,7 +29,7 @@ export interface PopperProps {
 }
 
 function Popper({
-  spacing = 40,
+  spacing = 30,
   theme = FiestaThemes.default,
   renderItem,
 }: PopperProps) {

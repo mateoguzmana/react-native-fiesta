@@ -20,10 +20,11 @@ The font is not directly integrated into Fiesta because it is a heavy file and n
 
 The emoji popper allows you to pass either a single or multiple emojis and then the emoji popper will distribute the emojis across the screen to give a nice and simple animation.
 
-| Name                 | Type       | Description                            |
-| :------------------- | :--------- | :------------------------------------- |
-| emojis?              | `string[]` | Array of emojis (default is `['🎉']`). |
-| [font](#emoji-fonts) | `SkFont`   | Font to use for the emojis.            |
+| Name                 | Type       | Description                                       |
+| :------------------- | :--------- | :------------------------------------------------ |
+| emojis?              | `string[]` | Array of emojis (default is `['🎉']`).            |
+| [font](#emoji-fonts) | `SkFont`   | Font to use for the emojis.                       |
+| spacing?             | `number`   | Space between items horizontally (default is 30). |
 
 ```js
 import { StyleSheet, View } from 'react-native';
