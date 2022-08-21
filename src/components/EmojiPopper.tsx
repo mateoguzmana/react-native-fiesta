@@ -20,11 +20,11 @@ const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
 export interface EmojiPopperProps {
-  emojis: string[];
+  emojis?: string[];
   font: SkFont;
 }
 
-function EmojiPopper({ emojis, font }: EmojiPopperProps) {
+function EmojiPopper({ emojis = ['🎉'], font }: EmojiPopperProps) {
   const yPosition = useValue(screenHeight);
 
   const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);

@@ -136,13 +136,13 @@ function App() {
         <TouchableOpacity
           onPress={() =>
             setComponentToRender(
-              <EmojiPopper emojis={['😀', '🌎', '🍏', '💻']} font={font} />
+              <EmojiPopper emojis={['🤠', '🎈', '🎉', '🇨🇴']} font={font} />
             )
           }
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Emoji emoji="😀" x={15} y={50} autoplay={false} font={font} />
+            <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
           <Text

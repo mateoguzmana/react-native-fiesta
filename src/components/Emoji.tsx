@@ -3,16 +3,20 @@ import { runSpring, SkFont, Text, useValue } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
 
 export interface EmojiProps {
-  x: number;
-  y: number;
-  autoplay?: boolean;
-  emoji: string;
-  size?: number;
-  color?: string;
+  x?: number;
+  y?: number;
+  autoHide?: boolean;
+  emoji?: string;
   font: SkFont;
 }
 
-function Emoji({ x, y, autoplay = true, emoji, font }: EmojiProps) {
+function Emoji({
+  x = 0,
+  y = 0,
+  autoHide = true,
+  emoji = '🎉',
+  font,
+}: EmojiProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
@@ -24,8 +28,8 @@ function Emoji({ x, y, autoplay = true, emoji, font }: EmojiProps) {
   );
 
   useEffect(() => {
-    autoplay && changeOpacity();
-  }, [autoplay, changeOpacity]);
+    autoHide && changeOpacity();
+  }, [autoHide, changeOpacity]);
 
   if (!font) return null;
 

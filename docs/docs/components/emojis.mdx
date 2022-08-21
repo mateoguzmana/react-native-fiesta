@@ -1,0 +1,80 @@
+---
+id: emojis
+title: Emojis
+sidebar_label: Emojis
+slug: /components/emojis
+---
+
+A set of animated emojis.
+
+- [Emoji Popper](#emoji-popper)
+- [Single Emoji](#single-emoji)
+
+### Emoji Fonts
+
+[OpenMoji](https://github.com/hfg-gmuend/openmoji/blob/master/font/OpenMoji-Color.ttf) is used in the examples as a font for the example but you can use any other emoji font. Example NotoColorEmoji or OpenSansEmoji (not as nice but lighter).
+
+The font is not directly integrated into Fiesta because it is a heavy file and not everyone needs it, hence you have to pass it yourself from your application.
+
+### Emoji Popper
+
+The emoji popper allows you to pass either a single or multiple emojis and then the emoji popper will distribute the emojis across the screen to give a nice and simple animation.
+
+| Name                 | Type       | Description                            |
+| :------------------- | :--------- | :------------------------------------- |
+| emojis?              | `string[]` | Array of emojis (default is `['🎉']`). |
+| [font](#emoji-fonts) | `SkFont`   | Font to use for the emojis.            |
+
+```js
+import { StyleSheet, View } from 'react-native';
+import { useFont } from '@shopify/react-native-skia';
+import { EmojiPopper } from 'react-native-fiesta';
+
+function App() {
+  const font = useFont(require('./fonts/OpenMoji-Color.ttf'), 30);
+
+  return (
+    <View style={styles.container}>
+      <EmojiPopper emojis={['🤠', '🎈', '🎉', '🇨🇴']} font={font} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+```
+
+### Single emoji
+
+You can also use a single emoji. Notice that you need to wrap the emoji with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
+
+| Name                 | Type      | Description                                                                      |
+| :------------------- | :-------- | :------------------------------------------------------------------------------- |
+| x?                   | `number`  | Initial x position of the emoji (default is 0).                                  |
+| y?                   | `number`  | Initial y position of the emoji (default is 0).                                  |
+| autoHide?            | `boolean` | Whether the emoji should hide (fade out) automatically or not (default is true). |
+| emoji?               | `string`  | Emoji to display (default is `'🎉'`).                                            |
+| [font](#emoji-fonts) | `SkFont`  | Font to use for the emojis.                                                      |
+
+```js
+import { StyleSheet } from 'react-native';
+import { Canvas } from '@shopify/react-native-skia';
+import { Emoji } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <Canvas style={styles.canvas}>
+      <Emoji emoji="🎉" x={15} y={50} autoplay={false} font={font} />
+    </Canvas>
+  );
+}
+
+const styles = StyleSheet.create({
+  canvas: {
+    flex: 1,
+  },
+});
+```
