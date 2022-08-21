@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Canvas,
@@ -11,13 +11,24 @@ import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import Star from './Star';
 import { shuffleArray } from '../utils/array';
+import { FiestaThemes } from '../constants/theming';
+import { colorsFromTheme } from '../utils/colors';
 
 const xGap = 40;
 const optimalNumberOfStars = Math.floor(screenWidth / xGap);
 const starsToRenderArray = [...Array(optimalNumberOfStars)];
 const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
 
-function Stars() {
+interface StarsProps {
+  theme?: string[];
+}
+
+function Stars({ theme = FiestaThemes.default }: StarsProps) {
+  const colors = useMemo(
+    () => colorsFromTheme(theme, optimalNumberOfStars),
+    [theme]
+  );
+
   const yPosition = useValue(screenHeight);
 
   const changeItemPosition = useCallback(
@@ -45,7 +56,12 @@ function Stars() {
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
         {starsToRenderArray.map((_, index) => (
-          <Star key={index} x={xGap * index} y={yPositions[index]} />
+          <Star
+            key={index}
+            x={xGap * index}
+            y={yPositions[index]}
+            color={colors[index]}
+          />
         ))}
       </Group>
     </Canvas>
