@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Canvas,
@@ -11,13 +11,23 @@ import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import Heart from './Heart';
 import { shuffleArray } from '../utils/array';
+import { colorsFromTheme } from '../utils/colors';
+import { FiestaThemes } from '../constants/theming';
 
 const xGap = 40;
-const optimalNumberOfStars = Math.floor(screenWidth / xGap);
-const starsToRenderArray = [...Array(optimalNumberOfStars)];
-const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
+const optimalNumberOfHearts = Math.floor(screenWidth / xGap);
+const heartsToRenderArray = [...Array(optimalNumberOfHearts)];
+const yPositions = shuffleArray(heartsToRenderArray.map((_, i) => i * xGap));
 
-function Hearts() {
+interface HeartsProps {
+  theme?: string[];
+}
+
+function Hearts({ theme = FiestaThemes.default }: HeartsProps) {
+  const colors = useMemo(
+    () => colorsFromTheme(theme, optimalNumberOfHearts),
+    [theme]
+  );
   const yPosition = useValue(screenHeight);
 
   const changeItemPosition = useCallback(
@@ -44,8 +54,13 @@ function Hearts() {
   return (
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
-        {starsToRenderArray.map((_, index) => (
-          <Heart key={index} x={xGap * index} y={yPositions[index]} />
+        {heartsToRenderArray.map((_, index) => (
+          <Heart
+            key={index}
+            x={xGap * index}
+            y={yPositions[index]}
+            color={colors[index]}
+          />
         ))}
       </Group>
     </Canvas>

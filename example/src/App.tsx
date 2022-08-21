@@ -97,7 +97,13 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Hearts />)}
+          onPress={() =>
+            setComponentToRender(
+              <Hearts
+                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
+              />
+            )
+          }
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
