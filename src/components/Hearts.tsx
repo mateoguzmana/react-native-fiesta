@@ -19,7 +19,7 @@ const optimalNumberOfHearts = Math.floor(screenWidth / xGap);
 const heartsToRenderArray = [...Array(optimalNumberOfHearts)];
 const yPositions = shuffleArray(heartsToRenderArray.map((_, i) => i * xGap));
 
-interface HeartsProps {
+export interface HeartsProps {
   theme?: string[];
 }
 

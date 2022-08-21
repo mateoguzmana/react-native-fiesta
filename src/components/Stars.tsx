@@ -19,7 +19,7 @@ const optimalNumberOfStars = Math.floor(screenWidth / xGap);
 const starsToRenderArray = [...Array(optimalNumberOfStars)];
 const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
 
-interface StarsProps {
+export interface StarsProps {
   theme?: string[];
 }
 
