@@ -18,6 +18,7 @@ function EmojiPopper({ emojis = ['🎉'], font }: EmojiPopperProps) {
 
   return (
     <Popper
+      xGap={xGap}
       renderItem={({ x, y }, index) => (
         <Emoji
           key={index}

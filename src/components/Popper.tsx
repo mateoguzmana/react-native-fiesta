@@ -11,41 +11,40 @@ import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 
-const xGap = 40;
-const optimalNumberOfItems = Math.floor(screenWidth / xGap);
-const itemsToRenderArray = [...Array(optimalNumberOfItems)];
-const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
-
 interface RenderItemParams {
   x: number;
   y: number;
 }
 
 export interface PopperProps {
+  xGap?: number;
   renderItem: (
     renderItemParams: RenderItemParams,
     index: number
   ) => React.ReactElement;
 }
 
-function Popper({ renderItem }: PopperProps) {
-  const yPosition = useValue(screenHeight);
+function Popper({ xGap = 40, renderItem }: PopperProps) {
+  const optimalNumberOfItems = Math.floor(screenWidth / xGap);
+  const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+  const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
+  const containerYPosition = useValue(screenHeight);
 
   const changeItemPosition = useCallback(
     () =>
-      runSpring(yPosition, -screenHeight, {
+      runSpring(containerYPosition, -screenHeight, {
         stiffness: 0.5,
       }),
-    [yPosition]
+    [containerYPosition]
   );
 
   const transform = useComputedValue(
     () => [
       {
-        translateY: yPosition.current,
+        translateY: containerYPosition.current,
       },
     ],
-    [yPosition]
+    [containerYPosition]
   );
 
   useEffect(() => {
