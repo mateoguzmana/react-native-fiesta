@@ -1,82 +1,18 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
-import {
-  Canvas,
-  Group,
-  runSpring,
-  useComputedValue,
-  useValue,
-} from '@shopify/react-native-skia';
-import { screenHeight } from '../constants/dimensions';
-import { screenWidth } from '../constants/dimensions';
+import React, { memo } from 'react';
 import Star from './Star';
-import { shuffleArray } from '../utils/array';
-import { FiestaThemes } from '../constants/theming';
-import { colorsFromTheme } from '../utils/colors';
+import Popper, { PopperProps } from './Popper';
 
-const xGap = 40;
-const optimalNumberOfStars = Math.floor(screenWidth / xGap);
-const starsToRenderArray = [...Array(optimalNumberOfStars)];
-const yPositions = shuffleArray(starsToRenderArray.map((_, i) => i * xGap));
+export interface StarsProps extends Omit<PopperProps, 'renderItem'> {}
 
-export interface StarsProps {
-  theme?: string[];
-}
-
-function Stars({ theme = FiestaThemes.default }: StarsProps) {
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfStars),
-    [theme]
-  );
-
-  const yPosition = useValue(screenHeight);
-
-  const changeItemPosition = useCallback(
-    () =>
-      runSpring(yPosition, -screenHeight, {
-        stiffness: 0.5,
-      }),
-    [yPosition]
-  );
-
-  const transform = useComputedValue(
-    () => [
-      {
-        translateY: yPosition.current,
-      },
-    ],
-    [yPosition]
-  );
-
-  useEffect(() => {
-    changeItemPosition();
-  }, [changeItemPosition]);
-
+function Stars(props: StarsProps) {
   return (
-    <Canvas style={styles.canvas}>
-      <Group transform={transform}>
-        {starsToRenderArray.map((_, index) => (
-          <Star
-            key={index}
-            x={xGap * index}
-            y={yPositions[index]}
-            color={colors[index]}
-          />
-        ))}
-      </Group>
-    </Canvas>
+    <Popper
+      renderItem={({ x, y, colors }, index) => (
+        <Star key={index} x={x} y={y} color={colors[index]} />
+      )}
+      {...props}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  canvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: -1,
-  },
-});
 
 export default memo(Stars);
