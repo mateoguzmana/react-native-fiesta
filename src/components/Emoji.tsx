@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { runSpring, Text, useFont, useValue } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
-import { palette } from '../constants/theming';
 
 export interface EmojiProps {
   x: number;
@@ -12,14 +11,7 @@ export interface EmojiProps {
   color?: string;
 }
 
-function Emoji({
-  x,
-  y,
-  autoplay = true,
-  emoji,
-  size = 30,
-  color = palette.golden,
-}: EmojiProps) {
+function Emoji({ x, y, autoplay = true, emoji, size = 30 }: EmojiProps) {
   const opacity = useValue(1);
   const font = useFont(require('../fonts/OpenMoji-Color.ttf'), size);
 
@@ -37,16 +29,7 @@ function Emoji({
 
   if (!font) return null;
 
-  return (
-    <Text
-      x={x}
-      y={y}
-      text={emoji}
-      opacity={opacity}
-      font={font}
-      color={color}
-    />
-  );
+  return <Text x={x} y={y} text={emoji} opacity={opacity} font={font} />;
 }
 
 export default memo(Emoji);
