@@ -1,19 +1,16 @@
 import React, { memo } from 'react';
 import Heart from './Heart';
-import { FiestaThemes } from '../constants/theming';
-import Popper from './Popper';
+import Popper, { PopperProps } from './Popper';
 
-export interface HeartsProps {
-  theme?: string[];
-}
+export interface HeartsProps extends Omit<PopperProps, 'renderItem'> {}
 
-function Hearts({ theme = FiestaThemes.default }: HeartsProps) {
+function Hearts(props: HeartsProps) {
   return (
     <Popper
-      theme={theme}
       renderItem={({ x, y, colors }, index) => (
         <Heart key={index} x={x} y={y} color={colors[index]} />
       )}
+      {...props}
     />
   );
 }
