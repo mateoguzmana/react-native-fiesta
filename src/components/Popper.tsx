@@ -11,10 +11,10 @@ import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 
-const xGap = 40; // ideally the gap can be also set from an external component
-const optimalNumberOfItems = Math.floor(screenWidth / xGap); // this one should remain the same as it is defined by the xGap
-const itemsToRenderArray = [...Array(optimalNumberOfItems)]; // remains the sane
-const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap)); // this one can also be very generic
+const xGap = 40;
+const optimalNumberOfItems = Math.floor(screenWidth / xGap);
+const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+const yPositions = shuffleArray(itemsToRenderArray.map((_, i) => i * xGap));
 
 interface RenderItemParams {
   x: number;
@@ -22,7 +22,10 @@ interface RenderItemParams {
 }
 
 export interface PopperProps {
-  renderItem: (renderItemParams: RenderItemParams) => React.ReactElement;
+  renderItem: (
+    renderItemParams: RenderItemParams,
+    index: number
+  ) => React.ReactElement;
 }
 
 function Popper({ renderItem }: PopperProps) {
@@ -55,7 +58,7 @@ function Popper({ renderItem }: PopperProps) {
     <Canvas style={styles.canvas}>
       <Group transform={transform}>
         {itemsToRenderArray.map((_, index) =>
-          renderItem({ x: xGap * index, y: yPositions[index] })
+          renderItem({ x: xGap * index, y: yPositions[index] }, index)
         )}
       </Group>
     </Canvas>
