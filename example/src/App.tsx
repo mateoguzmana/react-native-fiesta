@@ -108,7 +108,13 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Fireworks />)}
+          onPress={() =>
+            setComponentToRender(
+              <Fireworks
+                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
+              />
+            )
+          }
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>

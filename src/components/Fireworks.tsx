@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
@@ -6,16 +6,16 @@ import { screenHeight } from '../constants/dimensions';
 import { getParticlesFinalPositionsArray } from '../utils/fireworks';
 import { screenWidth } from '../constants/dimensions';
 import Firework from './Firework';
+import { colorsFromTheme } from '../utils/colors';
 
 const numberOfParticles = 18;
 const radius = 80;
-const particlesColors = FiestaThemes.default;
-const optimalNumberOfBalloons = Math.floor(screenWidth / 60);
+const optimalNumberOfFireworks = Math.floor(screenWidth / 60);
 const particlesFinalPositions = getParticlesFinalPositionsArray(
   numberOfParticles,
   radius
 );
-const fireworksToRenderArray = [...Array(optimalNumberOfBalloons)];
+const fireworksToRenderArray = [...Array(optimalNumberOfFireworks)];
 const fireworksGroupTransform = [
   { translateY: screenHeight * 1.2, translateX: screenWidth / 2 },
 ];
@@ -23,9 +23,19 @@ const fireworksGroupTransform = [
 export interface FireworksProps {
   autoHide?: boolean;
   particleRadius?: number;
+  theme?: string[];
 }
 
-function Fireworks({ autoHide, particleRadius }: FireworksProps) {
+function Fireworks({
+  autoHide,
+  particleRadius,
+  theme = FiestaThemes.default,
+}: FireworksProps) {
+  const colors = useMemo(
+    () => colorsFromTheme(theme, optimalNumberOfFireworks),
+    [theme]
+  );
+
   return (
     <Canvas style={styles.canvas}>
       <Group transform={fireworksGroupTransform}>
@@ -35,7 +45,7 @@ function Fireworks({ autoHide, particleRadius }: FireworksProps) {
             particlesFinalPositions={
               particlesFinalPositions[index] ?? { xValues: [], yValues: [] }
             }
-            color={particlesColors[index] ?? '#000'}
+            color={colors[index]}
             autoHide={autoHide}
             particleRadius={particleRadius}
           />
