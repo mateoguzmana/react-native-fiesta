@@ -7,6 +7,7 @@ export const palette = {
   orange: 'rgba(255, 165, 0, 1)',
   pink: 'rgba(255, 192, 203, 1)',
   black: 'rgba(0, 0, 0, 0.8)',
+  white: 'rgba(255, 255, 255, 0.8)',
   golden: 'rgba(245, 229, 27, 0.5)',
   gray: 'rgba(246, 243, 245, 0.5)',
 };
@@ -22,8 +23,10 @@ const DefaultTheme = [
 ];
 
 const DarkTheme = [palette.black];
+const LightTheme = [palette.white];
 
 export const FiestaThemes = {
   default: DefaultTheme,
   dark: DarkTheme,
+  light: LightTheme,
 };

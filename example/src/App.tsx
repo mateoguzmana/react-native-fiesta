@@ -54,7 +54,7 @@ function App() {
           onPress={() => {
             setComponentToRender(
               <Balloons
-                theme={lightMode ? FiestaThemes.dark : FiestaThemes.default}
+                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
               />
             );
           }}
