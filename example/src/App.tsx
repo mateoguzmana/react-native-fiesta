@@ -37,6 +37,8 @@ function App() {
   const [componentToRender, setComponentToRender] = useState<ReactChild | null>(
     null
   );
+  const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
+  const theme = lightMode ? FiestaThemes.dark : FiestaThemes.light;
 
   if (!font) return null;
 
@@ -52,81 +54,38 @@ function App() {
       <View style={styles.column}>
         <TouchableOpacity
           onPress={() => {
-            setComponentToRender(
-              <Balloons
-                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
-              />
-            );
+            setComponentToRender(<Balloons theme={theme} />);
           }}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
             <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
-          <Text
-            style={[
-              styles.pressableText,
-              lightMode ? styles.textLightColor : styles.textDarkColor,
-            ]}
-          >
-            Balloons
-          </Text>
+          <Text style={[styles.pressableText, textColor]}>Balloons</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            setComponentToRender(
-              <Stars
-                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
-              />
-            )
-          }
+          onPress={() => setComponentToRender(<Stars theme={theme} />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
             <Star x={25} y={30} autoplay={false} />
           </Canvas>
-          <Text
-            style={[
-              styles.pressableText,
-              lightMode ? styles.textLightColor : styles.textDarkColor,
-            ]}
-          >
-            Stars
-          </Text>
+          <Text style={[styles.pressableText, textColor]}>Stars</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            setComponentToRender(
-              <Hearts
-                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
-              />
-            )
-          }
+          onPress={() => setComponentToRender(<Hearts theme={theme} />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
             <Heart x={20} y={20} autoplay={false} />
           </Canvas>
-          <Text
-            style={[
-              styles.pressableText,
-              lightMode ? styles.textLightColor : styles.textDarkColor,
-            ]}
-          >
-            Hearts
-          </Text>
+          <Text style={[styles.pressableText, textColor]}>Hearts</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            setComponentToRender(
-              <Fireworks
-                theme={lightMode ? FiestaThemes.dark : FiestaThemes.light}
-              />
-            )
-          }
+          onPress={() => setComponentToRender(<Fireworks theme={theme} />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
@@ -141,14 +100,7 @@ function App() {
               autoHide={false}
             />
           </Canvas>
-          <Text
-            style={[
-              styles.pressableText,
-              lightMode ? styles.textLightColor : styles.textDarkColor,
-            ]}
-          >
-            Fireworks
-          </Text>
+          <Text style={[styles.pressableText, textColor]}>Fireworks</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -163,14 +115,7 @@ function App() {
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
-          <Text
-            style={[
-              styles.pressableText,
-              lightMode ? styles.textLightColor : styles.textDarkColor,
-            ]}
-          >
-            Emoji Popper
-          </Text>
+          <Text style={[styles.pressableText, textColor]}>Emoji Popper</Text>
         </TouchableOpacity>
       </View>
 

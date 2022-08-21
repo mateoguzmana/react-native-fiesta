@@ -7,47 +7,24 @@ interface ContentProps {
 }
 
 function Content({ lightMode, setLightMode }: ContentProps) {
+  const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
+
   return (
     <View style={styles.contentContainer}>
       <View style={styles.switchContainer}>
-        <Text
-          style={[
-            styles.title,
-            lightMode ? styles.textLightColor : styles.textDarkColor,
-          ]}
-        >
-          Dark
-        </Text>
+        <Text style={[styles.title, textColor]}>Dark</Text>
         <Switch
           onValueChange={setLightMode}
           value={lightMode}
           style={styles.switch}
         />
-        <Text
-          style={[
-            styles.title,
-            lightMode ? styles.textLightColor : styles.textDarkColor,
-          ]}
-        >
-          Light
-        </Text>
+        <Text style={[styles.title, textColor]}>Light</Text>
       </View>
-      <Text
-        style={[
-          styles.title,
-          lightMode ? styles.textLightColor : styles.textDarkColor,
-        ]}
-      >
-        Hello, congrats for being here today! 🥳
+      <Text style={[styles.title, textColor]}>
+        Hey, congrats for being here today! 🥳
       </Text>
 
-      <Text
-        style={[
-          styles.title,
-          styles.tryTitle,
-          lightMode ? styles.textLightColor : styles.textDarkColor,
-        ]}
-      >
+      <Text style={[styles.title, styles.tryTitle, textColor]}>
         Try out some fiesta components
       </Text>
     </View>
