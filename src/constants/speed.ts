@@ -18,17 +18,11 @@ const fastSpringSpeed = {
   damping: 19,
 };
 
-export const fiestaSpeedConfig = {
-  slow: slowSpringSpeed,
-  normal: normalSpringSpeed,
-  fast: fastSpringSpeed,
+export const FiestaSpeed = {
+  Slow: slowSpringSpeed,
+  Normal: normalSpringSpeed,
+  Fast: fastSpringSpeed,
 };
-
-export enum FiestaSpeed {
-  Slow = 'slow',
-  Normal = 'normal',
-  Fast = 'fast',
-}
 
 export const singleItemFadeSpeed = {
   mass: (screenHeight / Math.random()) * 0.2,

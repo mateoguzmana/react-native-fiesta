@@ -29,7 +29,7 @@ export interface FireworksProps {
 function Fireworks({
   autoHide,
   particleRadius,
-  theme = FiestaThemes.default,
+  theme = FiestaThemes.Default,
 }: FireworksProps) {
   const colors = useMemo(
     () => colorsFromTheme(theme, optimalNumberOfFireworks),

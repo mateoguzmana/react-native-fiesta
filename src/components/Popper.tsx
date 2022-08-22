@@ -12,7 +12,7 @@ import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
-import { FiestaSpeed, fiestaSpeedConfig } from '../constants/speed';
+import { FiestaSpeed } from '../constants/speed';
 
 interface RenderItemParams {
   x: number;
@@ -31,7 +31,7 @@ export interface PopperProps {
 
 function Popper({
   spacing = 30,
-  theme = FiestaThemes.default,
+  theme = FiestaThemes.Default,
   renderItem,
 }: PopperProps) {
   const optimalNumberOfItems = Math.floor(screenWidth / spacing);
@@ -46,12 +46,7 @@ function Popper({
   );
 
   const changeItemPosition = useCallback(
-    () =>
-      runSpring(
-        containerYPosition,
-        -screenHeight,
-        fiestaSpeedConfig[FiestaSpeed.Normal]
-      ),
+    () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
     [containerYPosition]
   );
 

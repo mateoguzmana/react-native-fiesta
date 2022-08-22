@@ -26,7 +26,7 @@ const DarkTheme = [palette.black];
 const LightTheme = [palette.white];
 
 export const FiestaThemes = {
-  default: DefaultTheme,
-  dark: DarkTheme,
-  light: LightTheme,
+  Default: DefaultTheme,
+  Dark: DarkTheme,
+  Light: LightTheme,
 };
