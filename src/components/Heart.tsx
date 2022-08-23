@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { Group, Path, runSpring, useValue } from '@shopify/react-native-skia';
-import { palette } from '../constants/theming';
+import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface HeartProps {
@@ -10,7 +10,7 @@ export interface HeartProps {
   color?: string;
 }
 
-function Heart({ x, y, autoplay = true, color = palette.red }: HeartProps) {
+function Heart({ x, y, autoplay = true, color = baseColors.red }: HeartProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(

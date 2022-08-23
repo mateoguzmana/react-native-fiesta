@@ -8,7 +8,7 @@ import {
   useComputedValue,
   useTiming,
 } from '@shopify/react-native-skia';
-import { palette } from '../constants/theming';
+import { baseColors } from '../constants/theming';
 
 export interface BalloonProps {
   x?: number;
@@ -55,7 +55,7 @@ function Balloon({
             <Group transform={[{ translateX: -55 }]}>
               <Path
                 path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
-                color={palette.golden}
+                color={baseColors.golden}
                 style="stroke"
                 strokeJoin="round"
                 strokeWidth={5}
@@ -74,7 +74,7 @@ function Balloon({
             cx={r / 0.8}
             cy={-25}
             r={r / 4}
-            color={palette.gray}
+            color={baseColors.gray}
             opacity={0.3}
           />
         </Group>

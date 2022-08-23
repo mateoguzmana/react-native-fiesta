@@ -1,32 +1,15 @@
-export const palette = {
+export const baseColors = {
   red: 'rgba(238, 17, 131, 1)',
-  blue: 'rgba(0, 0, 255, 1)',
-  green: 'rgba(0, 255, 0, 1)',
   yellow: 'rgba(255, 255, 0, 1)',
-  purple: 'rgba(255, 0, 255, 1)',
-  orange: 'rgba(255, 165, 0, 1)',
-  pink: 'rgba(255, 192, 203, 1)',
   black: 'rgba(0, 0, 0, 0.8)',
-  white: 'rgba(255, 255, 255, 0.8)',
   golden: 'rgba(245, 229, 27, 0.5)',
   gray: 'rgba(246, 243, 245, 0.5)',
 };
 
-const DefaultTheme = [
-  palette.red,
-  palette.blue,
-  palette.green,
-  palette.yellow,
-  palette.purple,
-  palette.orange,
-  palette.pink,
-];
-
-const DarkTheme = [palette.black];
-const LightTheme = [palette.white];
+// Themes taken from https://colorhunt.co/palettes
 
 export const FiestaThemes = {
-  Default: DefaultTheme,
-  Dark: DarkTheme,
-  Light: LightTheme,
+  Default: ['#F4BFBF', '#FFD9C0', '#FAF0D7', '#8CC0DE'],
+  Dark: ['#362222', '#171010', '#423F3E', '#2B2B2B'],
+  Wedding: ['#F9CEEE', '#F9F3EE', '#CCF3EE', '#97C4B8'],
 };

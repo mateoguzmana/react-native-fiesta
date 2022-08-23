@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import { Group, Path, runSpring, useValue } from '@shopify/react-native-skia';
-import { palette } from '../constants/theming';
+import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface StarProps {
@@ -10,7 +10,7 @@ export interface StarProps {
   color?: string;
 }
 
-function Star({ x, y, autoplay = true, color = palette.yellow }: StarProps) {
+function Star({ x, y, autoplay = true, color = baseColors.yellow }: StarProps) {
   const opacity = useValue(1);
 
   const changeOpacity = useCallback(
