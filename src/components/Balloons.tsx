@@ -4,7 +4,7 @@ import Popper, { PopperProps } from './Popper';
 import { screenWidth } from '../constants/dimensions';
 import { getBalloonsYPositions } from '../utils/balloons';
 
-const SPACING = 50;
+const SPACING = 45;
 const possibleDepths = [0.9, 1];
 const possibleYPositions = [150, 0, 300, 100, 250, 0, 150, 100, 300, 0];
 const optimalNumberOfItems = Math.floor(screenWidth / SPACING);
