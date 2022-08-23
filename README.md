@@ -14,7 +14,7 @@ Fiesta is a set of animations ideal for celebration and user engagement.
 yarn add react-native-fiesta
 ```
 
-Full documentation can be found [here](./docs/)
+Full documentation can be found [here](https://mateoguzmana.github.io/react-native-fiesta/)
 
 ## Library Under Construction 🚧
 
