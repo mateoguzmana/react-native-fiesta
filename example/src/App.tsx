@@ -38,7 +38,7 @@ function App() {
     null
   );
   const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
-  const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Wedding;
+  const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
 
   if (!font) return null;
 

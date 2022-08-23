@@ -12,4 +12,7 @@ export const FiestaThemes = {
   Default: ['#F4BFBF', '#FFD9C0', '#FAF0D7', '#8CC0DE'],
   Dark: ['#362222', '#171010', '#423F3E', '#2B2B2B'],
   Wedding: ['#F9CEEE', '#F9F3EE', '#CCF3EE', '#97C4B8'],
+  Halloween: ['#EEB76B', '#E2703A', '#9C3D54', '#310B0B'],
+  Neon: ['#7C83FD', '#96BAFF', '#7DEDFF', '#88FFF7'],
+  Christmas: ['#C9182B', '#F23A3A', '#E3F3AC', '#44C662'],
 };
