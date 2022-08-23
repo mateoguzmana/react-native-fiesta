@@ -10,7 +10,7 @@ const config = {
   tagline:
     'A set of celebration animations powered by Skia. Engage more with your users by celebrating in your React Native application.',
   url: 'https://mateoguzmana.github.io/react-native-fiesta',
-  baseUrl: '/',
+  baseUrl: '/react-native-fiesta/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
