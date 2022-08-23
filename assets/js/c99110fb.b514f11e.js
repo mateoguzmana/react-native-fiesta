@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[166],{4124:t=>{t.exports=JSON.parse('{"title":"Getting Started","slug":"/category/getting-started","permalink":"/react-native-fiesta/docs/category/getting-started","navigation":{"next":{"title":"Installation","permalink":"/react-native-fiesta/docs/getting-started/installation"}}}')}}]);
