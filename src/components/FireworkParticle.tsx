@@ -1,12 +1,10 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo } from 'react';
 import {
   vec,
-  Group,
-  runSpring,
-  useValue,
   Circle,
-  BlurMask,
   useComputedValue,
+  useTiming,
+  Easing,
 } from '@shopify/react-native-skia';
 
 export interface FireworkParticleProps {
@@ -29,62 +27,32 @@ function FireworkParticle({
   color,
   autoHide = true,
 }: FireworkParticleProps) {
-  const xPosition = useValue(x);
-  const yPosition = useValue(y);
-  const opacity = useValue(1);
-
-  const changeYPosition = useCallback(
-    () => runSpring(yPosition, finalPos.y),
-    [yPosition, finalPos.y]
+  const cx = useTiming(
+    { to: finalPos.x, from: x },
+    { duration: 1200, easing: Easing.linear }
   );
 
-  const changeXPosition = useCallback(
-    () => runSpring(xPosition, finalPos.x),
-    [xPosition, finalPos.x]
+  const cy = useTiming(
+    { to: finalPos.y, from: y },
+    { duration: 1200, easing: Easing.linear }
   );
 
-  const changeOpacity = useCallback(
-    () =>
-      runSpring(opacity, 0, {
-        mass: 1,
-        damping: 0.2,
-        stiffness: 0.5,
-        velocity: 70,
-      }),
-    [opacity]
-  );
-
-  const transform = useComputedValue(
-    () => [
-      {
-        translateY: yPosition.current,
-      },
-    ],
-    [xPosition]
+  const opacityValue = useTiming(
+    { to: 0, from: 1 },
+    { duration: 2000, easing: Easing.linear }
   );
 
   const transformCircle = useComputedValue(
-    () => vec(xPosition.current, 0),
-    [xPosition]
+    () => vec(cx.current, cy.current),
+    [cx, cy]
   );
 
-  const pushBalloons = useCallback(() => {
-    changeXPosition();
-    changeYPosition();
-    autoHide && changeOpacity();
-  }, [changeOpacity, changeXPosition, changeYPosition, autoHide]);
-
-  useEffect(() => {
-    pushBalloons();
-  }, [pushBalloons]);
-
-  return (
-    <Group transform={transform}>
-      <Circle c={transformCircle} r={r} color={color} opacity={opacity}>
-        <BlurMask blur={r / 3} style="normal" />
-      </Circle>
-    </Group>
+  const opacity = useComputedValue(
+    () => (autoHide ? opacityValue.current : 1),
+    [opacityValue]
   );
+
+  return <Circle c={transformCircle} r={r} color={color} opacity={opacity} />;
 }
 
 export default memo(FireworkParticle);

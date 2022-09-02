@@ -8,7 +8,6 @@ import Star from './components/Star';
 import Hearts from './components/Hearts';
 import Heart from './components/Heart';
 import { FiestaThemes } from './constants/theming';
-import { getParticlesFinalPositions } from './utils/fireworks';
 import EmojiPopper from './components/EmojiPopper';
 import Emoji from './components/Emoji';
 
@@ -23,7 +22,6 @@ export {
   Star,
   Hearts,
   Heart,
-  getParticlesFinalPositions,
   EmojiPopper,
   Emoji,
 };
@@ -39,7 +37,6 @@ export default {
   Star,
   Hearts,
   Heart,
-  getParticlesFinalPositions,
   EmojiPopper,
   Emoji,
 };

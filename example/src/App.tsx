@@ -16,20 +16,11 @@ import {
   Star,
   Heart,
   Firework,
-  getParticlesFinalPositions,
   EmojiPopper,
   Emoji,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import { Canvas, useFont } from '@shopify/react-native-skia';
-
-const numberOfParticles = 18;
-const radius = 30;
-const fireworksPositions = getParticlesFinalPositions(
-  numberOfParticles,
-  { x: 40, y: 40 },
-  radius
-);
 
 function App() {
   const font = useFont(require('./fonts/OpenMoji-Color.ttf'), 30);
@@ -85,18 +76,14 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Fireworks theme={theme} />)}
+          onPress={() => setComponentToRender(<Fireworks />)}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(255, 0, 255, 0.4)"
-              particlesInitialPosition={{ x: 0, y: 50 }}
-              particlesFinalPositions={{
-                xValues: fireworksPositions?.xValues ?? [],
-                yValues: fireworksPositions?.yValues ?? [],
-              }}
-              particleRadius={2}
+              initialPosition={{ x: 50, y: 50 }}
+              fireworkRadius={300}
               autoHide={false}
             />
           </Canvas>

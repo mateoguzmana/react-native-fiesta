@@ -3,18 +3,20 @@ import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { screenHeight } from '../constants/dimensions';
-import { getParticlesFinalPositionsArray } from '../utils/fireworks';
 import { screenWidth } from '../constants/dimensions';
 import Firework from './Firework';
 import { colorsFromTheme } from '../utils/colors';
 
-const numberOfParticles = 18;
-const radius = 80;
-const optimalNumberOfFireworks = Math.floor(screenWidth / 60);
-const particlesFinalPositions = getParticlesFinalPositionsArray(
-  numberOfParticles,
-  radius
-);
+const optimalNumberOfFireworks = 3;
+const initialPositions = [
+  { x: 100, y: -300 },
+  { x: 150, y: -700 },
+  { x: 200, y: -500 },
+  { x: 250, y: -600 },
+  { x: 300, y: -400 },
+  { x: 250, y: -800 },
+  { x: 200, y: -900 },
+];
 const fireworksToRenderArray = [...Array(optimalNumberOfFireworks)];
 const fireworksGroupTransform = [
   { translateY: screenHeight * 1.2, translateX: screenWidth / 2 },
@@ -24,12 +26,14 @@ export interface FireworksProps {
   autoHide?: boolean;
   particleRadius?: number;
   theme?: string[];
+  fireworkRadius?: number;
 }
 
 function Fireworks({
   autoHide,
   particleRadius,
   theme = FiestaThemes.Default,
+  fireworkRadius = 400,
 }: FireworksProps) {
   const colors = useMemo(
     () => colorsFromTheme(theme, optimalNumberOfFireworks),
@@ -42,12 +46,11 @@ function Fireworks({
         {fireworksToRenderArray.map((_, index) => (
           <Firework
             key={index}
-            particlesFinalPositions={
-              particlesFinalPositions[index] ?? { xValues: [], yValues: [] }
-            }
+            initialPosition={initialPositions[index]}
             color={colors[index]}
             autoHide={autoHide}
             particleRadius={particleRadius}
+            fireworkRadius={fireworkRadius}
           />
         ))}
       </Group>

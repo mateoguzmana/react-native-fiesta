@@ -17,6 +17,7 @@ A set of animated fireworks.
 | autoHide?       | `boolean`  | Whether the fireworks should hide (fade out) automatically or not (default is true).      |
 | particleRadius? | `number`   | Radius of the firework particle (default is 8).                                           |
 | theme?          | `string[]` | An array of colors used to add theming to the animation. Fiesta theme is used by default. |
+| fireworkRadius? | `number`   | Radius of the firework (default is 400).                                                  |
 
 ```js
 import { StyleSheet, View } from 'react-native';
@@ -41,39 +42,25 @@ const styles = StyleSheet.create({
 
 You can also use a single firework. Notice that you need to wrap the firework with a `Canvas`, not doing this will crash the application since we need to run the animation inside a `Canvas`.
 
-We also need to pass a final position to the firework particles, not doing this will end up in a non-good-looking firework since it won't animate the opening. You can use `getParticlesFinalPositions` to generate these positions based on the number of particles, a starting position and the firework radius, check the example below.
-
-| Name                      | Type                                        | Description                                                                          |
-| :------------------------ | :------------------------------------------ | :----------------------------------------------------------------------------------- |
-| particlesFinalPositions?  | `{ xValues: number[]; yValues: number[]; }` | Final position in the screen of every particle.                                      |
-| particlesInitialPosition? | `{ x: number; y: number; }`                 | Initial position of the particles.                                                   |
-| color?                    | `boolean`                                   | Firework color (default is #000).                                                    |
-| autoHide?                 | `boolean`                                   | Whether the fireworks should hide (fade out) automatically or not (default is true). |
-| particleRadius?           | `number`                                    | Radius of the firework particle (default is 8).                                      |
+| Name             | Type                        | Description                                                                          |
+| :--------------- | :-------------------------- | :----------------------------------------------------------------------------------- |
+| initialPosition? | `{ x: number; y: number; }` | Initial position of the particles.                                                   |
+| color?           | `boolean`                   | Firework color (default is #000).                                                    |
+| autoHide?        | `boolean`                   | Whether the fireworks should hide (fade out) automatically or not (default is true). |
+| particleRadius?  | `number`                    | Radius of the firework particle (default is 8).                                      |
+| fireworkRadius?  | `number`                    | Radius of the firework (default is 400).                                             |
 
 ```js
 import { StyleSheet } from 'react-native';
 import { Canvas } from '@shopify/react-native-skia';
-import { Firework, getParticlesFinalPositions } from 'react-native-fiesta';
-
-const fireworkParticles = 18;
-const fireworkRadius = 30;
-const particlesFinalPositions = getParticlesFinalPositions(
-  fireworkParticles,
-  { x: 40, y: 40 },
-  fireworkRadius
-);
+import { Firework } from 'react-native-fiesta';
 
 function App() {
   return (
     <Canvas style={styles.canvas}>
       <Firework
         color="rgba(255, 0, 255, 0.4)"
-        particlesInitialPosition={{ x: 0, y: 50 }}
-        particlesFinalPositions={{
-          xValues: particlesFinalPositions?.xValues ?? [],
-          yValues: particlesFinalPositions?.yValues ?? [],
-        }}
+        initialPosition={{ x: 0, y: 50 }}
       />
     </Canvas>
   );
