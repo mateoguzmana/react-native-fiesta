@@ -2,7 +2,7 @@
 
 <p align="center">A set of celebration animations powered by @shopify/react-native-skia. Engage more with your users by celebrating in your React Native application.</p>
 
-https://user-images.githubusercontent.com/20783123/186256978-5029cee5-827d-4515-aa0c-62b7b5e5c0ce.mov
+https://user-images.githubusercontent.com/20783123/188225120-12370b6a-04b6-4938-b2ee-3c8d65822fb2.mov
 
 Fiesta is a set of animations ideal for celebration and user engagement.
 
