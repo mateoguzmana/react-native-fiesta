@@ -18,6 +18,7 @@ import {
   Firework,
   EmojiPopper,
   Emoji,
+  PopperHandler,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import { Canvas, useFont } from '@shopify/react-native-skia';
@@ -31,7 +32,7 @@ function App() {
   const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
   const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
 
-  const heartsRef = useRef<any>(null);
+  const heartsRef = useRef<PopperHandler>(null);
 
   if (!font) return null;
 

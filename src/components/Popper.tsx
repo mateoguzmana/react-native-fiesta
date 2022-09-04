@@ -44,66 +44,70 @@ export interface PopperHandler {
 
 export type PopperRef = ForwardedRef<PopperHandler>;
 
-const Popper = (
-  {
-    spacing = 30,
-    theme = FiestaThemes.Default,
-    renderItem,
-    autoPlay = true,
-  }: PopperProps,
-  ref: PopperRef
-) => {
-  const optimalNumberOfItems = Math.floor(screenWidth / spacing);
-  const itemsToRenderArray = [...Array(optimalNumberOfItems)];
-
-  const yPositions = shuffleArray(
-    itemsToRenderArray.map((_, i) => i * spacing)
-  );
-
-  const containerYPosition = useValue(screenHeight);
-
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfItems),
-    [theme, optimalNumberOfItems]
-  );
-
-  const changeItemPosition = useCallback(
-    () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
-    [containerYPosition]
-  );
-
-  const transform = useComputedValue(
-    () => [
+export const Popper = memo(
+  forwardRef<PopperHandler, PopperProps>(
+    (
       {
-        translateY: containerYPosition.current,
-      },
-    ],
-    [containerYPosition]
-  );
+        spacing = 30,
+        theme = FiestaThemes.Default,
+        renderItem,
+        autoPlay = true,
+      }: PopperProps,
+      ref: PopperRef
+    ) => {
+      const optimalNumberOfItems = Math.floor(screenWidth / spacing);
+      const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 
-  useImperativeHandle(ref, () => ({
-    start() {
-      changeItemPosition();
-    },
-  }));
+      const yPositions = shuffleArray(
+        itemsToRenderArray.map((_, i) => i * spacing)
+      );
 
-  useEffect(() => {
-    autoPlay && changeItemPosition();
-  }, [changeItemPosition, autoPlay]);
+      const containerYPosition = useValue(screenHeight);
 
-  return (
-    <Canvas style={styles.canvas}>
-      <Group transform={transform}>
-        {itemsToRenderArray.map((_, index) =>
-          renderItem(
-            { x: spacing * index, y: yPositions[index], colors },
-            index
-          )
-        )}
-      </Group>
-    </Canvas>
-  );
-};
+      const colors = useMemo(
+        () => colorsFromTheme(theme, optimalNumberOfItems),
+        [theme, optimalNumberOfItems]
+      );
+
+      const changeItemPosition = useCallback(
+        () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
+        [containerYPosition]
+      );
+
+      const transform = useComputedValue(
+        () => [
+          {
+            translateY: containerYPosition.current,
+          },
+        ],
+        [containerYPosition]
+      );
+
+      useImperativeHandle(ref, () => ({
+        start() {
+          changeItemPosition();
+        },
+      }));
+
+      useEffect(() => {
+        autoPlay && changeItemPosition();
+      }, [changeItemPosition, autoPlay]);
+
+      return (
+        <Canvas style={styles.canvas}>
+          <Group transform={transform}>
+            {itemsToRenderArray.map((_, index) =>
+              renderItem(
+                { x: spacing * index, y: yPositions[index], colors },
+                index
+              )
+            )}
+          </Group>
+        </Canvas>
+      );
+    }
+  )
+);
 
 const styles = StyleSheet.create({
   canvas: {
@@ -115,5 +119,3 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
-
-export default memo(forwardRef<PopperHandler, PopperProps>(Popper));

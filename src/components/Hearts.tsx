@@ -1,11 +1,11 @@
-import React, { forwardRef, memo } from 'react';
-import Heart from './Heart';
-import Popper, { PopperHandler, PopperProps, PopperRef } from './Popper';
+import React, { forwardRef } from 'react';
+import { Heart } from './Heart';
+import { Popper, PopperHandler, PopperProps, PopperRef } from './Popper';
 
 export interface HeartsProps extends Omit<PopperProps, 'renderItem'> {}
 
-function Hearts(props: HeartsProps, ref?: PopperRef) {
-  return (
+export const Hearts = forwardRef<PopperHandler, HeartsProps>(
+  (props: HeartsProps, ref?: PopperRef) => (
     <Popper
       renderItem={({ x, y, colors }, index) => (
         <Heart key={index} x={x} y={y} color={colors[index]} />
@@ -13,7 +13,5 @@ function Hearts(props: HeartsProps, ref?: PopperRef) {
       {...props}
       ref={ref}
     />
-  );
-}
-
-export default memo(forwardRef<PopperHandler, HeartsProps>(Hearts));
+  )
+);

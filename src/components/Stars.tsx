@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import Star from './Star';
-import Popper, { PopperProps } from './Popper';
+import { Star } from './Star';
+import { Popper, PopperProps } from './Popper';
 
 export interface StarsProps extends Omit<PopperProps, 'renderItem'> {}
 
-function Stars(props: StarsProps) {
+export const Stars = memo((props: StarsProps) => {
   return (
     <Popper
       renderItem={({ x, y, colors }, index) => (
@@ -13,6 +13,4 @@ function Stars(props: StarsProps) {
       {...props}
     />
   );
-}
-
-export default memo(Stars);
+});

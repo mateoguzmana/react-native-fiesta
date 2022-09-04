@@ -10,27 +10,21 @@ export interface EmojiProps {
   font: SkFont;
 }
 
-function Emoji({
-  x = 0,
-  y = 0,
-  autoHide = true,
-  emoji = '🎉',
-  font,
-}: EmojiProps) {
-  const opacity = useValue(1);
+export const Emoji = memo(
+  ({ x = 0, y = 0, autoHide = true, emoji = '🎉', font }: EmojiProps) => {
+    const opacity = useValue(1);
 
-  const changeOpacity = useCallback(
-    () => runSpring(opacity, 0, singleItemFadeSpeed),
-    [opacity]
-  );
+    const changeOpacity = useCallback(
+      () => runSpring(opacity, 0, singleItemFadeSpeed),
+      [opacity]
+    );
 
-  useEffect(() => {
-    autoHide && changeOpacity();
-  }, [autoHide, changeOpacity]);
+    useEffect(() => {
+      autoHide && changeOpacity();
+    }, [autoHide, changeOpacity]);
 
-  if (!font) return null;
+    if (!font) return null;
 
-  return <Text x={x} y={y} text={emoji} opacity={opacity} font={font} />;
-}
-
-export default memo(Emoji);
+    return <Text x={x} y={y} text={emoji} opacity={opacity} font={font} />;
+  }
+);

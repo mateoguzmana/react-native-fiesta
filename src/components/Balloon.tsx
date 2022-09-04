@@ -18,69 +18,63 @@ export interface BalloonProps {
   depth?: number;
 }
 
-function Balloon({
-  x = 0,
-  y = 0,
-  color = 'blue',
-  r = 40,
-  depth = 1,
-}: BalloonProps) {
-  const stringRotation = useTiming({
-    to: 0.05,
-    from: -0.05,
-    yoyo: true,
-    loop: true,
-  });
+export const Balloon = memo(
+  ({ x = 0, y = 0, color = 'blue', r = 40, depth = 1 }: BalloonProps) => {
+    const stringRotation = useTiming({
+      to: 0.05,
+      from: -0.05,
+      yoyo: true,
+      loop: true,
+    });
 
-  const stringRotationTransform = useComputedValue(
-    () => [
-      {
-        rotate: stringRotation.current,
-      },
-    ],
-    [stringRotation]
-  );
+    const stringRotationTransform = useComputedValue(
+      () => [
+        {
+          rotate: stringRotation.current,
+        },
+      ],
+      [stringRotation]
+    );
 
-  return (
-    <Group transform={[{ scale: depth }]}>
-      <Group transform={[{ translateX: x }]}>
-        <Group
-          transform={[
-            {
-              translateY: y,
-            },
-          ]}
-        >
-          <Group transform={stringRotationTransform}>
-            <Group transform={[{ translateX: -55 }]}>
-              <Path
-                path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
-                color={baseColors.golden}
-                style="stroke"
-                strokeJoin="round"
-                strokeWidth={5}
-              />
+    return (
+      <Group transform={[{ scale: depth }]}>
+        <Group transform={[{ translateX: x }]}>
+          <Group
+            transform={[
+              {
+                translateY: y,
+              },
+            ]}
+          >
+            <Group transform={stringRotationTransform}>
+              <Group transform={[{ translateX: -55 }]}>
+                <Path
+                  path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
+                  color={baseColors.golden}
+                  style="stroke"
+                  strokeJoin="round"
+                  strokeWidth={5}
+                />
+              </Group>
             </Group>
-          </Group>
 
-          <Group transform={[{ translateY: -50 }]}>
-            <Group>
-              <Oval height={r * 2.3} width={r * 2} color={color} />
-              <Shadow dx={-12} dy={-12} blur={40} color="#fff" inner />
+            <Group transform={[{ translateY: -50 }]}>
+              <Group>
+                <Oval height={r * 2.3} width={r * 2} color={color} />
+                <Shadow dx={-12} dy={-12} blur={40} color="#fff" inner />
+              </Group>
             </Group>
-          </Group>
 
-          <Circle
-            cx={r / 0.8}
-            cy={-25}
-            r={r / 4}
-            color={baseColors.gray}
-            opacity={0.3}
-          />
+            <Circle
+              cx={r / 0.8}
+              cy={-25}
+              r={r / 4}
+              color={baseColors.gray}
+              opacity={0.3}
+            />
+          </Group>
         </Group>
       </Group>
-    </Group>
-  );
-}
-
-export default memo(Balloon);
+    );
+  }
+);
