@@ -1,4 +1,4 @@
-import React, { ReactChild, useState } from 'react';
+import React, { ReactChild, useRef, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,6 +18,7 @@ import {
   Firework,
   EmojiPopper,
   Emoji,
+  PopperHandler,
 } from 'react-native-fiesta';
 import Content from './components/Content';
 import { Canvas, useFont } from '@shopify/react-native-skia';
@@ -30,6 +31,8 @@ function App() {
   );
   const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
   const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
+
+  const heartsRef = useRef<PopperHandler>(null);
 
   if (!font) return null;
 
@@ -66,7 +69,7 @@ function App() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Hearts theme={theme} />)}
+          onPress={() => heartsRef?.current?.start()}
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
@@ -105,6 +108,8 @@ function App() {
           <Text style={[styles.pressableText, textColor]}>Emoji Popper</Text>
         </TouchableOpacity>
       </View>
+
+      <Hearts theme={theme} autoPlay={false} ref={heartsRef} />
 
       {componentToRender}
     </SafeAreaView>

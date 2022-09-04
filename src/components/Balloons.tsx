@@ -1,6 +1,6 @@
 import React from 'react';
-import Balloon from './Balloon';
-import Popper, { PopperProps } from './Popper';
+import { Balloon } from './Balloon';
+import { Popper, PopperProps } from './Popper';
 import { screenWidth } from '../constants/dimensions';
 import { getBalloonsYPositions } from '../utils/balloons';
 
@@ -15,7 +15,7 @@ const balloonsYPositions = getBalloonsYPositions(
 
 export interface BalloonsProps extends Omit<PopperProps, 'renderItem'> {}
 
-function Balloons({ spacing = SPACING, ...props }: BalloonsProps) {
+export function Balloons({ spacing = SPACING, ...props }: BalloonsProps) {
   return (
     <Popper
       spacing={spacing}
@@ -35,5 +35,3 @@ function Balloons({ spacing = SPACING, ...props }: BalloonsProps) {
     />
   );
 }
-
-export default Balloons;

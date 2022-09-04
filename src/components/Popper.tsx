@@ -1,4 +1,12 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  ForwardedRef,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Canvas,
@@ -27,55 +35,79 @@ export interface PopperProps {
     renderItemParams: RenderItemParams,
     index: number
   ) => React.ReactElement;
+  autoPlay?: boolean;
 }
 
-function Popper({
-  spacing = 30,
-  theme = FiestaThemes.Default,
-  renderItem,
-}: PopperProps) {
-  const optimalNumberOfItems = Math.floor(screenWidth / spacing);
-  const itemsToRenderArray = [...Array(optimalNumberOfItems)];
-  const yPositions = shuffleArray(
-    itemsToRenderArray.map((_, i) => i * spacing)
-  );
-  const containerYPosition = useValue(screenHeight);
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfItems),
-    [theme, optimalNumberOfItems]
-  );
+export interface PopperHandler {
+  start(): void;
+}
 
-  const changeItemPosition = useCallback(
-    () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
-    [containerYPosition]
-  );
+export type PopperRef = ForwardedRef<PopperHandler>;
 
-  const transform = useComputedValue(
-    () => [
+export const Popper = memo(
+  forwardRef<PopperHandler, PopperProps>(
+    (
       {
-        translateY: containerYPosition.current,
-      },
-    ],
-    [containerYPosition]
-  );
+        spacing = 30,
+        theme = FiestaThemes.Default,
+        renderItem,
+        autoPlay = true,
+      }: PopperProps,
+      ref: PopperRef
+    ) => {
+      const optimalNumberOfItems = Math.floor(screenWidth / spacing);
+      const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 
-  useEffect(() => {
-    changeItemPosition();
-  }, [changeItemPosition]);
+      const yPositions = shuffleArray(
+        itemsToRenderArray.map((_, i) => i * spacing)
+      );
 
-  return (
-    <Canvas style={styles.canvas}>
-      <Group transform={transform}>
-        {itemsToRenderArray.map((_, index) =>
-          renderItem(
-            { x: spacing * index, y: yPositions[index], colors },
-            index
-          )
-        )}
-      </Group>
-    </Canvas>
-  );
-}
+      const containerYPosition = useValue(screenHeight);
+
+      const colors = useMemo(
+        () => colorsFromTheme(theme, optimalNumberOfItems),
+        [theme, optimalNumberOfItems]
+      );
+
+      const changeItemPosition = useCallback(
+        () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
+        [containerYPosition]
+      );
+
+      const transform = useComputedValue(
+        () => [
+          {
+            translateY: containerYPosition.current,
+          },
+        ],
+        [containerYPosition]
+      );
+
+      useImperativeHandle(ref, () => ({
+        start() {
+          changeItemPosition();
+        },
+      }));
+
+      useEffect(() => {
+        autoPlay && changeItemPosition();
+      }, [changeItemPosition, autoPlay]);
+
+      return (
+        <Canvas style={styles.canvas}>
+          <Group transform={transform}>
+            {itemsToRenderArray.map((_, index) =>
+              renderItem(
+                { x: spacing * index, y: yPositions[index], colors },
+                index
+              )
+            )}
+          </Group>
+        </Canvas>
+      );
+    }
+  )
+);
 
 const styles = StyleSheet.create({
   canvas: {
@@ -87,5 +119,3 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
-
-export default memo(Popper);

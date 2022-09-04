@@ -4,7 +4,7 @@ import { Canvas, Group } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
-import Firework from './Firework';
+import { Firework } from './Firework';
 import { colorsFromTheme } from '../utils/colors';
 
 const optimalNumberOfFireworks = 3;
@@ -29,34 +29,36 @@ export interface FireworksProps {
   fireworkRadius?: number;
 }
 
-function Fireworks({
-  autoHide,
-  particleRadius,
-  theme = FiestaThemes.Default,
-  fireworkRadius = 400,
-}: FireworksProps) {
-  const colors = useMemo(
-    () => colorsFromTheme(theme, optimalNumberOfFireworks),
-    [theme]
-  );
+export const Fireworks = memo(
+  ({
+    autoHide,
+    particleRadius,
+    theme = FiestaThemes.Default,
+    fireworkRadius = 400,
+  }: FireworksProps) => {
+    const colors = useMemo(
+      () => colorsFromTheme(theme, optimalNumberOfFireworks),
+      [theme]
+    );
 
-  return (
-    <Canvas style={styles.canvas}>
-      <Group transform={fireworksGroupTransform}>
-        {fireworksToRenderArray.map((_, index) => (
-          <Firework
-            key={index}
-            initialPosition={initialPositions[index]}
-            color={colors[index]}
-            autoHide={autoHide}
-            particleRadius={particleRadius}
-            fireworkRadius={fireworkRadius}
-          />
-        ))}
-      </Group>
-    </Canvas>
-  );
-}
+    return (
+      <Canvas style={styles.canvas}>
+        <Group transform={fireworksGroupTransform}>
+          {fireworksToRenderArray.map((_, index) => (
+            <Firework
+              key={index}
+              initialPosition={initialPositions[index]}
+              color={colors[index]}
+              autoHide={autoHide}
+              particleRadius={particleRadius}
+              fireworkRadius={fireworkRadius}
+            />
+          ))}
+        </Group>
+      </Canvas>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   canvas: {
@@ -68,5 +70,3 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
-
-export default memo(Fireworks);
