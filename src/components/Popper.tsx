@@ -1,4 +1,12 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  ForwardedRef,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import {
   Canvas,
@@ -27,19 +35,33 @@ export interface PopperProps {
     renderItemParams: RenderItemParams,
     index: number
   ) => React.ReactElement;
+  autoPlay?: boolean;
 }
 
-function Popper({
-  spacing = 30,
-  theme = FiestaThemes.Default,
-  renderItem,
-}: PopperProps) {
+export interface PopperHandler {
+  start(): void;
+}
+
+export type PopperRef = ForwardedRef<PopperHandler>;
+
+const Popper = (
+  {
+    spacing = 30,
+    theme = FiestaThemes.Default,
+    renderItem,
+    autoPlay = true,
+  }: PopperProps,
+  ref: PopperRef
+) => {
   const optimalNumberOfItems = Math.floor(screenWidth / spacing);
   const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+
   const yPositions = shuffleArray(
     itemsToRenderArray.map((_, i) => i * spacing)
   );
+
   const containerYPosition = useValue(screenHeight);
+
   const colors = useMemo(
     () => colorsFromTheme(theme, optimalNumberOfItems),
     [theme, optimalNumberOfItems]
@@ -59,9 +81,15 @@ function Popper({
     [containerYPosition]
   );
 
+  useImperativeHandle(ref, () => ({
+    start() {
+      changeItemPosition();
+    },
+  }));
+
   useEffect(() => {
-    changeItemPosition();
-  }, [changeItemPosition]);
+    autoPlay && changeItemPosition();
+  }, [changeItemPosition, autoPlay]);
 
   return (
     <Canvas style={styles.canvas}>
@@ -75,7 +103,7 @@ function Popper({
       </Group>
     </Canvas>
   );
-}
+};
 
 const styles = StyleSheet.create({
   canvas: {
@@ -88,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Popper);
+export default memo(forwardRef<PopperHandler, PopperProps>(Popper));
