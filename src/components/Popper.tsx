@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
   useMemo,
   ForwardedRef,
+  useState,
 } from 'react';
 import { StyleSheet } from 'react-native';
 import {
@@ -55,6 +56,8 @@ export const Popper = memo(
       }: PopperProps,
       ref: PopperRef
     ) => {
+      const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
+
       const optimalNumberOfItems = Math.floor(screenWidth / spacing);
       const itemsToRenderArray = [...Array(optimalNumberOfItems)];
 
@@ -83,18 +86,41 @@ export const Popper = memo(
         [containerYPosition]
       );
 
+      // Once the animation finishes, we proceed to hiding the canvas to avoid blocking the UI
+      useEffect(() => {
+        const unsubscribe = containerYPosition.addListener((value) => {
+          if (value < -250 && displayCanvas) {
+            setDisplayCanvas(false);
+            containerYPosition.current = screenHeight;
+          }
+        });
+
+        return () => {
+          unsubscribe();
+        };
+      }, [containerYPosition, displayCanvas]);
+
       useImperativeHandle(ref, () => ({
         start() {
-          changeItemPosition();
+          setDisplayCanvas(true);
         },
       }));
 
       useEffect(() => {
-        autoPlay && changeItemPosition();
-      }, [changeItemPosition, autoPlay]);
+        displayCanvas && changeItemPosition();
+      }, [displayCanvas, changeItemPosition]);
+
+      if (!displayCanvas) return null;
 
       return (
-        <Canvas style={styles.canvas}>
+        <Canvas
+          style={[
+            styles.canvas,
+            // If the autoPlay is false it means the component is controlled, hence we have to put the zIndex as 1
+            // otherwise we won't be able to display the animation properly because of how the context provider is set
+            autoPlay ? styles.canvasBehind : styles.canvasInFront,
+          ]}
+        >
           <Group transform={transform}>
             {itemsToRenderArray.map((_, index) =>
               renderItem(
@@ -116,6 +142,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  canvasBehind: {
     zIndex: -1,
+  },
+  canvasInFront: {
+    zIndex: 1,
   },
 });
