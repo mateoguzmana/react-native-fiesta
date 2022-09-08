@@ -1,17 +1,27 @@
+import type { SkFont } from '@shopify/react-native-skia/lib/typescript/src';
 import React, { createContext, useContext, useRef } from 'react';
 import {
   Balloons as _Balloons,
   Hearts as _Hearts,
+  Stars as _Stars,
+  EmojiPopper as _EmojiPopper,
   PopperHandler,
 } from '../components';
 
 export enum FiestaAnimations {
   Hearts = 'Hearts',
   Balloons = 'Balloons',
+  Stars = 'Stars',
+  EmojiPopper = 'EmojiPopper',
+  Fireworks = 'Fireworks',
 }
 
 interface RunFiestaAnimationParams {
   animation: FiestaAnimations;
+}
+
+interface FiestaProviderProps {
+  font?: SkFont;
 }
 
 interface FiestContextType {
@@ -22,9 +32,14 @@ export const FiestaContext = createContext<FiestContextType>({
   runFiestaAnimation: () => {},
 });
 
-export const FiestaProvider: React.FC = ({ children }) => {
+export const FiestaProvider: React.FC<FiestaProviderProps> = ({
+  children,
+  font,
+}) => {
   const balloonsRef = useRef<PopperHandler>(null);
   const heartsRef = useRef<PopperHandler>(null);
+  const emojiPopperRef = useRef<PopperHandler>(null);
+  const starsRef = useRef<PopperHandler>(null);
 
   const runFiestaAnimation = ({ animation }: RunFiestaAnimationParams) => {
     switch (animation) {
@@ -33,6 +48,22 @@ export const FiestaProvider: React.FC = ({ children }) => {
         break;
       case FiestaAnimations.Hearts:
         heartsRef.current?.start();
+        break;
+      case FiestaAnimations.Stars:
+        starsRef.current?.start();
+        break;
+      case FiestaAnimations.Fireworks:
+        throw new Error(
+          'Fireworks are not supported yet in the Fiesta context, please use them as a component.'
+        );
+      case FiestaAnimations.EmojiPopper:
+        if (font) {
+          emojiPopperRef.current?.start();
+        } else {
+          throw new Error(
+            'This animation cannot be executed without a font, please set a font in the Fiesta provider.'
+          );
+        }
         break;
       default:
         balloonsRef.current?.start();
@@ -47,6 +78,11 @@ export const FiestaProvider: React.FC = ({ children }) => {
     >
       <_Balloons autoPlay={false} ref={balloonsRef} />
       <_Hearts autoPlay={false} ref={heartsRef} />
+      <_Stars autoPlay={false} ref={starsRef} />
+
+      {font ? (
+        <_EmojiPopper autoPlay={false} ref={emojiPopperRef} font={font} />
+      ) : null}
 
       {children}
     </FiestaContext.Provider>
