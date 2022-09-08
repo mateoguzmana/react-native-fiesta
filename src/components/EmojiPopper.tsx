@@ -1,17 +1,20 @@
-import React, { memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 import type { SkFont } from '@shopify/react-native-skia';
 import { screenWidth } from '../constants/dimensions';
 import { Emoji } from './Emoji';
 import { getEmojisToRender } from '../utils/emojis';
-import { Popper, PopperProps } from './Popper';
+import { Popper, PopperHandler, PopperProps } from './Popper';
 
 export interface EmojiPopperProps extends Omit<PopperProps, 'renderItem'> {
   emojis?: string[];
   font: SkFont;
 }
 
-export const EmojiPopper = memo(
-  ({ emojis = ['🎉'], font, spacing = 30 }: EmojiPopperProps) => {
+export const EmojiPopper = forwardRef<PopperHandler, EmojiPopperProps>(
+  (
+    { emojis = ['🎉'], font, spacing = 30, ...props }: EmojiPopperProps,
+    ref
+  ) => {
     const optimalNumberOfItems = Math.floor(screenWidth / spacing);
     const emojisToRender = getEmojisToRender(emojis, optimalNumberOfItems);
 
@@ -27,6 +30,8 @@ export const EmojiPopper = memo(
             font={font}
           />
         )}
+        {...props}
+        ref={ref}
       />
     );
   }
