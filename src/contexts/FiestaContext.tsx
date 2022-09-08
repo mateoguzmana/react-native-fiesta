@@ -13,6 +13,7 @@ export enum FiestaAnimations {
   Balloons = 'Balloons',
   Stars = 'Stars',
   EmojiPopper = 'EmojiPopper',
+  Fireworks = 'Fireworks',
 }
 
 interface RunFiestaAnimationParams {
@@ -51,6 +52,10 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
       case FiestaAnimations.Stars:
         starsRef.current?.start();
         break;
+      case FiestaAnimations.Fireworks:
+        throw new Error(
+          'Fireworks are not supported yet in the Fiesta context, please use them as a component.'
+        );
       case FiestaAnimations.EmojiPopper:
         if (font) {
           emojiPopperRef.current?.start();
