@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from 'react';
+import React, { forwardRef } from 'react';
 import type { SkFont } from '@shopify/react-native-skia';
 import { screenWidth } from '../constants/dimensions';
 import { Emoji } from './Emoji';

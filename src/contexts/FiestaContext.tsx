@@ -3,6 +3,7 @@ import React, { createContext, useContext, useRef } from 'react';
 import {
   Balloons as _Balloons,
   Hearts as _Hearts,
+  Stars as _Stars,
   EmojiPopper as _EmojiPopper,
   PopperHandler,
 } from '../components';
@@ -10,6 +11,7 @@ import {
 export enum FiestaAnimations {
   Hearts = 'Hearts',
   Balloons = 'Balloons',
+  Stars = 'Stars',
   EmojiPopper = 'EmojiPopper',
 }
 
@@ -36,6 +38,7 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
   const balloonsRef = useRef<PopperHandler>(null);
   const heartsRef = useRef<PopperHandler>(null);
   const emojiPopperRef = useRef<PopperHandler>(null);
+  const starsRef = useRef<PopperHandler>(null);
 
   const runFiestaAnimation = ({ animation }: RunFiestaAnimationParams) => {
     switch (animation) {
@@ -44,6 +47,9 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
         break;
       case FiestaAnimations.Hearts:
         heartsRef.current?.start();
+        break;
+      case FiestaAnimations.Stars:
+        starsRef.current?.start();
         break;
       case FiestaAnimations.EmojiPopper:
         if (font) {
@@ -67,6 +73,8 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
     >
       <_Balloons autoPlay={false} ref={balloonsRef} />
       <_Hearts autoPlay={false} ref={heartsRef} />
+      <_Stars autoPlay={false} ref={starsRef} />
+
       {font ? (
         <_EmojiPopper autoPlay={false} ref={emojiPopperRef} font={font} />
       ) : null}
