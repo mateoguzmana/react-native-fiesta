@@ -19,7 +19,7 @@ yarn add react-native-fiesta
 
 ## Library Under Construction 🚧
 
-This library is still under construction, right now it is experimental. You can read more about it [here](./docs/under-construction)
+This library is still under construction, right now it is experimental. You can read more about it [here](https://mateoguzmana.github.io/react-native-fiesta/docs/under-construction).
 
 ## Contributing
 
