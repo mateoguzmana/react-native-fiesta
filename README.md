@@ -23,7 +23,7 @@ This library is still under construction, right now it is experimental. You can 
 
 ## Contributing
 
-Please read the [guidelines](./CONTRIBUTING.md).
+Please read the [guidelines](./CODE_OF_CONDUCT.md).
 
 - If you have any questions or suggestions, please open an issue on [Github](https://github.com/mateoguzmana/react-native-fiesta/issues).
 - To contribute adding a new animation or by improving the existing ones, please open a pull request.
