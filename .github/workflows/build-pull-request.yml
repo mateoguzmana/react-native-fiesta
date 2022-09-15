@@ -1,0 +1,45 @@
+name: Build pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-pull-request:
+    name: Build pull request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.13.x
+          cache: yarn
+
+      - name: Restore dependencies
+        id: yarn-cache
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn --cwd example --frozen-lockfile
+          yarn --frozen-lockfile
+
+      - name: Lint files
+        run: yarn lint
+
+      - name: Typecheck files
+        run: yarn typescript
+
+      - name: Build packages
+        run: yarn prepare
+
+      - name: Run unit tests
+        run: yarn test --coverage
