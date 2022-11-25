@@ -5,15 +5,15 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator='iPhone 14 Pro'",
     "start": "react-native start",
     "pods": "pod-install --quiet",
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@shopify/react-native-skia": "0.1.137",
-    "react": "17.0.2",
-    "react-native": "0.68.2"
+    "@shopify/react-native-skia": "0.1.162",
+    "react": "18.0.0",
+    "react-native": "0.68.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -22,5 +22,8 @@
     "metro-react-native-babel-preset": "^0.67.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
+  },
+  "resolutions": {
+    "react": "18.0.0"
   }
 }
