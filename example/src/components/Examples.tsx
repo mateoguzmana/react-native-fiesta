@@ -83,8 +83,8 @@ export function Examples() {
               <Fireworks
                 numberOfFireworks={7}
                 // uncomment these two lines to some crazy fireworks
-                numberOfParticles={80}
-                fireworkRadius={2000}
+                // numberOfParticles={80}
+                // fireworkRadius={2000}
               />
             )
           }

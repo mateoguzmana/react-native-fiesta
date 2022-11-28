@@ -76,11 +76,7 @@ export const Fireworks = memo(
 
 const styles = StyleSheet.create({
   canvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
     zIndex: -1,
   },
 });
