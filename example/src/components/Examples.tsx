@@ -1,5 +1,6 @@
 import React, { ReactChild, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Canvas, useFont } from '@shopify/react-native-skia';
 import {
   Fireworks,
   FiestaThemes,
@@ -14,7 +15,6 @@ import {
   FiestaAnimations,
 } from 'react-native-fiesta';
 import Content from './Content';
-import { Canvas, useFont } from '@shopify/react-native-skia';
 
 export function Examples() {
   const { runFiestaAnimation } = useFiesta();
@@ -78,7 +78,16 @@ export function Examples() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Fireworks />)}
+          onPress={() =>
+            setComponentToRender(
+              <Fireworks
+                numberOfFireworks={7}
+                // uncomment these two lines to some crazy fireworks
+                numberOfParticles={80}
+                fireworkRadius={2000}
+              />
+            )
+          }
           style={styles.pressable}
         >
           {/*@ts-ignore */}

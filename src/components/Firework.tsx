@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Group } from '@shopify/react-native-skia';
 import { FireworkParticle } from './FireworkParticle';
 import { fromRadians } from '../utils/fireworks';
+
 interface FireworkPosition {
   x: number;
   y: number;
@@ -13,6 +14,11 @@ export interface FireworkProps {
   autoHide?: boolean;
   particleRadius?: number;
   fireworkRadius?: number;
+  /**
+   * Performance gets affected with more than 180 particles
+   * @default 50
+   */
+  numberOfParticles?: number;
 }
 
 export const Firework = memo(
@@ -22,22 +28,22 @@ export const Firework = memo(
     autoHide,
     particleRadius,
     fireworkRadius = 400,
+    numberOfParticles = 50,
   }: FireworkProps) => {
     const cx = useMemo(() => initialPosition?.x ?? 0, [initialPosition?.x]);
     const cy = useMemo(() => initialPosition?.y ?? 0, [initialPosition?.y]);
 
     const particlesToDraw = useMemo(
       () => () => {
-        const particles = 180; // performance gets affected with more than 180 particles
         const golden_ratio = (Math.sqrt(4) + 2) / 2 - 1;
         const golden_angle = golden_ratio * (2 * Math.PI);
         const circle_rad = fireworkRadius * 0.4 - 20; // defines the radious of the final circle
 
         const particlesToDrawArray = [];
 
-        for (let i = 1; i <= particles; ++i) {
-          const dot_rad = 0.001 * i;
-          const ratio = i / particles;
+        for (let i = 1; i <= numberOfParticles; ++i) {
+          const dot_rad = (numberOfParticles / 10) * 0.001 * i;
+          const ratio = i / numberOfParticles;
           const angle = i * golden_angle;
           const spiral_rad = ratio * circle_rad;
 
@@ -63,7 +69,7 @@ export const Firework = memo(
 
         return particlesToDrawArray;
       },
-      [cx, cy, fireworkRadius]
+      [cx, cy, fireworkRadius, numberOfParticles]
     );
 
     return (
