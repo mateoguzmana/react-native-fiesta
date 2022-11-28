@@ -96,13 +96,16 @@ export const Popper = memo(
         [containerYPosition]
       );
 
-      // Once the animation finishes, we proceed to hiding the canvas to avoid blocking the UI
+      // Once the animation finishes, we hide the canvas to avoid blocking the UI
       useEffect(() => {
         const unsubscribe = containerYPosition.addListener((value) => {
-          const offset =
-            direction === 'up' ? value < -250 : value >= screenHeight - 250;
+          const offset = 250;
+          const shouldHide =
+            direction === 'up'
+              ? value < -offset
+              : value >= screenHeight - offset;
 
-          if (offset && displayCanvas) {
+          if (shouldHide && displayCanvas) {
             setDisplayCanvas(false);
             containerYPosition.current = initialPosition;
           }
