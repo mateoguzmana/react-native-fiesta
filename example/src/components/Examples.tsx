@@ -81,6 +81,7 @@ export function Examples() {
           onPress={() => setComponentToRender(<Fireworks />)}
           style={styles.pressable}
         >
+          {/*@ts-ignore */}
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(255, 0, 255, 0.4)"
@@ -95,16 +96,23 @@ export function Examples() {
         <TouchableOpacity
           onPress={() =>
             setComponentToRender(
-              <EmojiPopper emojis={['🥳', '🪅', '🎉', '🍻']} font={font} />
+              <EmojiPopper
+                emojis={['🥳', '🪅', '🎉', '🍻']}
+                font={font}
+                direction="up"
+              />
             )
           }
           style={styles.pressable}
         >
+          {/*@ts-ignore */}
           <Canvas style={styles.canvas}>
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
-          <Text style={[styles.pressableText, textColor]}>Emoji Popper</Text>
+          <Text
+            style={[styles.pressableText, textColor]}
+          >{`Emoji Popper (direction - up)`}</Text>
         </TouchableOpacity>
       </View>
 

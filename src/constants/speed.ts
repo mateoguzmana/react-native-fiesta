@@ -25,5 +25,5 @@ export const FiestaSpeed = {
 };
 
 export const singleItemFadeSpeed = {
-  mass: (screenHeight / Math.random()) * 0.2,
+  mass: screenHeight,
 };
