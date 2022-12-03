@@ -20,9 +20,8 @@ export function Examples() {
   const { runFiestaAnimation } = useFiesta();
   const font = useFont(require('../fonts/OpenMoji-Color.ttf'), 30);
   const [lightMode, setLightMode] = useState(false);
-  const [componentToRender, setComponentToRender] = useState<ReactChild | null>(
-    null
-  );
+  const [componentToRender, setComponentToRender] =
+    useState<React.ReactNode | null>(null);
   const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
   const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
 
@@ -79,14 +78,7 @@ export function Examples() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(
-              <Fireworks
-                numberOfFireworks={7}
-                // uncomment these two lines to some crazy fireworks
-                // numberOfParticles={80}
-                // fireworkRadius={2000}
-              />
-            )
+            setComponentToRender(<Fireworks numberOfFireworks={7} />)
           }
           style={styles.pressable}
         >
@@ -97,9 +89,39 @@ export function Examples() {
               initialPosition={{ x: 50, y: 50 }}
               fireworkRadius={300}
               autoHide={false}
+              key="fireworks"
             />
           </Canvas>
           <Text style={[styles.pressableText, textColor]}>Fireworks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            setComponentToRender(
+              <Fireworks
+                numberOfFireworks={7}
+                numberOfParticles={80}
+                fireworkRadius={2000}
+                particleRadius={0.1}
+                key="fireworks-crazy-mode"
+              />
+            )
+          }
+          style={styles.pressable}
+        >
+          {/*@ts-ignore */}
+          <Canvas style={styles.canvas}>
+            <Firework
+              color="rgba(164, 164, 164, 0.4)"
+              initialPosition={{ x: 50, y: 50 }}
+              fireworkRadius={150}
+              numberOfParticles={50}
+              autoHide={false}
+            />
+          </Canvas>
+          <Text style={[styles.pressableText, textColor]}>
+            Fireworks (extreme mode)
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -121,7 +143,7 @@ export function Examples() {
 
           <Text
             style={[styles.pressableText, textColor]}
-          >{`Emoji Popper (direction - up)`}</Text>
+          >{`Emoji Popper (ascending)`}</Text>
         </TouchableOpacity>
       </View>
 
@@ -152,7 +174,7 @@ const styles = StyleSheet.create({
   pressable: {
     marginHorizontal: 8,
     borderBottomWidth: 1,
-    borderColor: 'rgba(255, 0, 255, 0.4)',
+    borderColor: 'rgba(162, 162, 162, 0.3)',
     padding: 4,
     alignItems: 'center',
     flexDirection: 'row',
