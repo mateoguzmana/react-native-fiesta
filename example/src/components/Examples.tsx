@@ -12,6 +12,7 @@ import {
   Emoji,
   useFiesta,
   FiestaAnimations,
+  PopperDirection,
 } from 'react-native-fiesta';
 import Content from './Content';
 import { Canvas, useFont } from '@shopify/react-native-skia';
@@ -99,7 +100,7 @@ export function Examples() {
               <EmojiPopper
                 emojis={['🥳', '🪅', '🎉', '🍻']}
                 font={font}
-                direction="up"
+                direction={PopperDirection.Ascending}
               />
             )
           }

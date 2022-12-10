@@ -29,6 +29,11 @@ interface RenderItemParams {
   colors: string[];
 }
 
+export enum PopperDirection {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
+
 export interface PopperProps {
   spacing?: number;
   theme?: string[];
@@ -37,7 +42,7 @@ export interface PopperProps {
     index: number
   ) => React.ReactElement;
   autoPlay?: boolean;
-  direction?: 'up' | 'down';
+  direction?: PopperDirection;
 }
 
 export interface PopperHandler {
@@ -54,17 +59,23 @@ export const Popper = memo(
         theme = FiestaThemes.Default,
         renderItem,
         autoPlay = true,
-        direction = 'down',
+        direction = PopperDirection.Descending,
       }: PopperProps,
       ref: PopperRef
     ) => {
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
       const initialPosition = useMemo(
-        () => (direction === 'up' ? screenHeight : -screenHeight / 2),
+        () =>
+          direction === PopperDirection.Ascending
+            ? screenHeight
+            : -screenHeight / 2,
         [direction]
       );
       const finalPosition = useMemo(
-        () => (direction === 'up' ? -screenHeight : screenHeight),
+        () =>
+          direction === PopperDirection.Ascending
+            ? -screenHeight
+            : screenHeight,
         [direction]
       );
 
@@ -101,7 +112,7 @@ export const Popper = memo(
         const unsubscribe = containerYPosition.addListener((value) => {
           const offset = 250;
           const shouldHide =
-            direction === 'up'
+            direction === PopperDirection.Ascending
               ? value < -offset
               : value >= screenHeight - offset;
 
