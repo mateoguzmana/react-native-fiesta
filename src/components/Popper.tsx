@@ -131,7 +131,7 @@ export const Popper = memo(
       return (
         <Canvas
           style={[
-            styles.canvas,
+            StyleSheet.absoluteFill,
             // If the autoPlay is false it means the component is controlled, hence we have to put the zIndex as 1
             // otherwise we won't be able to display the animation properly because of how the context provider is set
             autoPlay ? styles.canvasBehind : styles.canvasInFront,
@@ -152,13 +152,6 @@ export const Popper = memo(
 );
 
 const styles = StyleSheet.create({
-  canvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   canvasBehind: {
     zIndex: -1,
   },
