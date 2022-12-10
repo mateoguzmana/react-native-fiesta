@@ -18,6 +18,7 @@ export enum FiestaAnimations {
 
 interface RunFiestaAnimationParams {
   animation: FiestaAnimations;
+  theme?: string[];
 }
 
 interface FiestaProviderProps {
@@ -42,16 +43,21 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
   const emojiPopperRef = useRef<PopperHandler>(null);
   const starsRef = useRef<PopperHandler>(null);
 
-  const runFiestaAnimation = ({ animation }: RunFiestaAnimationParams) => {
+  const runFiestaAnimation = ({
+    animation,
+    theme,
+  }: RunFiestaAnimationParams) => {
+    const startParams = { theme };
+
     switch (animation) {
       case FiestaAnimations.Balloons:
-        balloonsRef.current?.start();
+        balloonsRef.current?.start(startParams);
         break;
       case FiestaAnimations.Hearts:
-        heartsRef.current?.start();
+        heartsRef.current?.start(startParams);
         break;
       case FiestaAnimations.Stars:
-        starsRef.current?.start();
+        starsRef.current?.start(startParams);
         break;
       case FiestaAnimations.Fireworks:
         throw new Error(
@@ -59,7 +65,7 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
         );
       case FiestaAnimations.EmojiPopper:
         if (font) {
-          emojiPopperRef.current?.start();
+          emojiPopperRef.current?.start(startParams);
         } else {
           throw new Error(
             'This animation cannot be executed without a font, please set a font in the Fiesta provider.'
@@ -67,7 +73,7 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
         }
         break;
       default:
-        balloonsRef.current?.start();
+        balloonsRef.current?.start(startParams);
     }
   };
 

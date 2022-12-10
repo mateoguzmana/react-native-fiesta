@@ -41,7 +41,7 @@ export interface PopperProps {
 }
 
 export interface PopperHandler {
-  start(): void;
+  start(params?: { theme?: string[] | undefined }): void;
 }
 
 export type PopperRef = ForwardedRef<PopperHandler>;
@@ -58,6 +58,9 @@ export const Popper = memo(
       }: PopperProps,
       ref: PopperRef
     ) => {
+      // properties that might be controlled are also defined in the state
+      const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
+
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
       const initialPosition = useMemo(
         () => (direction === 'up' ? screenHeight : -screenHeight / 2),
@@ -78,8 +81,8 @@ export const Popper = memo(
       const containerYPosition = useValue(initialPosition);
 
       const colors = useMemo(
-        () => colorsFromTheme(theme, optimalNumberOfItems),
-        [theme, optimalNumberOfItems]
+        () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
+        [controlledTheme, optimalNumberOfItems]
       );
 
       const changeItemPosition = useCallback(
@@ -117,8 +120,12 @@ export const Popper = memo(
       }, [containerYPosition, direction, displayCanvas, initialPosition]);
 
       useImperativeHandle(ref, () => ({
-        start() {
+        start(params) {
           setDisplayCanvas(true);
+
+          if (params?.theme) {
+            setControlledTheme(params.theme);
+          }
         },
       }));
 

@@ -56,7 +56,10 @@ export function Examples() {
         {/* Example using Fiesta context */}
         <TouchableOpacity
           onPress={() =>
-            runFiestaAnimation({ animation: FiestaAnimations.Hearts })
+            runFiestaAnimation({
+              animation: FiestaAnimations.Hearts,
+              theme: FiestaThemes.Neon,
+            })
           }
           style={styles.pressable}
         >
