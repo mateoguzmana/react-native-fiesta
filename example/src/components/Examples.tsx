@@ -14,18 +14,19 @@ import {
   useFiesta,
   FiestaAnimations,
 } from 'react-native-fiesta';
-import Content from './Content';
+import Header from './Header';
+
+// @TODO: add this in a dynamic list to show all themes in the example
+const theme = FiestaThemes.Dark;
 
 export function Examples() {
   const { runFiestaAnimation } = useFiesta();
   const font = useFont(require('../fonts/OpenMoji-Color.ttf'), 30);
-  const [lightMode, setLightMode] = useState(false);
+
   const [componentToRender, setComponentToRender] =
     useState<React.ReactNode | null>(null);
-  // this dynamic key is mostly to allow executing the examples multiple times without avoiding re-rendering
+  // this dynamic key is mostly to allow executing the examples multiple times allowing re-rendering
   const [dynamicKey, setDynamicKey] = useState(0);
-  const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
-  const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
 
   const onChangeComponent = useCallback((component: React.ReactNode) => {
     setDynamicKey((key) => key + 1);
@@ -35,13 +36,8 @@ export function Examples() {
   if (!font) return null;
 
   return (
-    <View
-      style={[styles.container, lightMode ? styles.lightMode : styles.darkMode]}
-    >
-      <Content
-        lightMode={lightMode}
-        setLightMode={() => setLightMode((mode) => !mode)}
-      />
+    <View style={styles.container}>
+      <Header />
 
       <View style={styles.column}>
         {/* Example using Fiesta context */}
@@ -51,11 +47,10 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
-          <Text style={[styles.pressableText, textColor]}>Balloons</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>Balloons</Text>
         </TouchableOpacity>
 
         {/* Example using Fiesta context */}
@@ -65,11 +60,10 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Heart x={20} y={20} autoplay={false} />
           </Canvas>
-          <Text style={[styles.pressableText, textColor]}>Hearts</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>Hearts</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -78,11 +72,10 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Star x={25} y={30} autoplay={false} />
           </Canvas>
-          <Text style={[styles.pressableText, textColor]}>Stars</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>Stars</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -93,7 +86,6 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(255, 0, 255, 0.4)"
@@ -102,7 +94,9 @@ export function Examples() {
               autoHide={false}
             />
           </Canvas>
-          <Text style={[styles.pressableText, textColor]}>Fireworks</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Fireworks
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -119,7 +113,6 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(164, 164, 164, 0.4)"
@@ -129,7 +122,7 @@ export function Examples() {
               autoHide={false}
             />
           </Canvas>
-          <Text style={[styles.pressableText, textColor]}>
+          <Text style={[styles.pressableText, styles.textColor]}>
             Fireworks (extreme mode)
           </Text>
         </TouchableOpacity>
@@ -147,13 +140,12 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
           <Text
-            style={[styles.pressableText, textColor]}
+            style={[styles.pressableText, styles.textColor]}
           >{`Emoji Popper (ascending)`}</Text>
         </TouchableOpacity>
       </View>
@@ -166,12 +158,7 @@ export function Examples() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  darkMode: {
     backgroundColor: 'black',
-  },
-  lightMode: {
-    backgroundColor: 'white',
   },
   canvas: {
     height: 80,
@@ -195,6 +182,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
-  textLightColor: { color: 'black' },
-  textDarkColor: { color: 'white' },
+  textColor: { color: 'white' },
 });
