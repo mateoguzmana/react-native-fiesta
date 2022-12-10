@@ -79,11 +79,18 @@ export const Popper = memo(
         [direction]
       );
 
-      const optimalNumberOfItems = Math.floor(screenWidth / spacing);
-      const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+      const optimalNumberOfItems = useMemo(
+        () => Math.floor(screenWidth / spacing),
+        [spacing]
+      );
+      const itemsToRenderArray = useMemo(
+        () => [...Array(optimalNumberOfItems)],
+        [optimalNumberOfItems]
+      );
 
-      const yPositions = shuffleArray(
-        itemsToRenderArray.map((_, i) => i * spacing)
+      const yPositions = useMemo(
+        () => shuffleArray(itemsToRenderArray.map((_, i) => i * spacing)),
+        [itemsToRenderArray, spacing]
       );
 
       const containerYPosition = useValue(initialPosition);
