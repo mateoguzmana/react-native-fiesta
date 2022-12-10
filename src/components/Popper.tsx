@@ -41,7 +41,7 @@ export interface PopperProps {
 }
 
 export interface PopperHandler {
-  start(params?: { theme?: string[] | undefined }): void;
+  start(params?: { theme?: string[]; direction?: 'up' | 'down' }): void;
 }
 
 export type PopperRef = ForwardedRef<PopperHandler>;
@@ -60,15 +60,18 @@ export const Popper = memo(
     ) => {
       // properties that might be controlled are also defined in the state
       const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
+      const [controlledDirection, setControlledDirection] = useState<
+        'up' | 'down'
+      >(direction);
 
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
       const initialPosition = useMemo(
-        () => (direction === 'up' ? screenHeight : -screenHeight / 2),
-        [direction]
+        () => (controlledDirection === 'up' ? screenHeight : -screenHeight / 2),
+        [controlledDirection]
       );
       const finalPosition = useMemo(
-        () => (direction === 'up' ? -screenHeight : screenHeight),
-        [direction]
+        () => (controlledDirection === 'up' ? -screenHeight : screenHeight),
+        [controlledDirection]
       );
 
       const optimalNumberOfItems = Math.floor(screenWidth / spacing);
@@ -104,7 +107,7 @@ export const Popper = memo(
         const unsubscribe = containerYPosition.addListener((value) => {
           const offset = 250;
           const shouldHide =
-            direction === 'up'
+            controlledDirection === 'up'
               ? value < -offset
               : value >= screenHeight - offset;
 
@@ -117,7 +120,12 @@ export const Popper = memo(
         return () => {
           unsubscribe();
         };
-      }, [containerYPosition, direction, displayCanvas, initialPosition]);
+      }, [
+        containerYPosition,
+        controlledDirection,
+        displayCanvas,
+        initialPosition,
+      ]);
 
       useImperativeHandle(ref, () => ({
         start(params) {
@@ -125,6 +133,10 @@ export const Popper = memo(
 
           if (params?.theme) {
             setControlledTheme(params.theme);
+          }
+
+          if (params?.direction) {
+            setControlledDirection(params.direction);
           }
         },
       }));

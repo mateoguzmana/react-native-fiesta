@@ -59,6 +59,7 @@ export function Examples() {
             runFiestaAnimation({
               animation: FiestaAnimations.Hearts,
               theme: FiestaThemes.Neon,
+              direction: 'up',
             })
           }
           style={styles.pressable}

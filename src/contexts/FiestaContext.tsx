@@ -19,6 +19,7 @@ export enum FiestaAnimations {
 interface RunFiestaAnimationParams {
   animation: FiestaAnimations;
   theme?: string[];
+  direction?: 'up' | 'down';
 }
 
 interface FiestaProviderProps {
@@ -46,8 +47,9 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
   const runFiestaAnimation = ({
     animation,
     theme,
+    direction,
   }: RunFiestaAnimationParams) => {
-    const startParams = { theme };
+    const startParams = { theme, direction };
 
     switch (animation) {
       case FiestaAnimations.Balloons:
