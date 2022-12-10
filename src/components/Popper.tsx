@@ -41,7 +41,7 @@ export interface PopperProps {
 }
 
 export interface PopperHandler {
-  start(params?: { theme?: string[]; direction?: 'up' | 'down' }): void;
+  start(params?: Pick<PopperProps, 'theme' | 'direction'>): void;
 }
 
 export type PopperRef = ForwardedRef<PopperHandler>;
