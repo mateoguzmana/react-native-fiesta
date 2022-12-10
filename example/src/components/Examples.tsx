@@ -1,4 +1,4 @@
-import React, { ReactChild, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Canvas, useFont } from '@shopify/react-native-skia';
 import {
@@ -22,8 +22,15 @@ export function Examples() {
   const [lightMode, setLightMode] = useState(false);
   const [componentToRender, setComponentToRender] =
     useState<React.ReactNode | null>(null);
+  // this dynamic key is mostly to allow executing the examples multiple times without avoiding re-rendering
+  const [dynamicKey, setDynamicKey] = useState(0);
   const textColor = lightMode ? styles.textLightColor : styles.textDarkColor;
   const theme = lightMode ? FiestaThemes.Dark : FiestaThemes.Halloween;
+
+  const onChangeComponent = useCallback((component: React.ReactNode) => {
+    setDynamicKey((key) => key + 1);
+    setComponentToRender(component);
+  }, []);
 
   if (!font) return null;
 
@@ -44,7 +51,7 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
@@ -58,7 +65,7 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Heart x={20} y={20} autoplay={false} />
           </Canvas>
@@ -66,10 +73,12 @@ export function Examples() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setComponentToRender(<Stars theme={theme} />)}
+          onPress={() =>
+            onChangeComponent(<Stars theme={theme} key={dynamicKey} />)
+          }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Star x={25} y={30} autoplay={false} />
           </Canvas>
@@ -78,18 +87,19 @@ export function Examples() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(<Fireworks numberOfFireworks={7} />)
+            onChangeComponent(
+              <Fireworks numberOfFireworks={7} key={dynamicKey} />
+            )
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(255, 0, 255, 0.4)"
               initialPosition={{ x: 50, y: 50 }}
-              fireworkRadius={300}
+              fireworkRadius={150}
               autoHide={false}
-              key="fireworks"
             />
           </Canvas>
           <Text style={[styles.pressableText, textColor]}>Fireworks</Text>
@@ -97,25 +107,25 @@ export function Examples() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(
+            onChangeComponent(
               <Fireworks
                 numberOfFireworks={7}
                 numberOfParticles={80}
                 fireworkRadius={2000}
                 particleRadius={0.1}
-                key="fireworks-crazy-mode"
+                key={dynamicKey}
               />
             )
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Firework
               color="rgba(164, 164, 164, 0.4)"
               initialPosition={{ x: 50, y: 50 }}
-              fireworkRadius={150}
-              numberOfParticles={50}
+              fireworkRadius={450}
+              numberOfParticles={70}
               autoHide={false}
             />
           </Canvas>
@@ -126,17 +136,18 @@ export function Examples() {
 
         <TouchableOpacity
           onPress={() =>
-            setComponentToRender(
+            onChangeComponent(
               <EmojiPopper
                 emojis={['🥳', '🪅', '🎉', '🍻']}
                 font={font}
                 direction="up"
+                key={dynamicKey}
               />
             )
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
+          {/*@ts-ignore  - temporal, awaiting for the issue in rn-skia */}
           <Canvas style={styles.canvas}>
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
