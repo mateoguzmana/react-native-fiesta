@@ -37,6 +37,9 @@ export interface PopperProps {
     index: number
   ) => React.ReactElement;
   autoPlay?: boolean;
+  /**
+   * Direction in which the elements will be popped
+   */
   direction?: 'up' | 'down';
 }
 
