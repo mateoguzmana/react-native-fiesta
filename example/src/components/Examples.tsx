@@ -17,7 +17,7 @@ import {
 import Header from './Header';
 
 // @TODO: add this in a dynamic list to show all themes in the example
-const theme = FiestaThemes.Dark;
+const theme = FiestaThemes.Neon;
 
 export function Examples() {
   const { runFiestaAnimation } = useFiesta();
@@ -50,7 +50,9 @@ export function Examples() {
           <Canvas style={styles.canvas}>
             <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
-          <Text style={[styles.pressableText, styles.textColor]}>Balloons</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Balloons (using Fiesta context)
+          </Text>
         </TouchableOpacity>
 
         {/* Example using Fiesta context */}
@@ -67,7 +69,9 @@ export function Examples() {
           <Canvas style={styles.canvas}>
             <Heart x={20} y={20} autoplay={false} />
           </Canvas>
-          <Text style={[styles.pressableText, styles.textColor]}>Hearts</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Hearts (using Fiesta context with options)
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -185,6 +189,7 @@ const styles = StyleSheet.create({
   pressableText: {
     color: 'white',
     fontSize: 20,
+    maxWidth: '70%',
   },
   textColor: { color: 'white' },
 });
