@@ -144,9 +144,9 @@ export function Examples() {
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
-          <Text
-            style={[styles.pressableText, styles.textColor]}
-          >{`Emoji Popper (ascending)`}</Text>
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Emoji Popper (ascending)
+          </Text>
         </TouchableOpacity>
       </View>
 
