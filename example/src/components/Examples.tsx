@@ -45,7 +45,6 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
           <Canvas style={styles.canvas}>
             <Balloon x={50} y={50} color={'blue'} depth={0.4} />
           </Canvas>
@@ -59,7 +58,6 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
           <Canvas style={styles.canvas}>
             <Heart x={20} y={20} autoplay={false} />
           </Canvas>
@@ -70,7 +68,6 @@ export function Examples() {
           onPress={() => setComponentToRender(<Stars theme={theme} />)}
           style={styles.pressable}
         >
-          {/*@ts-ignore */}
           <Canvas style={styles.canvas}>
             <Star x={25} y={30} autoplay={false} />
           </Canvas>
