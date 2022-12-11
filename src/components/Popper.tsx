@@ -42,11 +42,14 @@ export interface PopperProps {
     index: number
   ) => React.ReactElement;
   autoPlay?: boolean;
+  /**
+   * Direction in which the elements will be popped
+   */
   direction?: PopperDirection;
 }
 
 export interface PopperHandler {
-  start(): void;
+  start(params?: Pick<PopperProps, 'theme' | 'direction'>): void;
 }
 
 export type PopperRef = ForwardedRef<PopperHandler>;
@@ -63,20 +66,25 @@ export const Popper = memo(
       }: PopperProps,
       ref: PopperRef
     ) => {
+      // properties that might be controlled are also defined in the state
+      const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
+      const [controlledDirection, setControlledDirection] =
+        useState<PopperDirection>(direction);
+
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
       const initialPosition = useMemo(
         () =>
-          direction === PopperDirection.Ascending
+          controlledDirection === PopperDirection.Ascending
             ? screenHeight
             : -screenHeight / 2,
-        [direction]
+        [controlledDirection]
       );
       const finalPosition = useMemo(
         () =>
-          direction === PopperDirection.Ascending
+          controlledDirection === PopperDirection.Ascending
             ? -screenHeight
             : screenHeight,
-        [direction]
+        [controlledDirection]
       );
 
       const optimalNumberOfItems = useMemo(
@@ -96,8 +104,8 @@ export const Popper = memo(
       const containerYPosition = useValue(initialPosition);
 
       const colors = useMemo(
-        () => colorsFromTheme(theme, optimalNumberOfItems),
-        [theme, optimalNumberOfItems]
+        () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
+        [controlledTheme, optimalNumberOfItems]
       );
 
       const changeItemPosition = useCallback(
@@ -119,7 +127,7 @@ export const Popper = memo(
         const unsubscribe = containerYPosition.addListener((value) => {
           const offset = 250;
           const shouldHide =
-            direction === PopperDirection.Ascending
+            controlledDirection === PopperDirection.Ascending
               ? value < -offset
               : value >= screenHeight - offset;
 
@@ -132,11 +140,24 @@ export const Popper = memo(
         return () => {
           unsubscribe();
         };
-      }, [containerYPosition, direction, displayCanvas, initialPosition]);
+      }, [
+        containerYPosition,
+        controlledDirection,
+        displayCanvas,
+        initialPosition,
+      ]);
 
       useImperativeHandle(ref, () => ({
-        start() {
+        start(params) {
           setDisplayCanvas(true);
+
+          if (params?.theme) {
+            setControlledTheme(params.theme);
+          }
+
+          if (params?.direction) {
+            setControlledDirection(params.direction);
+          }
         },
       }));
 
