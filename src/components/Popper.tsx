@@ -29,6 +29,11 @@ interface RenderItemParams {
   colors: string[];
 }
 
+export enum PopperDirection {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
+
 export interface PopperProps {
   spacing?: number;
   theme?: string[];
@@ -40,7 +45,7 @@ export interface PopperProps {
   /**
    * Direction in which the elements will be popped
    */
-  direction?: 'up' | 'down';
+  direction?: PopperDirection;
 }
 
 export interface PopperHandler {
@@ -57,31 +62,43 @@ export const Popper = memo(
         theme = FiestaThemes.Default,
         renderItem,
         autoPlay = true,
-        direction = 'down',
+        direction = PopperDirection.Descending,
       }: PopperProps,
       ref: PopperRef
     ) => {
       // properties that might be controlled are also defined in the state
       const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
-      const [controlledDirection, setControlledDirection] = useState<
-        'up' | 'down'
-      >(direction);
+      const [controlledDirection, setControlledDirection] =
+        useState<PopperDirection>(direction);
 
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
       const initialPosition = useMemo(
-        () => (controlledDirection === 'up' ? screenHeight : -screenHeight / 2),
+        () =>
+          controlledDirection === PopperDirection.Ascending
+            ? screenHeight
+            : -screenHeight / 2,
         [controlledDirection]
       );
       const finalPosition = useMemo(
-        () => (controlledDirection === 'up' ? -screenHeight : screenHeight),
+        () =>
+          controlledDirection === PopperDirection.Ascending
+            ? -screenHeight
+            : screenHeight,
         [controlledDirection]
       );
 
-      const optimalNumberOfItems = Math.floor(screenWidth / spacing);
-      const itemsToRenderArray = [...Array(optimalNumberOfItems)];
+      const optimalNumberOfItems = useMemo(
+        () => Math.floor(screenWidth / spacing),
+        [spacing]
+      );
+      const itemsToRenderArray = useMemo(
+        () => [...Array(optimalNumberOfItems)],
+        [optimalNumberOfItems]
+      );
 
-      const yPositions = shuffleArray(
-        itemsToRenderArray.map((_, i) => i * spacing)
+      const yPositions = useMemo(
+        () => shuffleArray(itemsToRenderArray.map((_, i) => i * spacing)),
+        [itemsToRenderArray, spacing]
       );
 
       const containerYPosition = useValue(initialPosition);
@@ -110,7 +127,7 @@ export const Popper = memo(
         const unsubscribe = containerYPosition.addListener((value) => {
           const offset = 250;
           const shouldHide =
-            controlledDirection === 'up'
+            controlledDirection === PopperDirection.Ascending
               ? value < -offset
               : value >= screenHeight - offset;
 

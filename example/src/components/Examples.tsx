@@ -13,6 +13,7 @@ import {
   Emoji,
   useFiesta,
   FiestaAnimations,
+  PopperDirection,
 } from 'react-native-fiesta';
 import Header from './Header';
 
@@ -141,7 +142,7 @@ export function Examples() {
               <EmojiPopper
                 emojis={['🥳', '🪅', '🎉', '🍻']}
                 font={font}
-                direction="up"
+                direction={PopperDirection.Ascending}
                 key={dynamicKey}
               />
             )
