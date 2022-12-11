@@ -1,5 +1,5 @@
 import type { SkFont } from '@shopify/react-native-skia/lib/typescript/src';
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, ReactNode, useContext, useRef } from 'react';
 import {
   Balloons as _Balloons,
   Hearts as _Hearts,
@@ -21,6 +21,7 @@ interface RunFiestaAnimationParams {
 }
 
 interface FiestaProviderProps {
+  children?: ReactNode;
   font?: SkFont;
 }
 
