@@ -147,7 +147,6 @@ export const Popper = memo(
       if (!displayCanvas) return null;
 
       return (
-        // @ts-ignore
         <Canvas
           style={[
             styles.canvas,

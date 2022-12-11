@@ -42,7 +42,6 @@ export const Fireworks = memo(
     );
 
     return (
-      // @ts-ignore
       <Canvas style={styles.canvas}>
         <Group transform={fireworksGroupTransform}>
           {fireworksToRenderArray.map((_, index) => (
