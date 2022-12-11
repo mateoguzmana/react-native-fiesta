@@ -62,7 +62,7 @@ export function Examples() {
             runFiestaAnimation({
               animation: FiestaAnimations.Hearts,
               theme: FiestaThemes.Neon,
-              direction: 'up',
+              direction: PopperDirection.Ascending,
             })
           }
           style={styles.pressable}
