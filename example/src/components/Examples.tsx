@@ -12,6 +12,7 @@ import {
   Emoji,
   useFiesta,
   FiestaAnimations,
+  PopperDirection,
 } from 'react-native-fiesta';
 import Content from './Content';
 import { Canvas, useFont } from '@shopify/react-native-skia';
@@ -92,7 +93,11 @@ export function Examples() {
         <TouchableOpacity
           onPress={() =>
             setComponentToRender(
-              <EmojiPopper emojis={['🥳', '🪅', '🎉', '🍻']} font={font} />
+              <EmojiPopper
+                emojis={['🥳', '🪅', '🎉', '🍻']}
+                font={font}
+                direction={PopperDirection.Ascending}
+              />
             )
           }
           style={styles.pressable}
@@ -101,7 +106,9 @@ export function Examples() {
             <Emoji emoji="🎉" x={15} y={50} autoHide={false} font={font} />
           </Canvas>
 
-          <Text style={[styles.pressableText, textColor]}>Emoji Popper</Text>
+          <Text style={[styles.pressableText, textColor]}>
+            Emoji Popper (Ascending)
+          </Text>
         </TouchableOpacity>
       </View>
 

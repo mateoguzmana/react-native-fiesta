@@ -29,6 +29,11 @@ interface RenderItemParams {
   colors: string[];
 }
 
+export enum PopperDirection {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
+
 export interface PopperProps {
   spacing?: number;
   theme?: string[];
@@ -37,6 +42,7 @@ export interface PopperProps {
     index: number
   ) => React.ReactElement;
   autoPlay?: boolean;
+  direction?: PopperDirection;
 }
 
 export interface PopperHandler {
@@ -53,19 +59,41 @@ export const Popper = memo(
         theme = FiestaThemes.Default,
         renderItem,
         autoPlay = true,
+        direction = PopperDirection.Descending,
       }: PopperProps,
       ref: PopperRef
     ) => {
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
-
-      const optimalNumberOfItems = Math.floor(screenWidth / spacing);
-      const itemsToRenderArray = [...Array(optimalNumberOfItems)];
-
-      const yPositions = shuffleArray(
-        itemsToRenderArray.map((_, i) => i * spacing)
+      const initialPosition = useMemo(
+        () =>
+          direction === PopperDirection.Ascending
+            ? screenHeight
+            : -screenHeight / 2,
+        [direction]
+      );
+      const finalPosition = useMemo(
+        () =>
+          direction === PopperDirection.Ascending
+            ? -screenHeight
+            : screenHeight,
+        [direction]
       );
 
-      const containerYPosition = useValue(screenHeight);
+      const optimalNumberOfItems = useMemo(
+        () => Math.floor(screenWidth / spacing),
+        [spacing]
+      );
+      const itemsToRenderArray = useMemo(
+        () => [...Array(optimalNumberOfItems)],
+        [optimalNumberOfItems]
+      );
+
+      const yPositions = useMemo(
+        () => shuffleArray(itemsToRenderArray.map((_, i) => i * spacing)),
+        [itemsToRenderArray, spacing]
+      );
+
+      const containerYPosition = useValue(initialPosition);
 
       const colors = useMemo(
         () => colorsFromTheme(theme, optimalNumberOfItems),
@@ -73,8 +101,8 @@ export const Popper = memo(
       );
 
       const changeItemPosition = useCallback(
-        () => runSpring(containerYPosition, -screenHeight, FiestaSpeed.Normal),
-        [containerYPosition]
+        () => runSpring(containerYPosition, finalPosition, FiestaSpeed.Normal),
+        [containerYPosition, finalPosition]
       );
 
       const transform = useComputedValue(
@@ -86,19 +114,25 @@ export const Popper = memo(
         [containerYPosition]
       );
 
-      // Once the animation finishes, we proceed to hiding the canvas to avoid blocking the UI
+      // Once the animation finishes, we hide the canvas to avoid blocking the UI
       useEffect(() => {
         const unsubscribe = containerYPosition.addListener((value) => {
-          if (value < -250 && displayCanvas) {
+          const offset = 250;
+          const shouldHide =
+            direction === PopperDirection.Ascending
+              ? value < -offset
+              : value >= screenHeight - offset;
+
+          if (shouldHide && displayCanvas) {
             setDisplayCanvas(false);
-            containerYPosition.current = screenHeight;
+            containerYPosition.current = initialPosition;
           }
         });
 
         return () => {
           unsubscribe();
         };
-      }, [containerYPosition, displayCanvas]);
+      }, [containerYPosition, direction, displayCanvas, initialPosition]);
 
       useImperativeHandle(ref, () => ({
         start() {
