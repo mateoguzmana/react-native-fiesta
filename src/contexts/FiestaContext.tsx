@@ -1,5 +1,5 @@
-import type { SkFont } from '@shopify/react-native-skia/lib/typescript/src';
 import React, { createContext, ReactNode, useContext, useRef } from 'react';
+import type { SkFont } from '@shopify/react-native-skia';
 import {
   Balloons as _Balloons,
   Hearts as _Hearts,
@@ -93,7 +93,5 @@ export const FiestaProvider: React.FC<FiestaProviderProps> = ({
 export const useFiesta = () => {
   const { runFiestaAnimation } = useContext(FiestaContext);
 
-  return {
-    runFiestaAnimation,
-  };
+  return { runFiestaAnimation };
 };
