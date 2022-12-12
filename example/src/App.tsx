@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFont } from '@shopify/react-native-skia';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { FiestaProvider } from 'react-native-fiesta';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { Examples } from './components/Examples';
@@ -11,21 +11,14 @@ function App() {
   if (!font) return null;
 
   return (
-    <ActionSheetProvider>
-      <FiestaProvider font={font}>
-        <SafeAreaView style={styles.container}>
+    <SafeAreaProvider>
+      <ActionSheetProvider>
+        <FiestaProvider font={font}>
           <Examples />
-        </SafeAreaView>
-      </FiestaProvider>
-    </ActionSheetProvider>
+        </FiestaProvider>
+      </ActionSheetProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#181D31',
-  },
-});
 
 export default App;

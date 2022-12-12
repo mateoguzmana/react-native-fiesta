@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Canvas, useFont } from '@shopify/react-native-skia';
 import {
   Fireworks,
@@ -15,13 +16,14 @@ import {
   FiestaAnimations,
   PopperDirection,
 } from 'react-native-fiesta';
-import Header from './Header';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import Header from './Header';
 
 export function Examples() {
   const { runFiestaAnimation } = useFiesta();
   const { showActionSheetWithOptions } = useActionSheet();
   const font = useFont(require('../fonts/OpenMoji-Color.ttf'), 30);
+  const insets = useSafeAreaInsets();
 
   const [componentToRender, setComponentToRender] =
     useState<React.ReactNode | null>(null);
@@ -60,7 +62,12 @@ export function Examples() {
   if (!font) return null;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
       <Header onPressThemeChange={onPressThemeChange} theme={theme} />
 
       <View style={styles.column}>
@@ -199,6 +206,7 @@ export function Examples() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#181D31',
   },
   canvas: {
     height: 80,
