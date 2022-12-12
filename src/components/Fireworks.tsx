@@ -2,10 +2,9 @@ import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
-import { screenHeight } from '../constants/dimensions';
-import { screenWidth } from '../constants/dimensions';
 import { Firework, FireworkProps } from './Firework';
 import { colorsFromTheme } from '../utils/colors';
+import { generateRandomCoordinates } from '../utils/fireworks';
 
 const optimalNumberOfFireworks = 3;
 
@@ -71,33 +70,3 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
-
-function generateRandomCoordinates(
-  numElements: number
-): Array<{ x: number; y: number }> {
-  // Create an array to store the generated coordinates
-  const coordinates: Array<{ x: number; y: number }> = [];
-
-  // Generate random x,y coordinates until we have the desired number of elements
-  while (coordinates.length < numElements) {
-    // Generate a random x,y coordinate
-    const x = Math.random() * screenWidth;
-    const y = Math.random() * screenHeight;
-
-    // Check if the coordinate is unique
-    let unique = true;
-    for (const { x: prevX, y: prevY } of coordinates) {
-      if (prevX === x && prevY === y) {
-        unique = false;
-        break;
-      }
-    }
-
-    // If the coordinate is unique, add it to the array of coordinates
-    if (unique) {
-      coordinates.push({ x, y });
-    }
-  }
-
-  return coordinates;
-}
