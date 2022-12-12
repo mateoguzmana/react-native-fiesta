@@ -8,19 +8,6 @@ import { Firework, FireworkProps } from './Firework';
 import { colorsFromTheme } from '../utils/colors';
 
 const optimalNumberOfFireworks = 3;
-const initialPositions = [
-  { x: 100, y: -300 },
-  { x: 150, y: -700 },
-  { x: 200, y: -500 },
-  { x: 250, y: -600 },
-  { x: 300, y: -400 },
-  { x: 250, y: -800 },
-  { x: 200, y: -900 },
-];
-
-const fireworksGroupTransform = [
-  { translateY: screenHeight * 1.2, translateX: screenWidth / 2 },
-];
 
 export interface FireworksProps
   extends Pick<FireworkProps, 'numberOfParticles'> {
@@ -29,10 +16,10 @@ export interface FireworksProps
   theme?: string[];
   fireworkRadius?: number;
   /**
-   * For performance reasons, limiting the maximum number to 7
+   * For performance reasons, limiting the maximum number to 10
    * @default 3 - most performant number of fireworks
    */
-  numberOfFireworks?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  numberOfFireworks?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
 export const Fireworks = memo(
@@ -53,13 +40,18 @@ export const Fireworks = memo(
       [numberOfFireworks, theme]
     );
 
+    const positions = useMemo(
+      () => generateRandomCoordinates(numberOfFireworks),
+      [numberOfFireworks]
+    );
+
     return (
       <Canvas style={styles.canvas}>
-        <Group transform={fireworksGroupTransform}>
+        <Group>
           {fireworksToRenderArray.map((_, index) => (
             <Firework
               key={index}
-              initialPosition={initialPositions[index]}
+              initialPosition={positions[index]}
               color={colors[index]}
               autoHide={autoHide}
               particleRadius={particleRadius}
@@ -79,3 +71,33 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
+
+function generateRandomCoordinates(
+  numElements: number
+): Array<{ x: number; y: number }> {
+  // Create an array to store the generated coordinates
+  const coordinates: Array<{ x: number; y: number }> = [];
+
+  // Generate random x,y coordinates until we have the desired number of elements
+  while (coordinates.length < numElements) {
+    // Generate a random x,y coordinate
+    const x = Math.random() * screenWidth;
+    const y = Math.random() * screenHeight;
+
+    // Check if the coordinate is unique
+    let unique = true;
+    for (const { x: prevX, y: prevY } of coordinates) {
+      if (prevX === x && prevY === y) {
+        unique = false;
+        break;
+      }
+    }
+
+    // If the coordinate is unique, add it to the array of coordinates
+    if (unique) {
+      coordinates.push({ x, y });
+    }
+  }
+
+  return coordinates;
+}
