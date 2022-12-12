@@ -1,7 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FiestaThemes } from 'react-native-fiesta';
 
-function Header() {
+interface HeaderProps {
+  onPressThemeChange: () => void;
+  theme: number;
+}
+
+function Header({ onPressThemeChange, theme }: HeaderProps) {
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.title}>Hey, congrats for being here today! 🥳</Text>
@@ -9,6 +15,12 @@ function Header() {
       <Text style={[styles.title, styles.tryTitle]}>
         Try out some fiesta components
       </Text>
+
+      <TouchableOpacity onPress={onPressThemeChange}>
+        <Text style={[styles.title, styles.tryTitle]}>
+          Current theme: {Object.keys(FiestaThemes)[theme]} ↓
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
