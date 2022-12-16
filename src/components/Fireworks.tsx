@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import { Canvas, Group } from '@shopify/react-native-skia';
+import { Canvas } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { Firework, FireworkProps } from './Firework';
 import { colorsFromTheme } from '../utils/colors';
@@ -45,20 +45,18 @@ export const Fireworks = memo(
     );
 
     return (
-      <Canvas style={styles.canvas}>
-        <Group>
-          {fireworksToRenderArray.map((_, index) => (
-            <Firework
-              key={index}
-              initialPosition={positions[index]}
-              color={colors[index]}
-              autoHide={autoHide}
-              particleRadius={particleRadius}
-              fireworkRadius={fireworkRadius}
-              {...rest}
-            />
-          ))}
-        </Group>
+      <Canvas style={styles.canvas} pointerEvents="none">
+        {fireworksToRenderArray.map((_, index) => (
+          <Firework
+            key={index}
+            initialPosition={positions[index]}
+            color={colors[index]}
+            autoHide={autoHide}
+            particleRadius={particleRadius}
+            fireworkRadius={fireworkRadius}
+            {...rest}
+          />
+        ))}
       </Canvas>
     );
   }
@@ -67,6 +65,6 @@ export const Fireworks = memo(
 const styles = StyleSheet.create({
   canvas: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: -1,
+    zIndex: 1,
   },
 });
