@@ -15,7 +15,14 @@ yarn add @shopify/react-native-skia
 yarn add react-native-fiesta
 ```
 
-## [Full Documentation](https://mateoguzmana.github.io/react-native-fiesta/)
+## Documentation
+
+- [Take a look to the documentation on the website](https://mateoguzmana.github.io/react-native-fiesta/)
+
+## Examples
+
+- [With bare React Native](./example/)
+- [With Expo and web support](./expo-example/)
 
 ## Library Under Construction 🚧
 
