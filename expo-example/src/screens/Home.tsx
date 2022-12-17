@@ -9,7 +9,7 @@ import type { RootStackParamList } from '../App';
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const COLUMN_SIZE = Dimensions.get('window').width * 0.33;
-const ANIMATION_INITIAL_POSITION = {
+const initialPosition = {
   x: COLUMN_SIZE / 2,
   y: COLUMN_SIZE / 2,
 };
@@ -30,7 +30,7 @@ export function Home() {
           <Canvas style={styles.column}>
             <Firework
               color="rgba(164, 164, 164, 0.4)"
-              initialPosition={ANIMATION_INITIAL_POSITION}
+              initialPosition={initialPosition}
               fireworkRadius={Dimensions.get('screen').width * 0.33}
               numberOfParticles={40}
               autoHide={false}
@@ -40,12 +40,12 @@ export function Home() {
 
         <TouchableOpacity
           style={styles.column}
-          onPress={() => navigateToExample('Firework')}
+          onPress={() => navigateToExample('Fireworks')}
         >
           <Canvas style={styles.column}>
             <Firework
               color="rgba(164, 164, 164, 0.4)"
-              initialPosition={ANIMATION_INITIAL_POSITION}
+              initialPosition={initialPosition}
               fireworkRadius={Dimensions.get('screen').width * 0.33}
               numberOfParticles={40}
               autoHide={false}
@@ -55,12 +55,12 @@ export function Home() {
 
         <TouchableOpacity
           style={styles.column}
-          onPress={() => navigateToExample('Firework')}
+          onPress={() => navigateToExample('CrazyFireworks')}
         >
           <Canvas style={styles.column}>
             <Firework
               color="rgba(164, 164, 164, 0.4)"
-              initialPosition={ANIMATION_INITIAL_POSITION}
+              initialPosition={initialPosition}
               fireworkRadius={Dimensions.get('screen').width * 0.33}
               numberOfParticles={40}
               autoHide={false}
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#121212',
+    backgroundColor: '#181D31',
   },
   row: {
     flexDirection: 'row',

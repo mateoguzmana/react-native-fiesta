@@ -28,6 +28,7 @@
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
+    "expo-example": "yarn --cwd expo-example",
     "bootstrap": "yarn example && yarn && yarn example pods",
     "postinstall": "patch-package"
   },
