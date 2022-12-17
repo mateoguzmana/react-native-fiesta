@@ -39,3 +39,9 @@ Please read the [guidelines](./CONTRIBUTING.md).
 ## License
 
 MIT
+
+- - -
+
+<p align="center">
+  <img width="100%" src="https://user-images.githubusercontent.com/20783123/208243166-44ba12b5-1e19-407d-9a46-c4b04949c28d.gif" alt="React Native Fiesta Demo">
+</p>
