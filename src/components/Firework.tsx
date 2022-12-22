@@ -1,5 +1,10 @@
 import React, { memo, useMemo } from 'react';
-import { Group } from '@shopify/react-native-skia';
+import {
+  Easing,
+  Group,
+  useComputedValue,
+  useTiming,
+} from '@shopify/react-native-skia';
 import { FireworkParticle } from './FireworkParticle';
 import { fromRadians } from '../utils/fireworks';
 
@@ -25,7 +30,7 @@ export const Firework = memo(
   ({
     initialPosition,
     color = '#000',
-    autoHide,
+    autoHide = true,
     particleRadius,
     fireworkRadius = 400,
     numberOfParticles = 50,
@@ -72,8 +77,18 @@ export const Firework = memo(
       [cx, cy, fireworkRadius, numberOfParticles]
     );
 
+    const opacityValue = useTiming(
+      { to: 0, from: 1 },
+      { duration: 2000, easing: Easing.linear }
+    );
+
+    const opacity = useComputedValue(
+      () => (autoHide ? opacityValue.current : 1),
+      [opacityValue]
+    );
+
     return (
-      <Group origin={{ x: cx, y: cy }}>
+      <Group origin={{ x: cx, y: cy }} opacity={opacity}>
         {particlesToDraw().map((c, i) => {
           return (
             <FireworkParticle
@@ -83,7 +98,6 @@ export const Firework = memo(
               finalPos={{ x: c.x, y: c.y }}
               r={c.r * 10 ?? particleRadius}
               color={color ?? c.color}
-              autoHide={autoHide}
             />
           );
         })}
