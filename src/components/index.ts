@@ -10,3 +10,4 @@ export * from './Heart';
 export * from './EmojiPopper';
 export * from './Emoji';
 export * from './Popper';
+export * from './Confettis';

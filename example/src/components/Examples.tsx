@@ -1,5 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Canvas, useFont } from '@shopify/react-native-skia';
 import {
@@ -15,6 +21,7 @@ import {
   useFiesta,
   FiestaAnimations,
   PopperDirection,
+  Confettis,
 } from 'react-native-fiesta';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import Header from './Header';
@@ -70,7 +77,7 @@ export function Examples() {
     >
       <Header onPressThemeChange={onPressThemeChange} theme={theme} />
 
-      <View style={styles.column}>
+      <ScrollView style={styles.column}>
         {/* Example using Fiesta context */}
         <TouchableOpacity
           onPress={() =>
@@ -196,7 +203,18 @@ export function Examples() {
             Emoji Popper (ascending)
           </Text>
         </TouchableOpacity>
-      </View>
+
+        <TouchableOpacity
+          onPress={() => onChangeComponent(<Confettis />)}
+          style={styles.pressable}
+        >
+          <Confettis />
+
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Confettis
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
 
       {componentToRender}
     </View>
