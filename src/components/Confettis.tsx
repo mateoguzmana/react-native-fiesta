@@ -7,6 +7,8 @@ import {
   Rect,
   useComputedValue,
   useTiming,
+  Easing,
+  vec,
 } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { colorsFromTheme } from '../utils/colors';
@@ -20,7 +22,7 @@ function degreesToRadians(degrees: number) {
   return degrees * (pi / 180);
 }
 
-export interface ConfettisProps {
+export interface ConfettisProps extends Pick<ConfettiProps, 'size'> {
   autoHide?: boolean;
   theme?: string[];
   numberOfConfettis?: number;
@@ -41,56 +43,19 @@ export const Confettis = memo(
     );
 
     const positions = useMemo(
-      () => generateRandomCoordinates(numberOfConfettis, 100),
+      () => generateRandomCoordinates(numberOfConfettis, screenHeight / 2),
       [numberOfConfettis]
-    );
-
-    const rotateValue = useTiming({
-      from: 0,
-      to: degreesToRadians(360),
-      loop: true,
-    });
-
-    const scaleYValue = useTiming({
-      from: 1,
-      to: 0,
-      loop: true,
-      yoyo: true,
-    });
-
-    const yPosition = useTiming(
-      { from: screenHeight, to: 0 },
-      { duration: 2000 }
-    );
-
-    const allTransforms = useComputedValue(
-      () =>
-        processTransform2d([
-          { rotate: rotateValue.current },
-          { scaleY: scaleYValue.current },
-        ]),
-      [rotateValue, scaleYValue]
     );
 
     return (
       <Canvas style={styles.canvas} pointerEvents="none">
         {fireworksToRenderArray.map((_, index) => (
-          <Group
-            origin={{
-              x: positions[index]?.x ?? 0,
-              y: positions[index]?.y ?? 0,
-            }}
-            matrix={allTransforms}
+          <Confetti
             key={index}
-          >
-            <Rect
-              x={positions[index]?.x ?? 0}
-              y={yPosition}
-              width={8}
-              height={14}
-              color={colors[index]}
-            />
-          </Group>
+            position={positions[index] ?? { x: 0, y: 0 }}
+            color={colors[index] ?? 'red'}
+            index={index}
+          />
         ))}
       </Canvas>
     );
@@ -103,3 +68,62 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 });
+
+interface ConfettiProps {
+  position: { x: number; y: number };
+  color: string;
+  index: number;
+  size?: number;
+}
+
+const ANIMATION_DURATION = 4000;
+
+const Confetti = memo(
+  ({ position, color, index, size = 30 }: ConfettiProps) => {
+    const yPosition = useTiming(
+      {
+        from: -screenHeight / 2 + position.y,
+        to: screenHeight + (Math.random() * screenHeight) / 2,
+      },
+      { duration: ANIMATION_DURATION, easing: Easing.ease }
+    );
+
+    const origin = useComputedValue(() => {
+      return vec(position.x, yPosition.current);
+    }, [yPosition]);
+
+    const rotateValue = useTiming({
+      from: 0,
+      to: degreesToRadians(Math.random() < 0.5 ? -360 : 360),
+      loop: true,
+    });
+
+    const scaleYValue = useTiming({
+      from: 0.5,
+      to: 0,
+      loop: true,
+      yoyo: true,
+    });
+
+    const matrix = useComputedValue(
+      () =>
+        processTransform2d([
+          { rotate: rotateValue.current },
+          { scaleY: scaleYValue.current },
+        ]),
+      [rotateValue, scaleYValue]
+    );
+
+    return (
+      <Group origin={origin} matrix={matrix} key={index}>
+        <Rect
+          x={position.x}
+          y={yPosition}
+          width={size / 3}
+          height={size}
+          color={color}
+        />
+      </Group>
+    );
+  }
+);
