@@ -9,6 +9,9 @@ import {
   useTiming,
   Easing,
   vec,
+  Skia,
+  Shader,
+  Fill,
 } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { colorsFromTheme } from '../utils/colors';
@@ -21,6 +24,24 @@ function degreesToRadians(degrees: number) {
   var pi = Math.PI;
   return degrees * (pi / 180);
 }
+
+const source = Skia.RuntimeEffect.Make(`
+uniform float  iTime;
+vec3 iResolution = vec3(1.0, 1.0, 1.0);
+
+vec4 main(vec2 FC) {
+  vec4 o = vec4(0);
+  vec2 p = vec2(0), c=p, u=FC.xy*2.-iResolution.xy;
+  float a;
+  for (float i=0; i<4e2; i++) {
+    a = i/2e2-1.;
+    p = cos(i*2.4+iTime+vec2(0,11))*sqrt(1.-a*a);
+    c = u/iResolution.y+vec2(p.x,a)/(p.y+2.);
+    o += (cos(i+vec4(0,2,4,0))+1.)/dot(c,c)*(1.-p.y)/3e4;
+  }
+  return o;
+}
+`)!;
 
 export interface ConfettisProps extends Pick<ConfettiProps, 'size'> {
   autoHide?: boolean;
@@ -47,6 +68,25 @@ export const Confettis = memo(
       [numberOfConfettis]
     );
 
+    const iTime = useTiming(
+      {
+        from: 0,
+        to: 10,
+      },
+      {
+        duration: 1000,
+        easing: Easing.inOut(Easing.ease),
+      }
+    );
+
+    const uniforms = useComputedValue(
+      () => ({
+        iTime: iTime.current,
+        iResolution: vec(100, 100),
+      }),
+      [iTime]
+    );
+
     return (
       <Canvas style={styles.canvas} pointerEvents="none">
         {fireworksToRenderArray.map((_, index) => (
@@ -57,6 +97,10 @@ export const Confettis = memo(
             index={index}
           />
         ))}
+
+        <Fill>
+          <Shader source={source} uniforms={uniforms} />
+        </Fill>
       </Canvas>
     );
   }
