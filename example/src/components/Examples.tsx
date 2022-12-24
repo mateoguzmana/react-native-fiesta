@@ -205,7 +205,11 @@ export function Examples() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => onChangeComponent(<Confettis />)}
+          onPress={() =>
+            onChangeComponent(
+              <Confettis theme={selectedTheme} key={dynamicKey} />
+            )
+          }
           style={styles.pressable}
         >
           <Confettis />

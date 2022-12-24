@@ -76,40 +76,60 @@ interface ConfettiProps {
   size?: number;
 }
 
-const ANIMATION_DURATION = 4000;
+const ANIMATION_DURATION = 6000;
 
 const Confetti = memo(
   ({ position, color, index, size = 30 }: ConfettiProps) => {
+    const randomDuration = useMemo(
+      () => randomIntFromInterval(ANIMATION_DURATION, ANIMATION_DURATION * 1.5),
+      []
+    );
+
     const yPosition = useTiming(
       {
         from: -screenHeight / 2 + position.y,
         to: screenHeight + (Math.random() * screenHeight) / 2,
       },
-      { duration: ANIMATION_DURATION, easing: Easing.ease }
+      {
+        duration: randomDuration,
+        easing: Easing.inOut(Easing.ease),
+      }
     );
 
     const origin = useComputedValue(() => {
       return vec(position.x, yPosition.current);
     }, [yPosition]);
 
-    const rotateValue = useTiming({
-      from: 0,
-      to: degreesToRadians(Math.random() < 0.5 ? -360 : 360),
-      loop: true,
-    });
+    const rotateValue = useTiming(
+      {
+        from: 0,
+        to: degreesToRadians(Math.random() < 0.5 ? -360 : 360),
+        loop: true,
+      },
+      {
+        duration: randomDuration / 2,
+      }
+    );
 
-    const scaleYValue = useTiming({
-      from: 0.5,
-      to: 0,
-      loop: true,
-      yoyo: true,
-    });
+    const scaleYValue = useTiming(
+      {
+        from: Math.random() < 0.5 ? -0.5 : 0.5,
+        to: 0,
+        loop: true,
+        yoyo: true,
+      },
+      {
+        duration: randomDuration / 2,
+      }
+    );
 
     const matrix = useComputedValue(
       () =>
         processTransform2d([
           { rotate: rotateValue.current },
           { scaleY: scaleYValue.current },
+          { skewX: scaleYValue.current / 2 },
+          { skewY: -scaleYValue.current / 2 },
         ]),
       [rotateValue, scaleYValue]
     );
@@ -127,3 +147,8 @@ const Confetti = memo(
     );
   }
 );
+
+function randomIntFromInterval(min: number, max: number): number {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
