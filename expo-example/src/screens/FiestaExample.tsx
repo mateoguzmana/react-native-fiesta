@@ -1,111 +1,142 @@
-import React, { useCallback } from 'react';
-import { Dimensions, Easing, StyleSheet, View } from 'react-native';
-import { Firework, Fireworks } from 'react-native-fiesta';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
   Canvas,
+  Circle,
+  Easing,
   Fill,
+  RuntimeShader,
   Shader,
   Skia,
-  useClockValue,
   useComputedValue,
   useTiming,
-  vec,
 } from '@shopify/react-native-skia';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import type { RootStackParamList } from '../App';
-
-type FiestaExampleScreenNavigationProp = RouteProp<
-  RootStackParamList,
-  'FiestaExample'
->;
-
-const initialPosition = {
-  x: Dimensions.get('window').width / 2,
-  y: Dimensions.get('window').width / 2,
-};
 
 const source = Skia.RuntimeEffect.Make(`
 uniform float  iTime;
 vec3 iResolution = vec3(512, 512, 1.0);
 vec3 iMouse = vec3(512, 512, 1.0);
 
-// Star Nest by Pablo Roman Andrioli
+// Plasma Waves  
+// Created by scarletshark in 2017-09-15
+// https://www.shadertoy.com/view/ltXczj
 
-// This content is under the MIT License.
+const float overallSpeed = 0.2;
+const float gridSmoothWidth = 0.015;
+const float axisWidth = 0.05;
+const float majorLineWidth = 0.025;
+const float minorLineWidth = 0.0125;
+const float majorLineFrequency = 5.0;
+const float minorLineFrequency = 1.0;
+const vec4 gridColor = vec4(0.5);
+const float scale = 5.0;
+const vec4 lineColor = vec4(0.25, 0.5, 1.0, 1.0);
+const float minLineWidth = 0.02;
+const float maxLineWidth = 0.5;
+const float lineSpeed = 1.0 * overallSpeed;
+const float lineAmplitude = 1.0;
+const float lineFrequency = 0.2;
+const float warpSpeed = 0.2 * overallSpeed;
+const float warpFrequency = 0.5;
+const float warpAmplitude = 1.0;
+const float offsetFrequency = 0.5;
+const float offsetSpeed = 1.33 * overallSpeed;
+const float minOffsetSpread = 0.6;
+const float maxOffsetSpread = 2.0;
+const int linesPerGroup = 16;
 
-const int iterations = 17;
-const float formuparam = 0.53;
-
-const int volsteps = 20;
-const float stepsize = 0.1;
-
-const float zoom  = 0.800;
-const float tile  = 0.850;
-const float speed =0.010 ;
-
-const float brightness =0.0015;
-const float darkmatter =0.300;
-const float distfading =0.730;
-const float saturation =0.850;
+const vec4 bgColors0 = vec4(lineColor * 0.5);
+const vec4 bgColors1 = lineColor - vec4(0.2, 0.2, 0.7, 1);
 
 
-half4 main( in vec2 fragCoord )
+float drawSmoothLine(float pos, float halfWidth, float t) { 
+  return smoothstep(halfWidth, 0.0, abs(pos - (t)));
+}
+
+float drawCrispLine(float pos, float halfWidth, float t) {
+  return smoothstep(halfWidth + gridSmoothWidth, halfWidth, abs(pos - (t)));
+}
+
+float drawPeriodicLine(float freq, float width, float t) {
+  return drawCrispLine(freq / 2.0, width, abs(mod(t, freq) - (freq) / 2.0));
+}
+
+float drawGridLines(float axis)   
 {
-	//get coords and direction
-	vec2 uv=fragCoord.xy/iResolution.xy-.5;
-	uv.y*=iResolution.y/iResolution.x;
-	vec3 dir=vec3(uv*zoom,1.);
-	float time=iTime*speed+.25;
+    return   drawCrispLine(0.0, axisWidth, axis)
+           + drawPeriodicLine(majorLineFrequency, majorLineWidth, axis)
+           + drawPeriodicLine(minorLineFrequency, minorLineWidth, axis);
+}
 
-	//mouse rotation
-	float a1=.5+iMouse.x/iResolution.x*2.;
-	float a2=.8+iMouse.y/iResolution.y*2.;
-	mat2 rot1=mat2(cos(a1),sin(a1),-sin(a1),cos(a1));
-	mat2 rot2=mat2(cos(a2),sin(a2),-sin(a2),cos(a2));
-	dir.xz*=rot1;
-	dir.xy*=rot2;
-	vec3 from=vec3(1.,.5,0.5);
-	from+=vec3(time*2.,time,-2.);
-	from.xz*=rot1;
-	from.xy*=rot2;
-	
-	//volumetric rendering
-	float s=0.1,fade=1.;
-	vec3 v=vec3(0.);
-	for (int r=0; r<volsteps; r++) {
-		vec3 p=from+s*dir*.5;
-		p = abs(vec3(tile)-mod(p,vec3(tile*2.))); // tiling fold
-		float pa,a=pa=0.;
-		for (int i=0; i<iterations; i++) { 
-			p=abs(p)/dot(p,p)-formuparam; // the magic formula
-			a+=abs(length(p)-pa); // absolute sum of average change
-			pa=length(p);
-		}
-		float dm=max(0.,darkmatter-a*a*.001); //dark matter
-		a*=a*a; // add contrast
-		if (r>6) fade*=1.-dm; // dark matter, don't render near
-		//v+=vec3(dm,dm*.5,0.);
-		v+=fade;
-		v+=vec3(s,s*s,s*s*s*s)*a*brightness*fade; // coloring based on distance
-		fade*=distfading; // distance fading
-		s+=stepsize;
-	}
-	v=mix(vec3(length(v)),v,saturation); //color adjust
-	return vec4(v*.01,1.);	
-	
+float drawGrid(vec2 space)
+{
+    return min(1., drawGridLines(space.x)
+                  +drawGridLines(space.y));
+}
+
+// probably can optimize w/ noise, but currently using fourier transform
+float random(float t)
+{
+    return (cos(t) + cos(t * 1.3 + 1.3) + cos(t * 1.4 + 1.4)) / 3.0;   
+}
+
+float getPlasmaY(float x, float horizontalFade, float offset)   
+{
+    return random(x * lineFrequency + iTime * lineSpeed) * horizontalFade * lineAmplitude + offset;
+}
+
+vec4 main( in vec2 fragCoord )
+{
+    vec4 fragColor;
+    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 space = (fragCoord - iResolution.xy / 2.0) / iResolution.x * 2.0 * scale;
+    
+    float horizontalFade = 1.0 - (cos(uv.x * 6.28) * 0.5 + 0.5);
+    float verticalFade = 1.0 - (cos(uv.y * 6.28) * 0.5 + 0.5);
+
+    // fun with nonlinear transformations! (wind / turbulence)
+    space.y += random(space.x * warpFrequency + iTime * warpSpeed) * warpAmplitude * (0.5 + horizontalFade);
+    space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
+    
+    vec4 lines = vec4(0);
+    
+    for(int l = 0; l < linesPerGroup; l++)
+    {
+        float normalizedLineIndex = float(l) / float(linesPerGroup);
+        float offsetTime = iTime * offsetSpeed;
+        float offsetPosition = float(l) + space.x * offsetFrequency;
+        float rand = random(offsetPosition + offsetTime) * 0.5 + 0.5;
+        float halfWidth = mix(minLineWidth, maxLineWidth, rand * horizontalFade) / 2.0;
+        float offset = random(offsetPosition + offsetTime * (1.0 + normalizedLineIndex)) * mix(minOffsetSpread, maxOffsetSpread, horizontalFade);
+        float linePosition = getPlasmaY(space.x, horizontalFade, offset);
+        float line = drawSmoothLine(linePosition, halfWidth, space.y) / 2.0 + drawCrispLine(linePosition, halfWidth * 0.15, space.y);
+        
+        float circleX = mod(float(l) + iTime * lineSpeed, 25.0) - 12.0;
+        vec2 circlePosition = vec2(circleX, getPlasmaY(circleX, horizontalFade, offset));
+  			float circle = smoothstep(0.01 + gridSmoothWidth, 0.01, length(space - (circlePosition)))  * 4.0;
+        
+        line = line + circle;
+        lines += line * lineColor * rand;
+    }
+    
+    fragColor = vec4(0);
+    fragColor *= verticalFade;
+    fragColor.a = 1.0;
+    // debug grid:
+    //fragColor = mix(fragColor, gridColor, drawGrid(space));
+    fragColor += lines;
+    return fragColor;
 }
 `)!;
 
 export function FiestaExample() {
-  const route = useRoute<FiestaExampleScreenNavigationProp>();
-
   const iTime = useTiming(
     {
       from: 0,
-      to: 100,
+      to: 1000,
     },
     {
-      duration: 30000,
+      duration: 3000000,
       easing: Easing.linear,
     }
   );
@@ -113,25 +144,35 @@ export function FiestaExample() {
   const uniforms = useComputedValue(
     () => ({
       iTime: iTime.current,
+      // iTime: 10,
     }),
     [iTime]
   );
 
   return (
-    <Canvas style={styles.canvas}>
-      <Fill>
-        <Shader source={source} uniforms={uniforms} />
-      </Fill>
-    </Canvas>
+    <>
+      <Canvas style={styles.canvas}>
+        <Fill opacity={0.5}>
+          <Shader source={source} uniforms={uniforms} />
+
+          <RuntimeShader source={source} uniforms={uniforms} />
+          <Circle cx={200} cy={200} r={200} color="lightblue" />
+        </Fill>
+      </Canvas>
+
+      <TouchableOpacity
+        style={{ backgroundColor: 'white', position: 'absolute', top: 300 }}
+      >
+        <Text>Press me</Text>
+      </TouchableOpacity>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#181D31',
-  },
   canvas: {
     flex: 1,
+    height: 200,
+    // ...StyleSheet.absoluteFillObject,
   },
 });
