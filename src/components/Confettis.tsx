@@ -53,7 +53,7 @@ export const Confettis = memo(
         {confettisToRender.map((_, index) => (
           <Confetti
             key={index}
-            position={positions[index] ?? { x: 0, y: 0 }}
+            initialPosition={positions[index] ?? { x: 0, y: 0 }}
             color={colors[index] ?? 'red'}
             index={index}
           />
@@ -65,15 +65,15 @@ export const Confettis = memo(
 
 const styles = StyleSheet.create({
   canvas: {
-    ...StyleSheet.absoluteFillObject,
     zIndex: 1,
+    ...StyleSheet.absoluteFillObject,
   },
 });
 
 interface ConfettiProps {
-  position: { x: number; y: number };
-  color: string;
-  index: number;
+  initialPosition?: { x: number; y: number };
+  color?: string;
+  index?: number;
   size?: number;
   /**
    * Duration of the animation in milliseconds
@@ -84,11 +84,11 @@ interface ConfettiProps {
 
 const DEFAULT_ANIMATION_DURATION = 6000;
 
-const Confetti = memo(
+export const Confetti = memo(
   ({
-    position,
-    color,
-    index,
+    initialPosition = { x: 0, y: 0 },
+    color = '#fff',
+    index = 0,
     size = 30,
     duration = DEFAULT_ANIMATION_DURATION,
   }: ConfettiProps) => {
@@ -99,7 +99,7 @@ const Confetti = memo(
 
     const yPosition = useTiming(
       {
-        from: -screenHeight / 2 + position.y,
+        from: -screenHeight / 2 + initialPosition.y,
         to: screenHeight + 300,
       },
       { duration: randomDuration }
@@ -107,8 +107,8 @@ const Confetti = memo(
 
     const xOrigin = useTiming(
       {
-        from: position.x,
-        to: position.x + randomIntFromInterval(100, 50),
+        from: initialPosition.x,
+        to: initialPosition.x + randomIntFromInterval(100, 50),
         loop: true,
         yoyo: true,
       },
@@ -152,7 +152,7 @@ const Confetti = memo(
     return (
       <Group origin={origin} matrix={matrix} key={index}>
         <Rect
-          x={position.x}
+          x={initialPosition.x}
           y={yPosition}
           width={size / 3}
           height={size}

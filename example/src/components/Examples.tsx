@@ -22,6 +22,7 @@ import {
   FiestaAnimations,
   PopperDirection,
   Confettis,
+  Confetti,
 } from 'react-native-fiesta';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import Header from './Header';
@@ -212,7 +213,9 @@ export function Examples() {
           }
           style={styles.pressable}
         >
-          <Confettis />
+          <Canvas style={styles.canvas}>
+            <Confetti />
+          </Canvas>
 
           <Text style={[styles.pressableText, styles.textColor]}>
             Confettis
