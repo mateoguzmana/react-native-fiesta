@@ -7,7 +7,6 @@ import {
   Rect,
   useComputedValue,
   useTiming,
-  Easing,
   vec,
 } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
@@ -88,17 +87,24 @@ const Confetti = memo(
     const yPosition = useTiming(
       {
         from: -screenHeight / 2 + position.y,
-        to: screenHeight + (Math.random() * screenHeight) / 2,
+        to: screenHeight + 300,
       },
+      { duration: randomDuration }
+    );
+
+    const xOrigin = useTiming(
       {
-        duration: randomDuration,
-        easing: Easing.inOut(Easing.ease),
-      }
+        from: position.x,
+        to: position.x + randomIntFromInterval(100, 50),
+        loop: true,
+        yoyo: true,
+      },
+      { duration: randomDuration }
     );
 
     const origin = useComputedValue(() => {
-      return vec(position.x, yPosition.current);
-    }, [yPosition]);
+      return vec(xOrigin.current, yPosition.current);
+    }, [yPosition, xOrigin]);
 
     const rotateValue = useTiming(
       {
