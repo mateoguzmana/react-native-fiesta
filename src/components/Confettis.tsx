@@ -14,14 +14,15 @@ import { colorsFromTheme } from '../utils/colors';
 import { generateRandomCoordinates } from '../utils/fireworks';
 import { screenHeight } from '../constants/dimensions';
 
-const optimalNumberOfConfettis = 20;
+const optimalNumberOfConfettis = 30;
 
 function degreesToRadians(degrees: number) {
   var pi = Math.PI;
   return degrees * (pi / 180);
 }
 
-export interface ConfettisProps extends Pick<ConfettiProps, 'size'> {
+export interface ConfettisProps
+  extends Pick<ConfettiProps, 'size' | 'duration'> {
   autoHide?: boolean;
   theme?: string[];
   numberOfConfettis?: number;
@@ -32,10 +33,11 @@ export const Confettis = memo(
     theme = FiestaThemes.Default,
     numberOfConfettis = optimalNumberOfConfettis,
   }: ConfettisProps) => {
-    const fireworksToRenderArray = useMemo(
+    const confettisToRender = useMemo(
       () => [...Array(numberOfConfettis)],
       [numberOfConfettis]
     );
+
     const colors = useMemo(
       () => colorsFromTheme(theme, numberOfConfettis),
       [numberOfConfettis, theme]
@@ -48,7 +50,7 @@ export const Confettis = memo(
 
     return (
       <Canvas style={styles.canvas} pointerEvents="none">
-        {fireworksToRenderArray.map((_, index) => (
+        {confettisToRender.map((_, index) => (
           <Confetti
             key={index}
             position={positions[index] ?? { x: 0, y: 0 }}
@@ -73,15 +75,26 @@ interface ConfettiProps {
   color: string;
   index: number;
   size?: number;
+  /**
+   * Duration of the animation in milliseconds
+   * @default 6000
+   */
+  duration?: number;
 }
 
-const ANIMATION_DURATION = 6000;
+const DEFAULT_ANIMATION_DURATION = 6000;
 
 const Confetti = memo(
-  ({ position, color, index, size = 30 }: ConfettiProps) => {
+  ({
+    position,
+    color,
+    index,
+    size = 30,
+    duration = DEFAULT_ANIMATION_DURATION,
+  }: ConfettiProps) => {
     const randomDuration = useMemo(
-      () => randomIntFromInterval(ANIMATION_DURATION, ANIMATION_DURATION * 1.5),
-      []
+      () => randomIntFromInterval(duration, duration * 1.5),
+      [duration]
     );
 
     const yPosition = useTiming(
@@ -112,9 +125,7 @@ const Confetti = memo(
         to: degreesToRadians(Math.random() < 0.5 ? -360 : 360),
         loop: true,
       },
-      {
-        duration: randomDuration / 2,
-      }
+      { duration: randomDuration / 2 }
     );
 
     const scaleYValue = useTiming(
@@ -124,9 +135,7 @@ const Confetti = memo(
         loop: true,
         yoyo: true,
       },
-      {
-        duration: randomDuration / 2,
-      }
+      { duration: randomDuration / 2 }
     );
 
     const matrix = useComputedValue(
