@@ -90,7 +90,7 @@ export function Examples() {
           style={styles.pressable}
         >
           <Canvas style={styles.canvas}>
-            <Balloon x={50} y={50} color={'blue'} depth={0.4} />
+            <Balloon x={50} y={50} depth={0.4} autoPlay={false} />
           </Canvas>
           <Text style={[styles.pressableText, styles.textColor]}>
             Balloons (using Fiesta context)

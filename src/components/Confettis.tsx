@@ -27,7 +27,7 @@ export const Confettis = memo(
     numberOfConfettis = optimalNumberOfConfettis,
     duration = DEFAULT_ANIMATION_DURATION,
   }: ConfettisProps) => {
-    const [displayConfettis, setDisplayConfettis] = useState(true);
+    const [displayCanvas, setDisplayCanvas] = useState(true);
 
     const confettisToRender = useMemo(
       () => [...Array(numberOfConfettis)],
@@ -47,13 +47,13 @@ export const Confettis = memo(
     // Hide confettis after the animation is done
     useEffect(() => {
       const timeout = setTimeout(() => {
-        setDisplayConfettis(false);
+        setDisplayCanvas(false);
       }, duration * 1.5);
 
       return () => clearTimeout(timeout);
     }, [duration]);
 
-    if (!displayConfettis) return null;
+    if (!displayCanvas) return null;
 
     return (
       <Canvas style={styles.canvas} pointerEvents="none">
