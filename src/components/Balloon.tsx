@@ -59,15 +59,14 @@ export const Balloon = memo(
 
     return (
       <Group matrix={matrix} opacity={opacity}>
-        <Group transform={[{ translateX: -55 }]}>
-          <Path
-            path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
-            color={baseColors.golden}
-            style="stroke"
-            strokeJoin="round"
-            strokeWidth={5}
-          />
-        </Group>
+        <Path
+          path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
+          color={baseColors.golden}
+          style="stroke"
+          strokeJoin="round"
+          strokeWidth={5}
+          transform={[{ translateX: -55 }]}
+        />
 
         <Oval
           height={r * 2.3}
