@@ -24,6 +24,7 @@ export const Star = memo(
     }, [autoplay, changeOpacity]);
 
     return (
+      // @TODO: this can be optimised by using a matrix instead of multiple transforms
       <Group transform={[{ translateY: y }]}>
         <Group transform={[{ translateX: x }]}>
           <Group transform={[{ scale: 0.1 }]}>

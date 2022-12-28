@@ -37,6 +37,7 @@ export const Balloon = memo(
     );
 
     return (
+      // @TODO: this can be optimised by using a matrix instead of multiple transforms
       <Group transform={[{ scale: depth }]}>
         <Group transform={[{ translateX: x }]}>
           <Group

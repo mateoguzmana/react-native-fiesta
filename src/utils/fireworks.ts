@@ -5,7 +5,9 @@ export function fromRadians(angle: number) {
 }
 
 export function generateRandomCoordinates(
-  numElements: number
+  numElements: number,
+  specificHeight?: number,
+  specificWidth?: number
 ): Array<{ x: number; y: number }> {
   // Create an array to store the generated coordinates
   const coordinates: Array<{ x: number; y: number }> = [];
@@ -13,8 +15,8 @@ export function generateRandomCoordinates(
   // Generate random x,y coordinates until we have the desired number of elements
   while (coordinates.length < numElements) {
     // Generate a random x,y coordinate
-    const x = Math.random() * screenWidth;
-    const y = Math.random() * screenHeight;
+    const x = Math.random() * (specificWidth ?? screenWidth);
+    const y = Math.random() * (specificHeight ?? screenHeight);
 
     // Check if the coordinate is unique
     let unique = true;
