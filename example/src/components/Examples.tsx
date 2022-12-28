@@ -246,7 +246,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderBottomWidth: 1,
     borderColor: '#495579',
-    padding: 4,
     alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
