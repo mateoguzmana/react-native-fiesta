@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 import { FiestaThemes, Fireworks } from 'react-native-fiesta';
 import LogoImage from '../assets/logo.png';
@@ -21,9 +21,9 @@ const getRandomFiestaTheme = () => {
 };
 
 function App() {
-  const [dynamicKey, setDynamicKey] = React.useState(0);
+  const [dynamicKey, setDynamicKey] = useState(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setDynamicKey(dynamicKey + 1);
     }, THROW_FIREWORKS_INTERVAL);
