@@ -4,6 +4,7 @@ import { FiestaThemes, Fireworks } from 'react-native-fiesta';
 import LogoImage from '../assets/logo.png';
 
 const FIREWORK_RADIUS = Dimensions.get('window').width * 1.5;
+const NUMBER_OF_FIREWORKS = 10;
 const THROW_FIREWORKS_INTERVAL = 1200;
 const LOGO_ANIMATION_DURATION = 3000;
 const newYearThemes = [
@@ -37,7 +38,7 @@ function App() {
       <Fireworks
         key={dynamicKey}
         fireworkRadius={FIREWORK_RADIUS}
-        numberOfFireworks={10}
+        numberOfFireworks={NUMBER_OF_FIREWORKS}
         autoHide
         theme={getRandomFiestaTheme()}
       />
