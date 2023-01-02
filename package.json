@@ -1,6 +1,6 @@
 {
   "name": "react-native-fiesta",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A set of celebration animations powered by Skia. Engage more with your users by celebrating in your React Native application.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
