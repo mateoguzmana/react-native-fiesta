@@ -29,8 +29,7 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "expo-example": "yarn --cwd expo-example",
-    "bootstrap": "yarn example && yarn && yarn example pods",
-    "postinstall": "patch-package"
+    "bootstrap": "yarn example && yarn && yarn example pods"
   },
   "keywords": [
     "react-native",
@@ -58,7 +57,7 @@
     "@commitlint/config-conventional": "^17.0.2",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
-    "@shopify/react-native-skia": "0.1.162",
+    "@shopify/react-native-skia": "^0.1.162",
     "@types/jest": "^28.1.2",
     "@types/react": "18.0.25",
     "@types/react-native": "0.68.0",
@@ -67,9 +66,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
-    "patch-package": "^6.5.0",
     "pod-install": "^0.1.0",
-    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.0.5",
     "react": "18.0.0",
     "react-native": "0.68.2",

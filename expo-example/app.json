@@ -1,10 +1,10 @@
 {
-  "name": "react-native-clocks-example",
-  "displayName": "SkiaClock Example",
+  "name": "react-native-fiesta-expo-example",
+  "displayName": "Fiesta Expo Example",
   "expo": {
-    "name": "react-native-clocks-example",
-    "slug": "react-native-clocks-example",
-    "description": "Example app for react-native-clocks",
+    "name": "react-native-fiesta-expo-example",
+    "slug": "react-native-fiesta-expo-example",
+    "description": "Expo example app for react-native-fiesta",
     "privacy": "public",
     "version": "1.0.0",
     "platforms": [
