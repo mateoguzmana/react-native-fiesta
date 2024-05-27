@@ -38,5 +38,14 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    // <View
+    //   style={{
+    //     flex: 1,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //   }}
+    // >
+    //   <Text>Hello</Text>
+    // </View>
   );
 }

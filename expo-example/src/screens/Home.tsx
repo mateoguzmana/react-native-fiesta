@@ -6,6 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
 
+console.log({
+  Firework,
+});
+
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const COLUMN_SIZE = Dimensions.get('window').width * 0.33;
@@ -38,7 +42,7 @@ export function Home() {
           </Canvas>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.column}
           onPress={() => navigateToExample('Fireworks')}
         >
@@ -66,7 +70,7 @@ export function Home() {
               autoHide={false}
             />
           </Canvas>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
