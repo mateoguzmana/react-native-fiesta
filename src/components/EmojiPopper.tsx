@@ -3,7 +3,7 @@ import type { SkFont } from '@shopify/react-native-skia';
 import { screenWidth } from '../constants/dimensions';
 import { Emoji } from './Emoji';
 import { getEmojisToRender } from '../utils/emojis';
-import { Popper, PopperHandler, PopperProps } from './Popper';
+import { Popper, type PopperHandler, type PopperProps } from './Popper';
 
 export interface EmojiPopperProps extends Omit<PopperProps, 'renderItem'> {
   emojis?: string[];

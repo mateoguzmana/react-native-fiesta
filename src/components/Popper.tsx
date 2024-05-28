@@ -5,23 +5,19 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
-  ForwardedRef,
+  type ForwardedRef,
   useState,
+  useRef,
 } from 'react';
 import { StyleSheet } from 'react-native';
-import {
-  Canvas,
-  Group,
-  runSpring,
-  useComputedValue,
-  useValue,
-} from '@shopify/react-native-skia';
+import { Canvas, Group } from '@shopify/react-native-skia';
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
-import { FiestaSpeed } from '../constants/speed';
+// import { FiestaSpeed } from '../constants/speed';
+import { useDerivedValue, withSpring } from 'react-native-reanimated';
 
 interface RenderItemParams {
   x: number;
@@ -79,13 +75,13 @@ export const Popper = memo(
             : -screenHeight / 2,
         [controlledDirection]
       );
-      const finalPosition = useMemo(
-        () =>
-          controlledDirection === PopperDirection.Ascending
-            ? -screenHeight
-            : screenHeight,
-        [controlledDirection]
-      );
+      // const finalPosition = useMemo(
+      //   () =>
+      //     controlledDirection === PopperDirection.Ascending
+      //       ? -screenHeight
+      //       : screenHeight,
+      //   [controlledDirection]
+      // );
 
       const optimalNumberOfItems = useMemo(
         () => Math.floor(screenWidth / spacing),
@@ -101,7 +97,7 @@ export const Popper = memo(
         [itemsToRenderArray, spacing]
       );
 
-      const containerYPosition = useValue(initialPosition);
+      const containerYPosition = useRef(initialPosition);
 
       const colors = useMemo(
         () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
@@ -109,11 +105,15 @@ export const Popper = memo(
       );
 
       const changeItemPosition = useCallback(
-        () => runSpring(containerYPosition, finalPosition, FiestaSpeed.Normal),
-        [containerYPosition, finalPosition]
+        () =>
+          withSpring(containerYPosition.current, {
+            damping: 10,
+            stiffness: 100,
+          }),
+        [containerYPosition]
       );
 
-      const transform = useComputedValue(
+      const transform = useDerivedValue(
         () => [
           {
             translateY: containerYPosition.current,
@@ -122,30 +122,30 @@ export const Popper = memo(
         [containerYPosition]
       );
 
-      // Once the animation finishes, we hide the canvas to avoid blocking the UI
-      useEffect(() => {
-        const unsubscribe = containerYPosition.addListener((value) => {
-          const offset = 250;
-          const shouldHide =
-            controlledDirection === PopperDirection.Ascending
-              ? value < -offset
-              : value >= screenHeight - offset;
+      // // Once the animation finishes, we hide the canvas to avoid blocking the UI
+      // useEffect(() => {
+      //   const unsubscribe = containerYPosition.addListener((value) => {
+      //     const offset = 250;
+      //     const shouldHide =
+      //       controlledDirection === PopperDirection.Ascending
+      //         ? value < -offset
+      //         : value >= screenHeight - offset;
 
-          if (shouldHide && displayCanvas) {
-            setDisplayCanvas(false);
-            containerYPosition.current = initialPosition;
-          }
-        });
+      //     if (shouldHide && displayCanvas) {
+      //       setDisplayCanvas(false);
+      //       containerYPosition.current = initialPosition;
+      //     }
+      //   });
 
-        return () => {
-          unsubscribe();
-        };
-      }, [
-        containerYPosition,
-        controlledDirection,
-        displayCanvas,
-        initialPosition,
-      ]);
+      //   return () => {
+      //     unsubscribe();
+      //   };
+      // }, [
+      //   containerYPosition,
+      //   controlledDirection,
+      //   displayCanvas,
+      //   initialPosition,
+      // ]);
 
       useImperativeHandle(ref, () => ({
         start(params) {
@@ -168,14 +168,17 @@ export const Popper = memo(
       if (!displayCanvas) return null;
 
       return (
+        // @ts-ignore @TODO: fix me
         <Canvas style={styles.canvas} pointerEvents="none">
           <Group transform={transform}>
-            {itemsToRenderArray.map((_, index) =>
-              renderItem(
-                { x: spacing * index, y: yPositions[index], colors },
-                index
-              )
-            )}
+            <>
+              {itemsToRenderArray.map((_, index) =>
+                renderItem(
+                  { x: spacing * index, y: yPositions[index], colors },
+                  index
+                )
+              )}
+            </>
           </Group>
         </Canvas>
       );

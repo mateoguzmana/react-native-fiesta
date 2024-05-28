@@ -5,13 +5,14 @@ import {
   Oval,
   Path,
   processTransform2d,
-  useComputedValue,
-  useTiming,
-  Easing,
-  useSpring,
 } from '@shopify/react-native-skia';
 import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
+import {
+  useDerivedValue,
+  withRepeat,
+  withSpring,
+} from 'react-native-reanimated';
 
 export interface BalloonProps {
   x?: number;
@@ -31,34 +32,29 @@ export const Balloon = memo(
     depth = 1,
     autoPlay = true,
   }: BalloonProps) => {
-    const opacity = useSpring(
+    const opacity = withSpring(
       { to: autoPlay ? 0 : 1, from: 1 },
       singleItemFadeSpeed
     );
 
-    const stringRotation = useTiming(
-      {
-        to: 0.05,
-        from: -0.05,
-        yoyo: true,
-        loop: true,
-      },
-      { easing: Easing.linear }
-    );
+    const stringRotation = withRepeat({
+      to: 0.05,
+      from: -0.05,
+    });
 
-    const matrix = useComputedValue(
+    const matrix = useDerivedValue(
       () =>
         processTransform2d([
           { scale: depth },
           { translateX: x },
           { translateY: y },
-          { rotate: stringRotation.current },
+          { rotate: stringRotation.to },
         ]),
       [stringRotation, x, y, depth, opacity]
     );
 
     return (
-      <Group matrix={matrix} opacity={opacity}>
+      <Group matrix={matrix} opacity={opacity.to}>
         <Path
           path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
           color={baseColors.golden}

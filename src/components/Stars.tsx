@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Star } from './Star';
-import { Popper, PopperHandler, PopperProps } from './Popper';
+import { Popper, type PopperHandler, type PopperProps } from './Popper';
 
 export interface StarsProps extends Omit<PopperProps, 'renderItem'> {}
 

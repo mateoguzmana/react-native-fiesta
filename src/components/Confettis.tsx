@@ -5,7 +5,7 @@ import { FiestaThemes } from '../constants/theming';
 import { colorsFromTheme } from '../utils/colors';
 import { generateRandomCoordinates } from '../utils/fireworks';
 import { screenHeight } from '../constants/dimensions';
-import { Confetti, ConfettiProps } from './Confetti';
+import { Confetti, type ConfettiProps } from './Confetti';
 
 const optimalNumberOfConfettis = 30;
 export const DEFAULT_ANIMATION_DURATION = 6000;

@@ -1,12 +1,9 @@
 import React, { memo, useMemo } from 'react';
-import {
-  Easing,
-  Group,
-  useComputedValue,
-  useTiming,
-} from '@shopify/react-native-skia';
-import { FireworkParticle } from './FireworkParticle';
+import { Group } from '@shopify/react-native-skia';
+import { useEffect } from 'react';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { fromRadians } from '../utils/fireworks';
+import { FireworkParticle } from './FireworkParticle';
 
 interface FireworkPosition {
   x: number;
@@ -77,15 +74,23 @@ export const Firework = memo(
       [cx, cy, fireworkRadius, numberOfParticles]
     );
 
-    const opacityValue = useTiming(
-      { to: 0, from: 1 },
-      { duration: 2000, easing: Easing.linear }
-    );
+    const opacity = useSharedValue(0);
 
-    const opacity = useComputedValue(
-      () => (autoHide ? opacityValue.current : 1),
-      [opacityValue]
-    );
+    useEffect(() => {
+      opacity.value = withTiming(
+        1,
+        {
+          duration: 2000,
+        },
+        () => {
+          if (autoHide) {
+            opacity.value = withTiming(0, {
+              duration: 2000,
+            });
+          }
+        }
+      );
+    }, [autoHide, opacity]);
 
     return (
       <Group origin={{ x: cx, y: cy }} opacity={opacity}>

@@ -1,6 +1,11 @@
 import React, { forwardRef } from 'react';
 import { Heart } from './Heart';
-import { Popper, PopperHandler, PopperProps, PopperRef } from './Popper';
+import {
+  Popper,
+  type PopperHandler,
+  type PopperProps,
+  type PopperRef,
+} from './Popper';
 
 export interface HeartsProps extends Omit<PopperProps, 'renderItem'> {}
 

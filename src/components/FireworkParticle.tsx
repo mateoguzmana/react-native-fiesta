@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { vec, Circle } from '@shopify/react-native-skia';
 import {
-  vec,
-  Circle,
-  useComputedValue,
-  useTiming,
   Easing,
-} from '@shopify/react-native-skia';
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 export interface FireworkParticleProps {
   x: number;
@@ -21,20 +21,21 @@ export interface FireworkParticleProps {
 
 export const FireworkParticle = memo(
   ({ x, y = 0, finalPos, r = 8, color }: FireworkParticleProps) => {
-    const cx = useTiming(
-      { to: finalPos.x, from: x },
-      { duration: 1200, easing: Easing.linear }
-    );
+    const cx = useSharedValue(x);
+    const cy = useSharedValue(y);
 
-    const cy = useTiming(
-      { to: finalPos.y, from: y },
-      { duration: 1200, easing: Easing.linear }
-    );
+    useEffect(() => {
+      cx.value = withTiming(finalPos.x, {
+        duration: 1200,
+        easing: Easing.linear,
+      });
+      cy.value = withTiming(finalPos.y, {
+        duration: 1200,
+        easing: Easing.linear,
+      });
+    }, [cx, cy, finalPos.x, finalPos.y]);
 
-    const transformCircle = useComputedValue(
-      () => vec(cx.current, cy.current),
-      [cx, cy]
-    );
+    const transformCircle = useDerivedValue(() => vec(cx.value, cy.value));
 
     return <Circle c={transformCircle} r={r} color={color} />;
   }

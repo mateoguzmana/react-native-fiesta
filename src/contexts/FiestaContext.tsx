@@ -1,12 +1,17 @@
-import React, { createContext, ReactNode, useContext, useRef } from 'react';
+import React, {
+  createContext,
+  type ReactNode,
+  useContext,
+  useRef,
+} from 'react';
 import type { SkFont } from '@shopify/react-native-skia';
 import {
   Balloons as _Balloons,
   Hearts as _Hearts,
   Stars as _Stars,
   EmojiPopper as _EmojiPopper,
-  PopperHandler,
-  PopperProps,
+  type PopperHandler,
+  type PopperProps,
 } from '../components';
 
 export enum FiestaAnimations {

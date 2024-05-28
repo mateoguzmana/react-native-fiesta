@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
-import { Firework, FireworkProps } from './Firework';
+import { Firework, type FireworkProps } from './Firework';
 import { colorsFromTheme } from '../utils/colors';
 import { generateRandomCoordinates } from '../utils/fireworks';
 
@@ -21,7 +21,7 @@ export interface FireworksProps
   numberOfFireworks?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
-export const Fireworks = memo(
+export const Fireworks: React.FC<FireworksProps> = memo(
   ({
     autoHide,
     particleRadius,

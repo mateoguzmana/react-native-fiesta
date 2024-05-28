@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
-import { SkFont, Text, useSpring } from '@shopify/react-native-skia';
+import { type SkFont, Text } from '@shopify/react-native-skia';
 import { singleItemFadeSpeed } from '../constants/speed';
+import { withSpring } from 'react-native-reanimated';
 
 export interface EmojiProps {
   x?: number;
@@ -12,13 +13,13 @@ export interface EmojiProps {
 
 export const Emoji = memo(
   ({ x = 0, y = 0, autoHide = true, emoji = '🎉', font }: EmojiProps) => {
-    const opacity = useSpring(
+    const opacity = withSpring(
       { to: autoHide ? 0 : 1, from: 1 },
       singleItemFadeSpeed
     );
 
     if (!font) return null;
 
-    return <Text x={x} y={y} text={emoji} opacity={opacity} font={font} />;
+    return <Text x={x} y={y} text={emoji} opacity={opacity.to} font={font} />;
   }
 );
