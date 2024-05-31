@@ -7,7 +7,6 @@ import React, {
   useMemo,
   type ForwardedRef,
   useState,
-  useRef,
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
@@ -16,8 +15,12 @@ import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
-// import { FiestaSpeed } from '../constants/speed';
-import { useDerivedValue, withSpring } from 'react-native-reanimated';
+import { FiestaSpeed } from '../constants/speed';
+import {
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 interface RenderItemParams {
   x: number;
@@ -75,13 +78,13 @@ export const Popper = memo(
             : -screenHeight / 2,
         [controlledDirection]
       );
-      // const finalPosition = useMemo(
-      //   () =>
-      //     controlledDirection === PopperDirection.Ascending
-      //       ? -screenHeight
-      //       : screenHeight,
-      //   [controlledDirection]
-      // );
+      const finalPosition = useMemo(
+        () =>
+          controlledDirection === PopperDirection.Ascending
+            ? -screenHeight
+            : screenHeight,
+        [controlledDirection]
+      );
 
       const optimalNumberOfItems = useMemo(
         () => Math.floor(screenWidth / spacing),
@@ -97,26 +100,24 @@ export const Popper = memo(
         [itemsToRenderArray, spacing]
       );
 
-      const containerYPosition = useRef(initialPosition);
+      const containerYPosition = useSharedValue(initialPosition);
 
       const colors = useMemo(
         () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
         [controlledTheme, optimalNumberOfItems]
       );
 
-      const changeItemPosition = useCallback(
-        () =>
-          withSpring(containerYPosition.current, {
-            damping: 10,
-            stiffness: 100,
-          }),
-        [containerYPosition]
-      );
+      const changeItemPosition = useCallback(() => {
+        containerYPosition.value = withSpring(
+          finalPosition,
+          FiestaSpeed.Normal
+        );
+      }, [containerYPosition, finalPosition]);
 
       const transform = useDerivedValue(
         () => [
           {
-            translateY: containerYPosition.current,
+            translateY: containerYPosition.value,
           },
         ],
         [containerYPosition]
@@ -168,7 +169,6 @@ export const Popper = memo(
       if (!displayCanvas) return null;
 
       return (
-        // @ts-ignore @TODO: fix me
         <Canvas style={styles.canvas} pointerEvents="none">
           <Group transform={transform}>
             <>
