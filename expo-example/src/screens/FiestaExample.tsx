@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { Firework, Fireworks } from 'react-native-fiesta';
 import { Canvas } from '@shopify/react-native-skia';
 import { type RouteProp, useRoute } from '@react-navigation/native';
-import type { RootStackParamList } from '../App';
+import type { RootStackParamList } from '../App-legacy';
 
 type FiestaExampleScreenNavigationProp = RouteProp<
   RootStackParamList,
