@@ -10,10 +10,8 @@ interface HeaderProps {
 function Header({ onPressThemeChange, theme }: HeaderProps) {
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.title}>Hey, congrats for being here today! 🥳</Text>
-
       <Text style={[styles.title, styles.tryTitle]}>
-        Try out some fiesta components
+        Try out some fiesta components 🥳
       </Text>
 
       <TouchableOpacity onPress={onPressThemeChange}>
