@@ -12,7 +12,7 @@ import {
   Fireworks,
   FiestaThemes,
   Stars,
-  //   Balloon,
+  Balloon,
   Star,
   Heart,
   Firework,
@@ -78,7 +78,7 @@ export function Examples() {
       <Header onPressThemeChange={onPressThemeChange} theme={theme} />
 
       <ScrollView style={styles.column}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() =>
             runFiestaAnimation({
               animation: FiestaAnimations.Balloons,
@@ -93,7 +93,7 @@ export function Examples() {
           <Text style={[styles.pressableText, styles.textColor]}>
             Balloons (using Fiesta context)
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() =>

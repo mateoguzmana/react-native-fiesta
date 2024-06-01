@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
   Circle,
   Group,
@@ -9,7 +9,7 @@ import {
 import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
 import {
-  useDerivedValue,
+  useSharedValue,
   withRepeat,
   withSpring,
 } from 'react-native-reanimated';
@@ -32,29 +32,26 @@ export const Balloon = memo(
     depth = 1,
     autoPlay = true,
   }: BalloonProps) => {
-    const opacity = withSpring(
-      { to: autoPlay ? 0 : 1, from: 1 },
-      singleItemFadeSpeed
-    );
+    const opacity = useSharedValue(1);
+    const stringRotation = useSharedValue(-0.05);
 
-    const stringRotation = withRepeat({
-      to: 0.05,
-      from: -0.05,
-    });
+    useEffect(() => {
+      opacity.value = withSpring(autoPlay ? 0 : 1, singleItemFadeSpeed);
 
-    const matrix = useDerivedValue(
-      () =>
-        processTransform2d([
-          { scale: depth },
-          { translateX: x },
-          { translateY: y },
-          { rotate: stringRotation.to },
-        ]),
-      [stringRotation, x, y, depth, opacity]
-    );
+      stringRotation.value = withRepeat(withSpring(0.05), -1, true);
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [autoPlay]);
+
+    const matrix = processTransform2d([
+      { scale: depth },
+      { translateX: x },
+      { translateY: y },
+      { rotate: stringRotation.value },
+    ]);
 
     return (
-      <Group matrix={matrix} opacity={opacity.to}>
+      <Group matrix={matrix} opacity={opacity}>
         <Path
           path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
           color={baseColors.golden}
