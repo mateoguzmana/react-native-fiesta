@@ -14,7 +14,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <NavigationContainer>
-      {/* @ts-ignore: problems with expo and react version types */}
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
@@ -38,14 +37,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    // <View
-    //   style={{
-    //     flex: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //   }}
-    // >
-    //   <Text>Hello</Text>
-    // </View>
   );
 }
