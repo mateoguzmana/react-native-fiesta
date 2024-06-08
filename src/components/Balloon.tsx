@@ -43,6 +43,7 @@ export const Balloon = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoPlay]);
 
+    // @TODO: the transformations are not working as expected
     const matrix = processTransform2d([
       { scale: depth },
       { translateX: x },

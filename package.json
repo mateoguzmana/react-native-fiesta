@@ -28,8 +28,7 @@
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
-    "expo-example": "yarn --cwd expo-example",
-    "bootstrap": "yarn expo-example && yarn"
+    "bootstrap": "yarn example && yarn"
   },
   "keywords": [
     "react-native",
