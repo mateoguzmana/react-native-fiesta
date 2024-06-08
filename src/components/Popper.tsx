@@ -10,18 +10,18 @@ import React, {
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
+import {
+  runOnJS,
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
 import { FiestaSpeed } from '../constants/speed';
-import {
-  useDerivedValue,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
 
 interface RenderItemParams {
   x: number;
@@ -112,19 +112,16 @@ export const Popper = memo(
         containerYPosition.value = withSpring(
           finalPosition,
           FiestaSpeed.Normal,
-          // () => {
-          //   // setDisplayCanvas(false);
-          //   containerYPosition.value = initialPosition;
-          // }
           (finished) => {
             if (finished) {
-              console.log('ANIMATION ENDED');
-            } else {
-              console.log('ANIMATION GOT CANCELLED');
+              console.log('Popper finished');
+              containerYPosition.value = initialPosition;
+
+              runOnJS(setDisplayCanvas)(false);
             }
           }
         );
-      }, [containerYPosition, finalPosition]);
+      }, [containerYPosition, finalPosition, initialPosition]);
 
       const transform = useDerivedValue(() => [
         { translateY: containerYPosition.value },
@@ -155,7 +152,7 @@ export const Popper = memo(
         displayCanvas && changeItemPosition();
       }, [displayCanvas, changeItemPosition]);
 
-      // if (!displayCanvas) return null;
+      if (!displayCanvas) return null;
 
       return (
         <Canvas style={styles.canvas} pointerEvents="none">
