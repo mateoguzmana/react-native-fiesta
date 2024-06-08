@@ -1,0 +1,17 @@
+---
+id: troubleshooting
+title: Troubleshooting
+sidebar_label: Troubleshooting
+slug: /troubleshooting
+---
+
+### Fiesta Animations Blocking the UI
+
+By default, the `Canvas` component has pointer events that block the UI. For the `Popper` component for example, the pointer events disabled by default to avoid this as the Fiesta components are not intended to have pointer events.
+In case you are using an individual animation that doesn't have this property, you can disable it as below:
+
+```tsx
+<Canvas pointerEvents="none">
+  <YourSkiaComponent />
+</Canvas>
+```
