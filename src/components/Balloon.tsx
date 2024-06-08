@@ -1,18 +1,15 @@
 import React, { memo, useEffect } from 'react';
+import { Circle, Group, Oval, Path } from '@shopify/react-native-skia';
 import {
-  Circle,
-  Group,
-  Oval,
-  Path,
-  processTransform2d,
-} from '@shopify/react-native-skia';
-import { baseColors } from '../constants/theming';
-import { singleItemFadeSpeed } from '../constants/speed';
-import {
+  Easing,
+  useDerivedValue,
   useSharedValue,
   withRepeat,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
+import { baseColors } from '../constants/theming';
+import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface BalloonProps {
   x?: number;
@@ -38,13 +35,17 @@ export const Balloon = memo(
     useEffect(() => {
       opacity.value = withSpring(autoPlay ? 0 : 1, singleItemFadeSpeed);
 
-      stringRotation.value = withRepeat(withSpring(0.05), -1, true);
+      stringRotation.value = withRepeat(
+        withTiming(0.05, {
+          duration: 500,
+          easing: Easing.linear,
+        }),
+        -1,
+        true
+      );
+    }, [autoPlay, opacity, stringRotation]);
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoPlay]);
-
-    // @TODO: the transformations are not working as expected
-    const matrix = processTransform2d([
+    const matrix = useDerivedValue(() => [
       { scale: depth },
       { translateX: x },
       { translateY: y },
@@ -52,7 +53,7 @@ export const Balloon = memo(
     ]);
 
     return (
-      <Group matrix={matrix} opacity={opacity}>
+      <Group transform={matrix} opacity={opacity}>
         <Path
           path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
           color={baseColors.golden}
