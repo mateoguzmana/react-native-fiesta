@@ -46,7 +46,6 @@ export function Examples() {
 
   const onPressThemeChange = useCallback(() => {
     const options = Object.keys(FiestaThemes);
-
     showActionSheetWithOptions(
       {
         options,
@@ -79,7 +78,6 @@ export function Examples() {
       <Header onPressThemeChange={onPressThemeChange} theme={theme} />
 
       <ScrollView style={styles.column}>
-        {/* Example using Fiesta context */}
         <TouchableOpacity
           onPress={() =>
             runFiestaAnimation({
@@ -97,7 +95,6 @@ export function Examples() {
           </Text>
         </TouchableOpacity>
 
-        {/* Example using Fiesta context */}
         <TouchableOpacity
           onPress={() =>
             runFiestaAnimation({

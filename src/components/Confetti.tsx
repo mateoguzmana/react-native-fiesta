@@ -1,11 +1,11 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
+import { Rect, vec } from '@shopify/react-native-skia';
 import {
-  processTransform2d,
-  Rect,
-  useComputedValue,
-  useTiming,
-  vec,
-} from '@shopify/react-native-skia';
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import { screenHeight } from '../constants/dimensions';
 import { degreesToRadians, randomIntFromInterval } from '../utils/confettis';
 import { DEFAULT_ANIMATION_DURATION } from './Confettis';
@@ -35,57 +35,57 @@ export const Confetti = memo(
       [duration]
     );
 
-    const yPosition = useTiming(
-      {
-        from: -screenHeight / 2 + initialPosition.y,
-        to: screenHeight + 300,
-      },
-      { duration: randomDuration }
+    const yPosition = useSharedValue(-screenHeight / 2 + initialPosition.y);
+    const xOrigin = useSharedValue(initialPosition.x);
+    const rotateValue = useSharedValue(0);
+    const scaleYValue = useSharedValue(Math.random() < 0.5 ? -0.5 : 0.5);
+
+    useEffect(() => {
+      yPosition.value = withTiming(screenHeight + 300, {
+        duration: randomDuration,
+      });
+
+      xOrigin.value = withRepeat(
+        withTiming(initialPosition.x + randomIntFromInterval(100, 50), {
+          duration: randomDuration,
+        }),
+        -1,
+        true
+      );
+
+      rotateValue.value = withRepeat(
+        withTiming(degreesToRadians(Math.random() < 0.5 ? -360 : 360), {
+          duration: randomDuration / 2,
+        }),
+        -1,
+        true
+      );
+
+      scaleYValue.value = withRepeat(
+        withTiming(0, { duration: randomDuration / 2 }),
+        -1,
+        true
+      );
+    }, [
+      initialPosition.x,
+      randomDuration,
+      rotateValue,
+      scaleYValue,
+      xOrigin,
+      yPosition,
+    ]);
+
+    const origin = useDerivedValue(
+      () => vec(xOrigin.value, yPosition.value),
+      [yPosition, xOrigin]
     );
 
-    const xOrigin = useTiming(
-      {
-        from: initialPosition.x,
-        to: initialPosition.x + randomIntFromInterval(100, 50),
-        loop: true,
-        yoyo: true,
-      },
-      { duration: randomDuration }
-    );
-
-    const origin = useComputedValue(() => {
-      return vec(xOrigin.current, yPosition.current);
-    }, [yPosition, xOrigin]);
-
-    const rotateValue = useTiming(
-      {
-        from: 0,
-        to: degreesToRadians(Math.random() < 0.5 ? -360 : 360),
-        loop: true,
-      },
-      { duration: randomDuration / 2 }
-    );
-
-    const scaleYValue = useTiming(
-      {
-        from: Math.random() < 0.5 ? -0.5 : 0.5,
-        to: 0,
-        loop: true,
-        yoyo: true,
-      },
-      { duration: randomDuration / 2 }
-    );
-
-    const matrix = useComputedValue(
-      () =>
-        processTransform2d([
-          { rotate: rotateValue.current },
-          { scaleY: scaleYValue.current },
-          { skewX: scaleYValue.current / 2 },
-          { skewY: -scaleYValue.current / 2 },
-        ]),
-      [rotateValue, scaleYValue]
-    );
+    const matrix = useDerivedValue(() => [
+      { scaleY: scaleYValue.value },
+      { rotate: rotateValue.value },
+      { skewX: scaleYValue.value / 2 },
+      { skewY: -scaleYValue.value / 2 },
+    ]);
 
     return (
       <Rect
@@ -95,7 +95,7 @@ export const Confetti = memo(
         height={size}
         color={color}
         origin={origin}
-        matrix={matrix}
+        transform={matrix}
         key={index}
       />
     );

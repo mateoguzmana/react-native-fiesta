@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
-import { SkFont, Text, useSpring } from '@shopify/react-native-skia';
+import React, { memo, useEffect } from 'react';
+import { type SkFont, Text } from '@shopify/react-native-skia';
+import { useSharedValue, withSpring } from 'react-native-reanimated';
 import { singleItemFadeSpeed } from '../constants/speed';
 
 export interface EmojiProps {
@@ -12,10 +13,11 @@ export interface EmojiProps {
 
 export const Emoji = memo(
   ({ x = 0, y = 0, autoHide = true, emoji = '🎉', font }: EmojiProps) => {
-    const opacity = useSpring(
-      { to: autoHide ? 0 : 1, from: 1 },
-      singleItemFadeSpeed
-    );
+    const opacity = useSharedValue(1);
+
+    useEffect(() => {
+      opacity.value = withSpring(autoHide ? 0 : 1, singleItemFadeSpeed);
+    }, [autoHide, opacity]);
 
     if (!font) return null;
 

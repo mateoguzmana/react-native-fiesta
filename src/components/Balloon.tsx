@@ -1,15 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { Circle, Group, Oval, Path } from '@shopify/react-native-skia';
 import {
-  Circle,
-  Group,
-  Oval,
-  Path,
-  processTransform2d,
-  useComputedValue,
-  useTiming,
   Easing,
-  useSpring,
-} from '@shopify/react-native-skia';
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
 
@@ -31,34 +29,31 @@ export const Balloon = memo(
     depth = 1,
     autoPlay = true,
   }: BalloonProps) => {
-    const opacity = useSpring(
-      { to: autoPlay ? 0 : 1, from: 1 },
-      singleItemFadeSpeed
-    );
+    const opacity = useSharedValue(1);
+    const stringRotation = useSharedValue(-0.05);
 
-    const stringRotation = useTiming(
-      {
-        to: 0.05,
-        from: -0.05,
-        yoyo: true,
-        loop: true,
-      },
-      { easing: Easing.linear }
-    );
+    useEffect(() => {
+      opacity.value = withSpring(autoPlay ? 0 : 1, singleItemFadeSpeed);
 
-    const matrix = useComputedValue(
-      () =>
-        processTransform2d([
-          { scale: depth },
-          { translateX: x },
-          { translateY: y },
-          { rotate: stringRotation.current },
-        ]),
-      [stringRotation, x, y, depth, opacity]
-    );
+      stringRotation.value = withRepeat(
+        withTiming(0.05, {
+          duration: 500,
+          easing: Easing.linear,
+        }),
+        -1,
+        true
+      );
+    }, [autoPlay, opacity, stringRotation]);
+
+    const matrix = useDerivedValue(() => [
+      { scale: depth },
+      { translateX: x },
+      { translateY: y },
+      { rotate: stringRotation.value },
+    ]);
 
     return (
-      <Group matrix={matrix} opacity={opacity}>
+      <Group transform={matrix} opacity={opacity}>
         <Path
           path={`M 100 22 C 90 10, 110 80, 100 100 S 100 170, 100 150`}
           color={baseColors.golden}

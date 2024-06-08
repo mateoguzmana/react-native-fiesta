@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Balloon } from './Balloon';
-import { Popper, PopperHandler, PopperProps } from './Popper';
+import { Popper, type PopperHandler, type PopperProps } from './Popper';
 import { screenWidth } from '../constants/dimensions';
 import { getBalloonsYPositions } from '../utils/balloons';
 
@@ -30,6 +30,7 @@ export const Balloons = forwardRef<PopperHandler, BalloonsProps>(
             depth={
               possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
             }
+            autoPlay={false}
           />
         )}
         {...props}

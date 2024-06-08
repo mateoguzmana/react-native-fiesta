@@ -4,7 +4,7 @@ import { Firework } from 'react-native-fiesta';
 import { Canvas } from '@shopify/react-native-skia';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import type { RootStackParamList } from '../App';
+import type { RootStackParamList } from '../App-legacy';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -33,7 +33,7 @@ export function Home() {
               initialPosition={initialPosition}
               fireworkRadius={Dimensions.get('screen').width * 0.33}
               numberOfParticles={40}
-              autoHide={false}
+              autoHide={true}
             />
           </Canvas>
         </TouchableOpacity>

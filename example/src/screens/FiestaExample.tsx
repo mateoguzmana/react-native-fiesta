@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Firework, Fireworks } from 'react-native-fiesta';
 import { Canvas } from '@shopify/react-native-skia';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import type { RootStackParamList } from '../App';
+import { type RouteProp, useRoute } from '@react-navigation/native';
+import type { RootStackParamList } from '../App-legacy';
 
 type FiestaExampleScreenNavigationProp = RouteProp<
   RootStackParamList,

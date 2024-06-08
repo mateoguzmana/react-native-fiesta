@@ -21,7 +21,6 @@ yarn add react-native-fiesta
 
 ## Examples
 
-- [With bare React Native](./example/)
 - [With Expo and web support](./expo-example/)
 
 ## Library Under Construction 🚧

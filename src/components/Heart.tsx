@@ -1,11 +1,8 @@
-import React, { memo, useMemo } from 'react';
-import {
-  Path,
-  processTransform2d,
-  useSpring,
-} from '@shopify/react-native-skia';
+import React, { memo, useEffect, useMemo } from 'react';
+import { Path, processTransform2d } from '@shopify/react-native-skia';
 import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
+import { useSharedValue, withSpring } from 'react-native-reanimated';
 
 export interface HeartProps {
   x: number;
@@ -16,10 +13,7 @@ export interface HeartProps {
 
 export const Heart = memo(
   ({ x, y, autoplay = true, color = baseColors.red }: HeartProps) => {
-    const opacity = useSpring(
-      { to: autoplay ? 0 : 1, from: 1 },
-      singleItemFadeSpeed
-    );
+    const opacity = useSharedValue(1);
 
     const matrix = useMemo(
       () =>
@@ -30,6 +24,10 @@ export const Heart = memo(
         ]),
       [x, y]
     );
+
+    useEffect(() => {
+      opacity.value = withSpring(autoplay ? 0 : 1, singleItemFadeSpeed);
+    }, [autoplay, opacity]);
 
     return (
       <Path

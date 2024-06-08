@@ -14,7 +14,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <NavigationContainer>
-      {/* @ts-ignore: problems with expo and react version types */}
       <Stack.Navigator>
         <Stack.Screen
           name="Home"

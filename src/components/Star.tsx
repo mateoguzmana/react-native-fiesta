@@ -1,9 +1,6 @@
-import React, { memo, useMemo } from 'react';
-import {
-  Path,
-  processTransform2d,
-  useSpring,
-} from '@shopify/react-native-skia';
+import React, { memo, useEffect, useMemo } from 'react';
+import { Path, processTransform2d } from '@shopify/react-native-skia';
+import { useSharedValue, withSpring } from 'react-native-reanimated';
 import { baseColors } from '../constants/theming';
 import { singleItemFadeSpeed } from '../constants/speed';
 
@@ -16,10 +13,7 @@ export interface StarProps {
 
 export const Star = memo(
   ({ x, y, autoplay = true, color = baseColors.yellow }: StarProps) => {
-    const opacity = useSpring(
-      { to: autoplay ? 0 : 1, from: 1 },
-      singleItemFadeSpeed
-    );
+    const opacity = useSharedValue(1);
 
     const matrix = useMemo(
       () =>
@@ -30,6 +24,10 @@ export const Star = memo(
         ]),
       [x, y]
     );
+
+    useEffect(() => {
+      opacity.value = withSpring(autoplay ? 0 : 1, singleItemFadeSpeed);
+    }, [autoplay, opacity]);
 
     return (
       <Path

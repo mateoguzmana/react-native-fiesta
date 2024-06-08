@@ -16,7 +16,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.13.x
+          node-version: 18.17.0
           cache: yarn
 
       - name: Restore dependencies
@@ -30,7 +30,6 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: |
           yarn --cwd example --frozen-lockfile
-          yarn --cwd expo-example --frozen-lockfile
           yarn --frozen-lockfile
 
       - name: Lint files

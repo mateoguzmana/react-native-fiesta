@@ -5,23 +5,24 @@ import React, {
   useEffect,
   useImperativeHandle,
   useMemo,
-  ForwardedRef,
+  type ForwardedRef,
   useState,
 } from 'react';
 import { StyleSheet } from 'react-native';
+import { Canvas, Group } from '@shopify/react-native-skia';
 import {
-  Canvas,
-  Group,
-  runSpring,
-  useComputedValue,
-  useValue,
-} from '@shopify/react-native-skia';
+  cancelAnimation,
+  runOnJS,
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
-import { FiestaSpeed } from '../constants/speed';
+import { FiestaSpeed, singleItemFadeSpeed } from '../constants/speed';
 
 interface RenderItemParams {
   x: number;
@@ -101,56 +102,45 @@ export const Popper = memo(
         [itemsToRenderArray, spacing]
       );
 
-      const containerYPosition = useValue(initialPosition);
+      const containerYPosition = useSharedValue(0);
+      const opacity = useSharedValue(1);
 
       const colors = useMemo(
         () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
         [controlledTheme, optimalNumberOfItems]
       );
 
-      const changeItemPosition = useCallback(
-        () => runSpring(containerYPosition, finalPosition, FiestaSpeed.Normal),
-        [containerYPosition, finalPosition]
-      );
+      const changeItemPosition = useCallback(() => {
+        containerYPosition.value = withSpring(
+          finalPosition,
+          FiestaSpeed.Normal,
+          (finished) => {
+            if (finished) {
+              containerYPosition.value = initialPosition;
 
-      const transform = useComputedValue(
-        () => [
-          {
-            translateY: containerYPosition.current,
-          },
-        ],
-        [containerYPosition]
-      );
-
-      // Once the animation finishes, we hide the canvas to avoid blocking the UI
-      useEffect(() => {
-        const unsubscribe = containerYPosition.addListener((value) => {
-          const offset = 250;
-          const shouldHide =
-            controlledDirection === PopperDirection.Ascending
-              ? value < -offset
-              : value >= screenHeight - offset;
-
-          if (shouldHide && displayCanvas) {
-            setDisplayCanvas(false);
-            containerYPosition.current = initialPosition;
+              runOnJS(setDisplayCanvas)(false);
+            }
           }
-        });
+        );
 
-        return () => {
-          unsubscribe();
-        };
-      }, [
-        containerYPosition,
-        controlledDirection,
-        displayCanvas,
-        initialPosition,
+        opacity.value = withSpring(0, singleItemFadeSpeed);
+      }, [containerYPosition, finalPosition, initialPosition, opacity]);
+
+      const transform = useDerivedValue(() => [
+        { translateY: containerYPosition.value },
       ]);
 
       useImperativeHandle(ref, () => ({
         start(params) {
-          setDisplayCanvas(true);
+          // cancel any ongoing animation
+          cancelAnimation(containerYPosition);
+          setDisplayCanvas(false);
 
+          // reset the container position and opacity
+          containerYPosition.value = initialPosition;
+          opacity.value = 1;
+
+          // @TODO: to avoid re-renders probably some of this values could use a ref
           if (params?.theme) {
             setControlledTheme(params.theme);
           }
@@ -158,8 +148,17 @@ export const Popper = memo(
           if (params?.direction) {
             setControlledDirection(params.direction);
           }
+
+          // plays the animation again
+          setDisplayCanvas(true);
+          changeItemPosition();
         },
       }));
+
+      // when the controlled direction changes, reset the container position
+      useEffect(() => {
+        containerYPosition.value = initialPosition;
+      }, [containerYPosition, controlledDirection, initialPosition]);
 
       useEffect(() => {
         displayCanvas && changeItemPosition();
@@ -169,13 +168,15 @@ export const Popper = memo(
 
       return (
         <Canvas style={styles.canvas} pointerEvents="none">
-          <Group transform={transform}>
-            {itemsToRenderArray.map((_, index) =>
-              renderItem(
-                { x: spacing * index, y: yPositions[index], colors },
-                index
-              )
-            )}
+          <Group transform={transform} opacity={opacity}>
+            <>
+              {itemsToRenderArray.map((_, index) =>
+                renderItem(
+                  { x: spacing * index, y: yPositions[index], colors },
+                  index
+                )
+              )}
+            </>
           </Group>
         </Canvas>
       );
