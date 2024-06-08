@@ -1,14 +1,14 @@
 import React, { memo, useEffect, useMemo } from 'react';
-import { processTransform2d, Rect, vec } from '@shopify/react-native-skia';
-import { screenHeight } from '../constants/dimensions';
-import { degreesToRadians, randomIntFromInterval } from '../utils/confettis';
-import { DEFAULT_ANIMATION_DURATION } from './Confettis';
+import { Rect, vec } from '@shopify/react-native-skia';
 import {
   useDerivedValue,
   useSharedValue,
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
+import { screenHeight } from '../constants/dimensions';
+import { degreesToRadians, randomIntFromInterval } from '../utils/confettis';
+import { DEFAULT_ANIMATION_DURATION } from './Confettis';
 
 export interface ConfettiProps {
   initialPosition?: { x: number; y: number };
@@ -66,17 +66,21 @@ export const Confetti = memo(
         -1,
         true
       );
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+      initialPosition.x,
+      randomDuration,
+      rotateValue,
+      scaleYValue,
+      xOrigin,
+      yPosition,
+    ]);
 
     const origin = useDerivedValue(
       () => vec(xOrigin.value, yPosition.value),
       [yPosition, xOrigin]
     );
 
-    // @TODO: the skew values are not working as expected
-    const matrix = processTransform2d([
+    const matrix = useDerivedValue(() => [
       { scaleY: scaleYValue.value },
       { rotate: rotateValue.value },
       { skewX: scaleYValue.value / 2 },
@@ -91,7 +95,7 @@ export const Confetti = memo(
         height={size}
         color={color}
         origin={origin}
-        matrix={matrix}
+        transform={matrix}
         key={index}
       />
     );
