@@ -75,6 +75,7 @@ export const Confetti = memo(
       [yPosition, xOrigin]
     );
 
+    // @TODO: the skew values are not working as expected
     const matrix = processTransform2d([
       { scaleY: scaleYValue.value },
       { rotate: rotateValue.value },

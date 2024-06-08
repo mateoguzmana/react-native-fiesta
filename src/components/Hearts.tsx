@@ -13,7 +13,7 @@ export const Hearts = forwardRef<PopperHandler, HeartsProps>(
   (props: HeartsProps, ref?: PopperRef) => (
     <Popper
       renderItem={({ x, y, colors }, index) => (
-        <Heart key={index} x={x} y={y} color={colors[index]} />
+        <Heart key={index} x={x} y={y} color={colors[index]} autoplay={false} />
       )}
       {...props}
       ref={ref}

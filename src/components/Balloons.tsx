@@ -30,6 +30,7 @@ export const Balloons = forwardRef<PopperHandler, BalloonsProps>(
             depth={
               possibleDepths[Math.floor(Math.random() * possibleDepths.length)]
             }
+            autoPlay={false}
           />
         )}
         {...props}

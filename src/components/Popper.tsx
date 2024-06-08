@@ -11,6 +11,7 @@ import React, {
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
 import {
+  cancelAnimation,
   runOnJS,
   useDerivedValue,
   useSharedValue,
@@ -21,7 +22,7 @@ import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
 import { colorsFromTheme } from '../utils/colors';
 import { FiestaThemes } from '../constants/theming';
-import { FiestaSpeed } from '../constants/speed';
+import { FiestaSpeed, singleItemFadeSpeed } from '../constants/speed';
 
 interface RenderItemParams {
   x: number;
@@ -102,6 +103,7 @@ export const Popper = memo(
       );
 
       const containerYPosition = useSharedValue(0);
+      const opacity = useSharedValue(1);
 
       const colors = useMemo(
         () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
@@ -114,14 +116,15 @@ export const Popper = memo(
           FiestaSpeed.Normal,
           (finished) => {
             if (finished) {
-              console.log('Popper finished');
               containerYPosition.value = initialPosition;
 
               runOnJS(setDisplayCanvas)(false);
             }
           }
         );
-      }, [containerYPosition, finalPosition, initialPosition]);
+
+        opacity.value = withSpring(0, singleItemFadeSpeed);
+      }, [containerYPosition, finalPosition, initialPosition, opacity]);
 
       const transform = useDerivedValue(() => [
         { translateY: containerYPosition.value },
@@ -129,8 +132,15 @@ export const Popper = memo(
 
       useImperativeHandle(ref, () => ({
         start(params) {
-          console.log('Starting popper', params);
+          // cancel any ongoing animation
+          cancelAnimation(containerYPosition);
+          setDisplayCanvas(false);
 
+          // reset the container position and opacity
+          containerYPosition.value = initialPosition;
+          opacity.value = 1;
+
+          // @TODO: to avoid re-renders probably some of this values could use a ref
           if (params?.theme) {
             setControlledTheme(params.theme);
           }
@@ -139,7 +149,9 @@ export const Popper = memo(
             setControlledDirection(params.direction);
           }
 
+          // plays the animation again
           setDisplayCanvas(true);
+          changeItemPosition();
         },
       }));
 
@@ -156,7 +168,7 @@ export const Popper = memo(
 
       return (
         <Canvas style={styles.canvas} pointerEvents="none">
-          <Group transform={transform}>
+          <Group transform={transform} opacity={opacity}>
             <>
               {itemsToRenderArray.map((_, index) =>
                 renderItem(

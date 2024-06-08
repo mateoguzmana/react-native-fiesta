@@ -9,7 +9,13 @@ export const Stars = forwardRef<PopperHandler, StarsProps>(
     return (
       <Popper
         renderItem={({ x, y, colors }, index) => (
-          <Star key={index} x={x} y={y} color={colors[index]} />
+          <Star
+            key={index}
+            x={x}
+            y={y}
+            color={colors[index]}
+            autoplay={false}
+          />
         )}
         {...props}
         ref={ref}

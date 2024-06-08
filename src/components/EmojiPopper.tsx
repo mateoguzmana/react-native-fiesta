@@ -28,6 +28,7 @@ export const EmojiPopper = forwardRef<PopperHandler, EmojiPopperProps>(
             y={y}
             emoji={emojisToRender[index] ?? '❓'}
             font={font}
+            autoHide={false}
           />
         )}
         {...props}
