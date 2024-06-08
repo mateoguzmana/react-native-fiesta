@@ -20,6 +20,7 @@ import {
   useDerivedValue,
   useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 
 interface RenderItemParams {
@@ -100,7 +101,7 @@ export const Popper = memo(
         [itemsToRenderArray, spacing]
       );
 
-      const containerYPosition = useSharedValue(initialPosition);
+      const containerYPosition = useSharedValue(0);
 
       const colors = useMemo(
         () => colorsFromTheme(controlledTheme, optimalNumberOfItems),
@@ -110,47 +111,28 @@ export const Popper = memo(
       const changeItemPosition = useCallback(() => {
         containerYPosition.value = withSpring(
           finalPosition,
-          FiestaSpeed.Normal
+          FiestaSpeed.Normal,
+          // () => {
+          //   // setDisplayCanvas(false);
+          //   containerYPosition.value = initialPosition;
+          // }
+          (finished) => {
+            if (finished) {
+              console.log('ANIMATION ENDED');
+            } else {
+              console.log('ANIMATION GOT CANCELLED');
+            }
+          }
         );
       }, [containerYPosition, finalPosition]);
 
-      const transform = useDerivedValue(
-        () => [
-          {
-            translateY: containerYPosition.value,
-          },
-        ],
-        [containerYPosition]
-      );
-
-      // // Once the animation finishes, we hide the canvas to avoid blocking the UI
-      // useEffect(() => {
-      //   const unsubscribe = containerYPosition.addListener((value) => {
-      //     const offset = 250;
-      //     const shouldHide =
-      //       controlledDirection === PopperDirection.Ascending
-      //         ? value < -offset
-      //         : value >= screenHeight - offset;
-
-      //     if (shouldHide && displayCanvas) {
-      //       setDisplayCanvas(false);
-      //       containerYPosition.current = initialPosition;
-      //     }
-      //   });
-
-      //   return () => {
-      //     unsubscribe();
-      //   };
-      // }, [
-      //   containerYPosition,
-      //   controlledDirection,
-      //   displayCanvas,
-      //   initialPosition,
-      // ]);
+      const transform = useDerivedValue(() => [
+        { translateY: containerYPosition.value },
+      ]);
 
       useImperativeHandle(ref, () => ({
         start(params) {
-          setDisplayCanvas(true);
+          console.log('Starting popper', params);
 
           if (params?.theme) {
             setControlledTheme(params.theme);
@@ -159,14 +141,21 @@ export const Popper = memo(
           if (params?.direction) {
             setControlledDirection(params.direction);
           }
+
+          setDisplayCanvas(true);
         },
       }));
+
+      // when the controlled direction changes, reset the container position
+      useEffect(() => {
+        containerYPosition.value = initialPosition;
+      }, [containerYPosition, controlledDirection, initialPosition]);
 
       useEffect(() => {
         displayCanvas && changeItemPosition();
       }, [displayCanvas, changeItemPosition]);
 
-      if (!displayCanvas) return null;
+      // if (!displayCanvas) return null;
 
       return (
         <Canvas style={styles.canvas} pointerEvents="none">
