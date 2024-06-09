@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Canvas, useFont } from '@shopify/react-native-skia';
+import { Canvas, Circle, useFont } from '@shopify/react-native-skia';
 import {
   Fireworks,
   FiestaThemes,
@@ -23,6 +23,7 @@ import {
   PopperDirection,
   Confettis,
   Confetti,
+  CustomPoppers,
 } from 'react-native-fiesta';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import Header from './Header';
@@ -216,6 +217,26 @@ export function Examples() {
 
           <Text style={[styles.pressableText, styles.textColor]}>
             Confettis
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            onChangeComponent(
+              <CustomPoppers
+                theme={selectedTheme}
+                key={dynamicKey}
+                children={<Circle r={100} color="lightblue" />}
+              />
+            )
+          }
+          style={styles.pressable}
+        >
+          <Canvas style={styles.canvas}>
+            <Circle r={10} color="lightblue" />
+          </Canvas>
+          <Text style={[styles.pressableText, styles.textColor]}>
+            Custom Popper Element
           </Text>
         </TouchableOpacity>
       </ScrollView>

@@ -12,3 +12,5 @@ export * from './Emoji';
 export * from './Popper';
 export * from './Confettis';
 export * from './Confetti';
+export * from './CustomPopper';
+export * from './CustomPoppers';
