@@ -1,0 +1,56 @@
+---
+id: popper
+title: Popper
+sidebar_label: Popper
+slug: /components/popper
+---
+
+A popper component that allows composing a set of elements that are thrown across the screen.
+
+- [Simple Popper](#simple-popper)
+
+### Simple Popper
+
+You can define a custom Skia element and render it within the `Popper`.
+
+```tsx
+import { StyleSheet } from 'react-native';
+import { Canvas, Circle } from '@shopify/react-native-skia';
+import { Popper, PopperDirection } from 'react-native-fiesta';
+
+function App() {
+  return (
+    <Canvas style={styles.canvas}>
+      <Popper
+          direction={PopperDirection.Ascending}
+          spacing={10}
+          renderItem={({ x, y, colors }, index) => (
+            <Circle
+              key={`circle-${index}`}
+              cx={x}
+              cy={y}
+              r={10}
+              color={colors[index]}
+            />
+          )}
+          positionSpringConfig={{
+            stiffness: 100,
+            damping: 100,
+            mass: 11000,
+          }}
+          fadeSpringConfig={{
+            stiffness: 1,
+            damping: 1,
+            mass: 1000,
+          }}
+        />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  canvas: {
+    flex: 1,
+  },
+});
+```
