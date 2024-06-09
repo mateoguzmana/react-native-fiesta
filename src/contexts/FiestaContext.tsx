@@ -11,7 +11,7 @@ import {
   Stars as _Stars,
   EmojiPopper as _EmojiPopper,
   type PopperHandler,
-  type PopperProps,
+  type StartPopperParams,
 } from '../components';
 
 export enum FiestaAnimations {
@@ -22,8 +22,7 @@ export enum FiestaAnimations {
   Fireworks = 'Fireworks',
 }
 
-interface RunFiestaAnimationParams
-  extends Pick<PopperProps, 'theme' | 'direction'> {
+interface RunFiestaAnimationParams extends StartPopperParams {
   animation: FiestaAnimations;
 }
 
