@@ -7,6 +7,7 @@ import React, {
   useMemo,
   type ForwardedRef,
   useState,
+  useRef,
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
@@ -85,32 +86,23 @@ export const Popper = memo(
       }: PopperProps,
       ref: PopperRef
     ) => {
-      // properties that might be controlled are also defined in the state
+      // properties that might be controlled are also defined as states and refs
       const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
-      const [controlledDirection, setControlledDirection] =
-        useState<PopperDirection>(direction);
-      const [
-        controlledPositionSpringConfig,
-        setControlledPositionSpringConfig,
-      ] = useState<SpringConfig>(positionSpringConfig);
-      const [controlledFadeSpringConfig, setControlledFadeSpringConfig] =
-        useState<SpringConfig>(fadeSpringConfig);
+      const controlledDirection = useRef<PopperDirection>(direction);
+      const controlledPositionSpringConfig =
+        useRef<SpringConfig>(positionSpringConfig);
+      const controlledFadeSpringConfig = useRef<SpringConfig>(fadeSpringConfig);
 
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
-      const initialPosition = useMemo(
-        () =>
-          controlledDirection === PopperDirection.Ascending
-            ? screenHeight
-            : -screenHeight / 2,
-        [controlledDirection]
-      );
-      const finalPosition = useMemo(
-        () =>
-          controlledDirection === PopperDirection.Ascending
-            ? -screenHeight
-            : screenHeight,
-        [controlledDirection]
-      );
+
+      const initialPosition =
+        controlledDirection.current === PopperDirection.Ascending
+          ? screenHeight
+          : -screenHeight / 2;
+      const finalPosition =
+        controlledDirection.current === PopperDirection.Ascending
+          ? -screenHeight
+          : screenHeight;
 
       const optimalNumberOfItems = useMemo(
         () => Math.floor(screenWidth / spacing),
@@ -137,7 +129,7 @@ export const Popper = memo(
       const changeItemPosition = useCallback(() => {
         containerYPosition.value = withSpring(
           finalPosition,
-          controlledPositionSpringConfig,
+          controlledPositionSpringConfig.current,
           (finished) => {
             if (finished) {
               containerYPosition.value = initialPosition;
@@ -147,7 +139,7 @@ export const Popper = memo(
           }
         );
 
-        opacity.value = withSpring(0, controlledFadeSpringConfig);
+        opacity.value = withSpring(0, controlledFadeSpringConfig.current);
       }, [
         containerYPosition,
         controlledFadeSpringConfig,
@@ -171,18 +163,18 @@ export const Popper = memo(
           containerYPosition.value = initialPosition;
           opacity.value = 1;
 
-          // @TODO: to avoid unnecessary re-renders probably some of this values could use a ref
           if (params?.theme) {
             setControlledTheme(params.theme);
           }
           if (params?.direction) {
-            setControlledDirection(params.direction);
+            controlledDirection.current = params.direction;
           }
           if (params?.positionSpringConfig) {
-            setControlledPositionSpringConfig(params.positionSpringConfig);
+            controlledPositionSpringConfig.current =
+              params.positionSpringConfig;
           }
           if (params?.fadeSpringConfig) {
-            setControlledFadeSpringConfig(params.fadeSpringConfig);
+            controlledFadeSpringConfig.current = params.fadeSpringConfig;
           }
 
           // plays the animation again

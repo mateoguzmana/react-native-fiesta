@@ -102,6 +102,16 @@ export function Examples() {
               animation: FiestaAnimations.Hearts,
               theme: selectedTheme,
               direction: PopperDirection.Ascending,
+              positionSpringConfig: {
+                stiffness: 100,
+                damping: 100,
+                mass: 11000,
+              },
+              fadeSpringConfig: {
+                stiffness: 1,
+                damping: 1,
+                mass: 1000,
+              },
             })
           }
           style={styles.pressable}
