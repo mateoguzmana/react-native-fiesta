@@ -4,11 +4,11 @@ import { Canvas } from '@shopify/react-native-skia';
 import { FiestaThemes } from '../constants/theming';
 import { colorsFromTheme } from '../utils/colors';
 import { generateRandomCoordinates } from '../utils/fireworks';
+import { DEFAULT_ANIMATION_DURATION } from '../utils/confettis';
 import { screenHeight } from '../constants/dimensions';
 import { Confetti, type ConfettiProps } from './Confetti';
 
 const optimalNumberOfConfettis = 30;
-export const DEFAULT_ANIMATION_DURATION = 6000;
 
 export interface ConfettisProps
   extends Pick<ConfettiProps, 'size' | 'duration'> {
