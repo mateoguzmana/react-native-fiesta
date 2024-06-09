@@ -1,5 +1,10 @@
 import { screenWidth, screenHeight } from '../constants/dimensions';
 
+interface Coordinates {
+  x: number;
+  y: number;
+}
+
 export function fromRadians(angle: number) {
   return angle * (180.0 / Math.PI);
 }
@@ -8,9 +13,9 @@ export function generateRandomCoordinates(
   numElements: number,
   specificHeight?: number,
   specificWidth?: number
-): Array<{ x: number; y: number }> {
+): Array<Coordinates> {
   // Create an array to store the generated coordinates
-  const coordinates: Array<{ x: number; y: number }> = [];
+  const coordinates: Array<Coordinates> = [];
 
   // Generate random x,y coordinates until we have the desired number of elements
   while (coordinates.length < numElements) {

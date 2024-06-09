@@ -7,8 +7,11 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 import { screenHeight } from '../constants/dimensions';
-import { degreesToRadians, randomIntFromInterval } from '../utils/confettis';
-import { DEFAULT_ANIMATION_DURATION } from './Confettis';
+import {
+  degreesToRadians,
+  randomIntFromInterval,
+  DEFAULT_ANIMATION_DURATION,
+} from '../utils/confettis';
 
 export interface ConfettiProps {
   initialPosition?: { x: number; y: number };

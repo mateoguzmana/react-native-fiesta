@@ -7,6 +7,7 @@ import React, {
   useMemo,
   type ForwardedRef,
   useState,
+  useRef,
 } from 'react';
 import { StyleSheet } from 'react-native';
 import { Canvas, Group } from '@shopify/react-native-skia';
@@ -17,6 +18,7 @@ import {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import type { SpringConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/springUtils';
 import { screenHeight } from '../constants/dimensions';
 import { screenWidth } from '../constants/dimensions';
 import { shuffleArray } from '../utils/array';
@@ -47,10 +49,25 @@ export interface PopperProps {
    * Direction in which the elements will be popped
    */
   direction?: PopperDirection;
+  /**
+   * Controls the speed of the elements moving across the screen
+   * @default FiestaSpeed.Normal
+   */
+  positionSpringConfig?: SpringConfig;
+  /**
+   * Controls the speed of the elements fading out
+   * @default singleItemFadeSpeed – mass is set to screenHeight, which calculates the fade speed based on the screen height
+   */
+  fadeSpringConfig?: SpringConfig;
 }
 
+export type StartPopperParams = Pick<
+  PopperProps,
+  'theme' | 'direction' | 'positionSpringConfig' | 'fadeSpringConfig'
+>;
+
 export interface PopperHandler {
-  start(params?: Pick<PopperProps, 'theme' | 'direction'>): void;
+  start(params?: StartPopperParams): void;
 }
 
 export type PopperRef = ForwardedRef<PopperHandler>;
@@ -64,29 +81,28 @@ export const Popper = memo(
         renderItem,
         autoPlay = true,
         direction = PopperDirection.Descending,
+        positionSpringConfig = FiestaSpeed.Normal,
+        fadeSpringConfig = singleItemFadeSpeed,
       }: PopperProps,
       ref: PopperRef
     ) => {
-      // properties that might be controlled are also defined in the state
+      // properties that might be controlled are also defined as states and refs
       const [controlledTheme, setControlledTheme] = useState<string[]>(theme);
-      const [controlledDirection, setControlledDirection] =
-        useState<PopperDirection>(direction);
+      const controlledDirection = useRef<PopperDirection>(direction);
+      const controlledPositionSpringConfig =
+        useRef<SpringConfig>(positionSpringConfig);
+      const controlledFadeSpringConfig = useRef<SpringConfig>(fadeSpringConfig);
 
       const [displayCanvas, setDisplayCanvas] = useState<boolean>(autoPlay);
-      const initialPosition = useMemo(
-        () =>
-          controlledDirection === PopperDirection.Ascending
-            ? screenHeight
-            : -screenHeight / 2,
-        [controlledDirection]
-      );
-      const finalPosition = useMemo(
-        () =>
-          controlledDirection === PopperDirection.Ascending
-            ? -screenHeight
-            : screenHeight,
-        [controlledDirection]
-      );
+
+      const initialPosition =
+        controlledDirection.current === PopperDirection.Ascending
+          ? screenHeight
+          : -screenHeight / 2;
+      const finalPosition =
+        controlledDirection.current === PopperDirection.Ascending
+          ? -screenHeight
+          : screenHeight;
 
       const optimalNumberOfItems = useMemo(
         () => Math.floor(screenWidth / spacing),
@@ -113,7 +129,7 @@ export const Popper = memo(
       const changeItemPosition = useCallback(() => {
         containerYPosition.value = withSpring(
           finalPosition,
-          FiestaSpeed.Normal,
+          controlledPositionSpringConfig.current,
           (finished) => {
             if (finished) {
               containerYPosition.value = initialPosition;
@@ -123,8 +139,15 @@ export const Popper = memo(
           }
         );
 
-        opacity.value = withSpring(0, singleItemFadeSpeed);
-      }, [containerYPosition, finalPosition, initialPosition, opacity]);
+        opacity.value = withSpring(0, controlledFadeSpringConfig.current);
+      }, [
+        containerYPosition,
+        controlledFadeSpringConfig,
+        controlledPositionSpringConfig,
+        finalPosition,
+        initialPosition,
+        opacity,
+      ]);
 
       const transform = useDerivedValue(() => [
         { translateY: containerYPosition.value },
@@ -140,13 +163,18 @@ export const Popper = memo(
           containerYPosition.value = initialPosition;
           opacity.value = 1;
 
-          // @TODO: to avoid re-renders probably some of this values could use a ref
           if (params?.theme) {
             setControlledTheme(params.theme);
           }
-
           if (params?.direction) {
-            setControlledDirection(params.direction);
+            controlledDirection.current = params.direction;
+          }
+          if (params?.positionSpringConfig) {
+            controlledPositionSpringConfig.current =
+              params.positionSpringConfig;
+          }
+          if (params?.fadeSpringConfig) {
+            controlledFadeSpringConfig.current = params.fadeSpringConfig;
           }
 
           // plays the animation again

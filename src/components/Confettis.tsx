@@ -6,9 +6,9 @@ import { colorsFromTheme } from '../utils/colors';
 import { generateRandomCoordinates } from '../utils/fireworks';
 import { screenHeight } from '../constants/dimensions';
 import { Confetti, type ConfettiProps } from './Confetti';
+import { DEFAULT_ANIMATION_DURATION } from '../utils/confettis';
 
 const optimalNumberOfConfettis = 30;
-export const DEFAULT_ANIMATION_DURATION = 6000;
 
 export interface ConfettisProps
   extends Pick<ConfettiProps, 'size' | 'duration'> {
