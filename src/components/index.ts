@@ -12,3 +12,5 @@ export * from './Emoji';
 export * from './Popper';
 export * from './Confettis';
 export * from './Confetti';
+// @TODO: from here more things will go out, but for now, let's keep it simple
+export * from './effects/WithEffect';

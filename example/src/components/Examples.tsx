@@ -24,6 +24,7 @@ import {
   Confettis,
   Confetti,
   Popper,
+  WithEffect,
 } from 'react-native-fiesta';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import Header from './Header';
@@ -79,6 +80,10 @@ export function Examples() {
       <Header onPressThemeChange={onPressThemeChange} theme={theme} />
 
       <ScrollView style={styles.column}>
+        <WithEffect style={styles.withEffect}>
+          <Text style={[styles.pressableText, styles.textColor]}>Effects</Text>
+        </WithEffect>
+
         <TouchableOpacity
           onPress={() =>
             runFiestaAnimation({
@@ -305,4 +310,11 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
   },
   textColor: { color: 'white' },
+  withEffect: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 10,
+    marginHorizontal: 8,
+    padding: 10,
+    alignSelf: 'center',
+  },
 });
