@@ -316,5 +316,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     padding: 10,
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '60%',
+    height: 220,
   },
 });
