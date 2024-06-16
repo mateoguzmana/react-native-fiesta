@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '60%',
-    height: 220,
+    width: '40%',
+    height: 50,
   },
 });

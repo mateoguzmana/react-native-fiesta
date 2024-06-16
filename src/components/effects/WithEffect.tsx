@@ -1,5 +1,5 @@
 import { Canvas, RoundedRect, Shader, Skia } from '@shopify/react-native-skia';
-import React, { forwardRef, useRef, useEffect } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import type { GestureResponderEvent } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity, type TouchableOpacityProps } from 'react-native';
@@ -13,30 +13,24 @@ const source = Skia.RuntimeEffect.Make(`
 uniform float width;
 uniform float height;
 uniform float time;
-uniform vec2 mouse;
 
-const mat3 p = mat3(13.323122,23.5112,21.71123,21.1212,28.7312,11.9312,21.8112,14.7212,61.3934);
+float f(vec3 p) {
+    p.z -= time * 10.;
+    float a = p.z * .1;
+    p.xy *= mat2(cos(a), sin(a), -sin(a), cos(a));
+    return .1 - length(cos(p.xy) + sin(p.yz));
+}
 
-vec4 main(vec2 fragCoord) {
-    vec2 uv = mouse + vec2(1., height / width) * fragCoord / vec2(width, height);
-    vec3 acc = vec3(0.0);
-    float dof = 5.0 * sin(time * 0.1);
-    for (int i = 0; i < 200; i++) {
-        float fi = float(i);
-        vec2 q = uv * (1.0 + fi * .1);
-        q += vec2(q.y * (.8 * mod(fi * 7.238917, 1.0) - .8 * 0.5), 1.5 * time / (1.0 + fi * .1 * 0.03));
-        vec3 n = vec3(floor(q), 31.189 + fi);
-        vec3 m = floor(n) * 0.00001 + fract(n);
-        vec3 mp = (31415.9 + m) / fract(p * m);
-        vec3 r = fract(mp);
-        vec2 s = abs(mod(q, 1.0) - 0.5 + 0.9 * r.xy - 0.45);
-        s += 0.01 * abs(2.0 * fract(10.0 * q.yx) - 1.0); 
-        float d = 0.6 * max(s.x - s.y, s.x + s.y) + max(s.x, s.y) - 0.01;
-        float edge = 0.005 + 0.05 * min(0.5 * abs(fi - 5.0 - dof), 1.0);
-        acc += vec3(smoothstep(edge, -edge, d) * (r.x / (1.0 + 0.02 * fi * .1)));
+half4 main(vec2 fragcoord) { 
+    vec3 d = .5 - vec3(fragcoord / vec2(width, height), 0);
+    vec3 p = vec3(0);
+    for (int i = 0; i < 32; i++) {
+      p += f(p) * d;
     }
-    return vec4(vec3(acc), 1.0);
-}`)!;
+    return ((sin(p) + vec3(2, 5, 12)) / length(p)).xyz1;
+}
+
+`)!;
 
 const styles = StyleSheet.create({
   canvas: {
@@ -59,18 +53,15 @@ function _WithEffect(
   const effectHeight = useSharedValue(0);
   const effectOpacity = useSharedValue(0);
   const effectRadius = useSharedValue(10);
-  const time = useSharedValue(0);
-  const mouseX = useSharedValue(0);
-  const mouseY = useSharedValue(0);
+  const effectTime = useSharedValue(0);
 
   const uniforms = useDerivedValue(() => {
     return {
       width: effectWidth.value,
       height: effectHeight.value,
-      time: time.value,
-      mouse: [mouseX.value, mouseY.value],
+      time: effectTime.value,
     };
-  }, [effectWidth, effectHeight, time, mouseX, mouseY]);
+  });
 
   const effectRef = useRef<TouchableOpacity>(null);
 
@@ -84,10 +75,12 @@ function _WithEffect(
       effectCY.value = y;
       effectWidth.value = width;
       effectHeight.value = height;
-      mouseX.value = pageX;
-      mouseY.value = pageY;
       effectOpacity.value = withTiming(1, { duration: 500 }, () => {
         effectOpacity.value = withTiming(0, { duration: 500 });
+      });
+
+      effectTime.value = withTiming(100, { duration: 500 }, () => {
+        effectTime.value = withTiming(0, { duration: 500 });
       });
 
       // @ts-expect-error - borderRadius is not in the types
@@ -97,23 +90,7 @@ function _WithEffect(
         effectRadius.value = hasBorderRadius;
       }
     });
-
-    const interval = setInterval(() => {
-      time.value += 0.1;
-    }, 100);
-
-    setTimeout(() => {
-      clearInterval(interval);
-      time.value = 0;
-    }, 5000);
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      time.value += 0.1;
-    }, 100);
-    return () => clearInterval(interval);
-  }, [time]);
 
   return (
     <>
@@ -135,4 +112,8 @@ function _WithEffect(
   );
 }
 
+/**
+ * IMPORTANT: This component is experimental.
+ * A `TouchableOpacity` with built-in effects.
+ */
 export const WithEffect = forwardRef(_WithEffect);
